@@ -8,8 +8,15 @@
 2. 克隆仓库。已持有此仓库副本的成员直接使用现有目录，无需重复克隆。
 
 ```powershell
-git clone https://github.com/ShDH-CMYK/-11.git weyoung-2026
+git clone https://github.com/ShDH-CMYK/heikesong-zuopin.git weyoung-2026
 cd weyoung-2026
+```
+
+如果已有仓库副本仍使用旧远程地址，在该副本目录中更新一次：
+
+```powershell
+git remote set-url origin https://github.com/ShDH-CMYK/heikesong-zuopin.git
+git remote -v
 ```
 
 ## 开始一项任务
