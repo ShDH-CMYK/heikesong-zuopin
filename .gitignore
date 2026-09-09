@@ -1,0 +1,41 @@
+# Local environment values; example files must contain placeholders only.
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+!.env.template
+
+# Private keys and credential bundles.
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# Local-only creation evidence and notes.
+/private/
+/local-notes/
+
+# Common dependencies and interpreter caches.
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Temporary output. Refine build rules after choosing the stack.
+.cache/
+.pytest_cache/
+coverage/
+*.log
+*.tmp
+*.swp
+*~
+
+# OS-generated files.
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Keep source assets, project configuration and dependency lockfiles tracked.
