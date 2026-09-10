@@ -178,6 +178,7 @@ function handleOffline() {
 }
 
 function refreshSampleCount() {
+  if (sampleInput.value.length > SAMPLE_LIMIT) sampleInput.value = sampleInput.value.slice(0, SAMPLE_LIMIT);
   sampleCount.textContent = sampleInput.value.length + " / " + SAMPLE_LIMIT;
 }
 
