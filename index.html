@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="人类观察报告：点击一次，研究员吐槽一次。" />
+    <title>人类观察报告：人类研究中心</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <a class="wordmark" href="./" aria-label="人类观察报告首页">
+          <span class="wordmark-mark" aria-hidden="true">H</span>
+          <span>HUMAN<br />RESEARCH CENTRE</span>
+        </a>
+        <p class="case-file">CASE FILE / 2026-09</p>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-dot"></span> 观测站在线 · 等待人类样本</p>
+          <h1 id="page-title">人类观察<br /><em>报告</em></h1>
+          <p class="hero-intro">你负责做人类。<br />我们负责解释你为什么这样做。</p>
+        </div>
+        <div class="hero-note" aria-label="使用说明">
+          <span class="note-label">研究指令</span>
+          <p>点击一次，研究员吐槽一次。每次观察都会抽取一条新的日常行为。</p>
+          <span class="note-stamp">CLASSIFIED<br />BUT FRIENDLY</span>
+        </div>
+      </section>
+
+      <section class="control-panel" aria-label="开始观察">
+        <div class="counter-wrap">
+          <span class="counter-label">已完成观察</span>
+          <strong id="count">00</strong>
+          <span class="counter-unit">次</span>
+        </div>
+        <button id="roast-button" class="roast-button" type="button">
+          <span class="button-kicker">RUN HUMAN ANALYSIS</span>
+          <span class="button-text">开始吐槽</span>
+          <span class="button-arrow" aria-hidden="true">↗</span>
+        </button>
+        <p id="status" class="status" role="status">研究员正在等待你的下一次点击。</p>
+      </section>
+
+      <section id="report" class="report-card empty" aria-live="polite" aria-label="观察报告">
+        <div class="report-empty">
+          <span class="empty-symbol" aria-hidden="true">◎</span>
+          <p>报告档案为空</p>
+          <span>点击上方按钮，启动第一次人类观察。</span>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>本站吐槽行为和情境，不评价真实身份。请勿输入他人的隐私或敏感信息。</p>
+        <p class="footer-code">HRC / NO. <span id="footer-number">0000</span></p>
+      </footer>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
