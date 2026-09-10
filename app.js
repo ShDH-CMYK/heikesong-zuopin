@@ -144,7 +144,7 @@ async function handleOnline() {
     return;
   }
   startThinking("研究员分析中…");
-  status.textContent = "正在分析你提交的观察样本，请稍候。";
+  status.textContent = "正在分析你提交的观察样本——研究员思考得很认真，最长可能需要一分钟。";
   try {
     const item = await requestReport(sample);
     failedCalls = 0;

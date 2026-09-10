@@ -4,7 +4,10 @@
 const API_ENDPOINT = "https://open.bigmodel.cn/api/paas/v4/chat/completions";
 const API_MODEL = "glm-4.7-flash"; // 用真实密钥联调时验证;若模型名无效,只改这一行
 const API_KEY_STORAGE = "human-report-apikey-v1";
-const REQUEST_TIMEOUT_MS = 10000;
+// 实测思考型模型单次生成可达 50 秒以上,10 秒级超时会误杀正常请求
+const REQUEST_TIMEOUT_MS = 60000;
+const RATE_LIMIT_RETRIES = 2;
+const RATE_LIMIT_BACKOFF_MS = 3000;
 
 const ERROR_MESSAGES = {
   AUTH: "密钥未通过验证，请检查后重新登记。",
@@ -86,16 +89,30 @@ async function callOnce(sampleText, apiKey, strict) {
   }
 }
 
-// 生成一份观察报告;FORMAT 类失败自动带严格指令重试 1 次
+// 生成一份观察报告;FORMAT 自动带严格指令重试 1 次;429 高峰期常见,自动退避重试
 async function requestReport(sampleText) {
   const apiKey = readApiKey();
   if (!apiKey) throw apiError("AUTH");
+  let item;
   try {
-    return await callOnce(sampleText, apiKey, false);
+    item = await callOnce(sampleText, apiKey, false);
   } catch (err) {
     if (err && err.kind === "FORMAT") return callOnce(sampleText, apiKey, true);
+    if (err && err.kind === "RATE_LIMIT") {
+      for (let i = 0; i < RATE_LIMIT_RETRIES; i++) {
+        await new Promise((resolve) => setTimeout(resolve, RATE_LIMIT_BACKOFF_MS));
+        try {
+          return await callOnce(sampleText, apiKey, false);
+        } catch (retryErr) {
+          if (!(retryErr && (retryErr.kind === "RATE_LIMIT" || retryErr.kind === "FORMAT"))) throw retryErr;
+          if (retryErr.kind === "FORMAT") return callOnce(sampleText, apiKey, true);
+        }
+      }
+      throw apiError("RATE_LIMIT");
+    }
     throw err;
   }
+  return item;
 }
 
 // 供 Node 单测 require;浏览器以 <script> 加载时 module 未定义,自动跳过。
