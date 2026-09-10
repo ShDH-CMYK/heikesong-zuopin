@@ -34,6 +34,11 @@
       </section>
 
       <section class="control-panel" aria-label="开始观察">
+        <div class="sample-wrap">
+          <label class="sample-label" for="sample-input">提交你的观察样本 / SAMPLE</label>
+          <textarea id="sample-input" maxlength="200" rows="2" placeholder="例如：我又熬夜刷手机到凌晨三点"></textarea>
+          <span id="sample-count" class="sample-count" aria-live="polite">0 / 200</span>
+        </div>
         <div class="counter-wrap">
           <span class="counter-label">已完成观察</span>
           <strong id="count">00</strong>
@@ -45,6 +50,20 @@
           <span class="button-arrow" aria-hidden="true">↗</span>
         </button>
         <p id="status" class="status" role="status">研究员正在等待你的下一次点击。</p>
+      </section>
+
+      <section id="key-gate" class="key-gate" hidden aria-labelledby="key-gate-title">
+        <div class="key-gate-box">
+          <p class="eyebrow">RESEARCHER KEY / 研究员密钥</p>
+          <h2 id="key-gate-title">在线分析需要登记一枚免费研究员密钥</h2>
+          <p class="key-gate-copy">密钥只保存在你自己的浏览器里，本站不上传、不记录。到 <a href="https://open.bigmodel.cn" target="_blank" rel="noopener noreferrer">智谱 BigModel</a> 免费注册并创建 API 密钥，粘贴到这里即可开始实时观察。</p>
+          <div class="key-row">
+            <input id="key-input" type="password" placeholder="粘贴 API 密钥" autocomplete="off" aria-label="研究员密钥" />
+            <button id="key-save" type="button">登记密钥</button>
+          </div>
+          <button id="offline-mode" type="button" class="key-gate-offline">先翻离线档案（历史观察记录）</button>
+          <p id="key-error" class="key-error" role="status"></p>
+        </div>
       </section>
 
       <section id="report" class="report-card empty" aria-live="polite" aria-label="观察报告">
@@ -75,6 +94,8 @@
         <p class="footer-code">HRC / NO. <span id="footer-number">0000</span></p>
       </footer>
     </main>
+    <script src="prompt.js"></script>
+    <script src="api-client.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
