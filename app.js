@@ -1,3 +1,5 @@
+// app.js — 页面状态机:在线生成(真 AI)/ 离线档案 / 密钥引导 / 通讯中断重试。
+
 const reports = [
   { subject: "凌晨两点仍然不睡的人类", title: "睡眠系统遭遇主动延期", observation: "该样本已经明显进入低电量状态，却坚持用“再看一个”向大脑申请延期。研究员未发现任何必要任务，只有一条不断刷新的时间线。", roast: "你不是睡不着，你是在把明天的精神状态拿出来拍卖。", advice: "把手机放到三米之外；如果你愿意爬下床去拿，说明你确实还没准备好睡觉。", level: 3 },
   { subject: "打开冰箱但什么都不拿的人类", title: "冰箱被误认为低配抽卡机", observation: "该样本在六分钟内打开冷藏门三次。每次都认真扫描货架，却期待食物像游戏奖励一样自动刷新。", roast: "你不是饿，你只是希望冰箱突然长出一个新的晚餐。", advice: "下次打开冰箱前先写下想找的东西；没写出来就承认自己只是来参观。", level: 2 },
@@ -14,9 +16,23 @@ const count = document.querySelector("#count");
 const footerNumber = document.querySelector("#footer-number");
 const status = document.querySelector("#status");
 const achievement = document.querySelector("#achievement-idle");
+const sampleInput = document.querySelector("#sample-input");
+const sampleCount = document.querySelector("#sample-count");
+const keyGate = document.querySelector("#key-gate");
+const keyInput = document.querySelector("#key-input");
+const keySave = document.querySelector("#key-save");
+const keyError = document.querySelector("#key-error");
+const offlineButton = document.querySelector("#offline-mode");
+
 const progressKey = "human-report-progress-v1";
+const SAMPLE_LIMIT = 200;
+const FAKE_DELAY_MS = 520; // 离线模式保留原有的"研究员观察中"节奏
+
 let clicks = 0;
 let lastIndex = -1;
+let mode = "pending"; // "pending" 未登记密钥 | "online" | "offline"
+let failedCalls = 0;
+let savedProgress = readProgress();
 
 function readProgress() {
   try {
@@ -32,7 +48,7 @@ function saveProgress(unlocked) {
   try {
     localStorage.setItem(progressKey, JSON.stringify({ clicks, unlocked }));
   } catch {
-    // Private browsing or blocked storage should not disable the core button.
+    // 隐私模式或存储被禁用时,不应影响核心功能
   }
 }
 
@@ -44,11 +60,10 @@ function showAchievement(unlocked) {
   achievement.querySelector("div span").textContent = unlocked ? "你已经把无聊发展成了一项研究" : "完成 5 次人类观察后解锁";
 }
 
-const savedProgress = readProgress();
-clicks = savedProgress.clicks;
-count.textContent = String(clicks).padStart(2, "0");
-footerNumber.textContent = clicks ? String(1000 + clicks).slice(-4) : "0000";
-showAchievement(savedProgress.unlocked);
+// AI 输出与动态内容进入 innerHTML 前必须转义
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+}
 
 function nextReport() {
   let index = Math.floor(Math.random() * reports.length);
@@ -61,43 +76,148 @@ function stars(level) {
   return Array.from({ length: 5 }, (_, i) => `<span class="${i < level ? "" : "off"}">★</span>`).join("");
 }
 
-function render(item) {
+function render(item, isOnline) {
   const number = String(clicks).padStart(2, "0");
   report.classList.remove("empty");
   report.innerHTML = `
     <div class="report-head">
-      <div><p class="report-kicker">人类观察档案 / 离线研究员样本</p><h2 class="report-title">${item.title}</h2></div>
+      <div><p class="report-kicker">人类观察档案 / ${isOnline ? "实时分析" : "历史样本"}</p><h2 class="report-title">${escapeHtml(item.title)}</h2></div>
       <span class="report-number">#${number}</span>
     </div>
     <div class="report-grid">
-      <div><p class="report-meta">观察对象</p><p class="report-copy">${item.subject}</p></div>
+      <div><p class="report-meta">观察对象</p><p class="report-copy">${escapeHtml(item.subject)}</p></div>
       <div><p class="report-meta">吐槽等级</p><div class="level" aria-label="${item.level} 星">${stars(item.level)}</div></div>
-      <div><p class="report-meta">研究记录</p><p class="report-copy">${item.observation}</p></div>
-      <div><p class="report-meta">荒谬建议</p><p class="report-copy">${item.advice}</p></div>
-      <blockquote class="report-quote">“${item.roast}”</blockquote>
+      <div><p class="report-meta">研究记录</p><p class="report-copy">${escapeHtml(item.observation)}</p></div>
+      <div><p class="report-meta">荒谬建议</p><p class="report-copy">${escapeHtml(item.advice)}</p></div>
+      <blockquote class="report-quote">“${escapeHtml(item.roast)}”</blockquote>
     </div>
-    <p class="report-note">本条为本地演示观察记录。接入真实 AI 接口后，点击将生成实时报告。</p>`;
+    ${item.leaked_note ? `<p class="leaked-note"><span class="leaked-label">内部批注(勿删)</span><span class="leaked-text">${escapeHtml(item.leaked_note)}</span></p>` : ""}
+    <p class="report-note">${isOnline ? "本条报告由 AI 研究员实时生成，仅供会心一笑。" : "本条来自离线历史档案。"}</p>`;
+}
+
+// 成功路径的公共收尾:计数、渲染、成就、存档;返回要展示的状态文案
+function archive(item, isOnline) {
+  clicks += 1;
+  count.textContent = String(clicks).padStart(2, "0");
+  footerNumber.textContent = String(1000 + clicks).slice(-4);
+  render(item, isOnline);
+  let message;
+  if (clicks >= 5 && !savedProgress.unlocked) {
+    savedProgress.unlocked = true;
+    showAchievement(true);
+    message = "报告已归档。成就解锁：闲着无聊。";
+  } else {
+    showAchievement(savedProgress.unlocked);
+    message = isOnline ? "报告已归档。研究员还在待命，要再提交一个样本吗？" : "历史档案已调阅。";
+  }
+  saveProgress(savedProgress.unlocked);
+  return message;
+}
+
+function startThinking(text) {
+  button.disabled = true;
+  button.querySelector(".button-text").textContent = text;
+}
+
+function endTurn() {
+  button.querySelector(".button-text").textContent = "再吐一次";
+  button.disabled = false;
+}
+
+async function handleOnline() {
+  const sample = sampleInput.value.trim();
+  if (!sample) {
+    status.textContent = "观察样本为空：请描述一件你今天做过的小事，研究员才能开始分析。";
+    sampleInput.focus();
+    return;
+  }
+  startThinking("研究员分析中…");
+  status.textContent = "正在分析你提交的观察样本，请稍候。";
+  try {
+    const item = await requestReport(sample);
+    failedCalls = 0;
+    status.textContent = archive(item, true);
+  } catch (err) {
+    const kind = err && err.kind ? err.kind : "NETWORK";
+    if (kind === "AUTH") {
+      keyError.textContent = "密钥未通过验证，请检查后重新登记，或先翻离线档案。";
+      keyGate.hidden = false;
+      status.textContent = ERROR_MESSAGES.AUTH;
+    } else {
+      failedCalls += 1;
+      status.textContent = ERROR_MESSAGES[kind];
+      if (failedCalls >= 2) {
+        keyError.textContent = ERROR_MESSAGES[kind] + " 也可以先翻离线档案。";
+        keyGate.hidden = false;
+      }
+    }
+  } finally {
+    endTurn();
+  }
+}
+
+function handleOffline() {
+  startThinking("调阅档案中…");
+  status.textContent = "正在检索历史观察档案，请稍候。";
+  window.setTimeout(() => {
+    status.textContent = archive(nextReport(), false);
+    endTurn();
+  }, FAKE_DELAY_MS);
+}
+
+function refreshSampleCount() {
+  sampleCount.textContent = sampleInput.value.length + " / " + SAMPLE_LIMIT;
 }
 
 button.addEventListener("click", () => {
   if (button.disabled) return;
-  button.disabled = true;
-  button.querySelector(".button-text").textContent = "研究员观察中…";
-  status.textContent = "正在检索人类行为档案，请稍候。";
-  window.setTimeout(() => {
-    clicks += 1;
-    count.textContent = String(clicks).padStart(2, "0");
-    footerNumber.textContent = String(1000 + clicks).slice(-4);
-    render(nextReport());
-    const justUnlocked = clicks >= 5 && !savedProgress.unlocked;
-    if (justUnlocked) {
-      savedProgress.unlocked = true;
-      showAchievement(true);
-      status.textContent = "报告已归档。成就解锁：闲着无聊。";
-    }
-    saveProgress(savedProgress.unlocked);
-    if (!justUnlocked) status.textContent = "报告已归档。还要再观察一次吗？";
-    button.querySelector(".button-text").textContent = "再吐一次";
-    button.disabled = false;
-  }, 520);
+  if (mode === "online") {
+    handleOnline();
+  } else if (mode === "offline") {
+    handleOffline();
+  } else {
+    status.textContent = "在线分析需要研究员密钥：请在下方引导卡登记，或先翻离线档案。";
+    keyGate.hidden = false;
+  }
 });
+
+sampleInput.addEventListener("input", refreshSampleCount);
+
+keySave.addEventListener("click", () => {
+  const key = keyInput.value.trim();
+  if (!key) {
+    keyError.textContent = "密钥为空：请先到智谱 BigModel 创建并粘贴 API 密钥。";
+    return;
+  }
+  if (!saveApiKey(key)) {
+    keyError.textContent = "当前浏览器无法保存密钥（可能是隐私模式），请改用离线档案。";
+    return;
+  }
+  keyError.textContent = "";
+  keyInput.value = "";
+  keyGate.hidden = true;
+  mode = "online";
+  status.textContent = "密钥已登记，观测站切换到实时分析。";
+});
+
+offlineButton.addEventListener("click", () => {
+  keyGate.hidden = true;
+  keyError.textContent = "";
+  mode = "offline";
+  status.textContent = "离线档案模式：展示历史观察记录，随时可登记密钥回到实时分析。";
+});
+
+// 初始化:恢复进度;有密钥直接在线,否则展示引导卡
+clicks = savedProgress.clicks;
+count.textContent = String(clicks).padStart(2, "0");
+footerNumber.textContent = clicks ? String(1000 + clicks).slice(-4) : "0000";
+showAchievement(savedProgress.unlocked);
+refreshSampleCount();
+if (readApiKey()) {
+  mode = "online";
+  keyGate.hidden = true;
+  status.textContent = "检测到研究员密钥，观测站在线。";
+} else {
+  keyGate.hidden = false;
+  status.textContent = "观测站在线 · 等待研究员登记密钥或调阅离线档案。";
+}
