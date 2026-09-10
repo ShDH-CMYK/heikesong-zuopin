@@ -13,8 +13,42 @@ const report = document.querySelector("#report");
 const count = document.querySelector("#count");
 const footerNumber = document.querySelector("#footer-number");
 const status = document.querySelector("#status");
+const achievement = document.querySelector("#achievement-idle");
+const progressKey = "human-report-progress-v1";
 let clicks = 0;
 let lastIndex = -1;
+
+function readProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(progressKey) || "{}");
+    const restoredClicks = Math.max(0, Number(saved.clicks) || 0);
+    return { clicks: restoredClicks, unlocked: saved.unlocked === true || restoredClicks >= 5 };
+  } catch {
+    return { clicks: 0, unlocked: false };
+  }
+}
+
+function saveProgress(unlocked) {
+  try {
+    localStorage.setItem(progressKey, JSON.stringify({ clicks, unlocked }));
+  } catch {
+    // Private browsing or blocked storage should not disable the core button.
+  }
+}
+
+function showAchievement(unlocked) {
+  achievement.classList.toggle("unlocked", unlocked);
+  achievement.classList.toggle("locked", !unlocked);
+  achievement.setAttribute("aria-label", unlocked ? "已解锁：闲着无聊" : "尚未解锁：闲着无聊");
+  achievement.querySelector(".achievement-state").textContent = unlocked ? "UNLOCKED" : "LOCKED";
+  achievement.querySelector("div span").textContent = unlocked ? "你已经把无聊发展成了一项研究" : "完成 5 次人类观察后解锁";
+}
+
+const savedProgress = readProgress();
+clicks = savedProgress.clicks;
+count.textContent = String(clicks).padStart(2, "0");
+footerNumber.textContent = clicks ? String(1000 + clicks).slice(-4) : "0000";
+showAchievement(savedProgress.unlocked);
 
 function nextReport() {
   let index = Math.floor(Math.random() * reports.length);
@@ -55,7 +89,14 @@ button.addEventListener("click", () => {
     count.textContent = String(clicks).padStart(2, "0");
     footerNumber.textContent = String(1000 + clicks).slice(-4);
     render(nextReport());
-    status.textContent = "报告已归档。还要再观察一次吗？";
+    const justUnlocked = clicks >= 5 && !savedProgress.unlocked;
+    if (justUnlocked) {
+      savedProgress.unlocked = true;
+      showAchievement(true);
+      status.textContent = "报告已归档。成就解锁：闲着无聊。";
+    }
+    saveProgress(savedProgress.unlocked);
+    if (!justUnlocked) status.textContent = "报告已归档。还要再观察一次吗？";
     button.querySelector(".button-text").textContent = "再吐一次";
     button.disabled = false;
   }, 520);

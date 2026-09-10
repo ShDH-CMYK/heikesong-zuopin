@@ -75,6 +75,19 @@ h1 em { color: var(--signal); font-style: normal; }
 .level { display: inline-flex; gap: 4px; color: var(--signal); font: 16px "Space Mono", monospace; }
 .level span.off { color: var(--paper-deep); }
 .report-note { margin: 28px 0 0; padding-top: 15px; border-top: 1px dashed var(--line); color: var(--muted); font-size: 12px; }
+.achievement-panel { display: grid; grid-template-columns: .6fr 1.4fr; align-items: center; gap: 28px; margin: 0 0 44px; padding: 24px 0; border-top: 1px solid var(--line); }
+.achievement-panel h2 { margin: 0; font-size: 24px; letter-spacing: -.05em; }
+.achievement-panel .eyebrow { margin: 0 0 8px; font-size: 9px; }
+.achievement { display: flex; align-items: center; gap: 16px; min-height: 78px; padding: 13px 18px; border: 1px solid var(--line); background: rgba(255,255,255,.25); }
+.achievement-icon { display: grid; place-items: center; width: 42px; height: 42px; color: var(--paper); background: var(--ink); font-size: 23px; }
+.achievement strong, .achievement span { display: block; }
+.achievement strong { font-size: 17px; }
+.achievement div span { margin-top: 4px; color: var(--muted); font-size: 12px; }
+.achievement-state { margin-left: auto; color: var(--muted); font: 10px "Space Mono", monospace; }
+.achievement.unlocked { border-color: var(--signal); background: rgba(239,77,53,.1); animation: unlock-in .5s ease both; }
+.achievement.unlocked .achievement-icon { color: var(--ink); background: var(--signal); }
+.achievement.unlocked .achievement-state { color: var(--signal-dark); }
+@keyframes unlock-in { from { opacity: .3; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .footer { display: flex; justify-content: space-between; gap: 24px; align-items: center; color: var(--muted); text-transform: none; letter-spacing: 0; line-height: 1.5; }
 
 @media (max-width: 760px) {
@@ -86,6 +99,7 @@ h1 em { color: var(--signal); font-style: normal; }
   .button-text { font-size: 24px; }
   .report-grid { grid-template-columns: 1fr; gap: 24px; }
   .report-quote { grid-column: auto; }
+  .achievement-panel { grid-template-columns: 1fr; gap: 16px; }
   .footer { align-items: flex-start; flex-direction: column; gap: 10px; }
 }
 
