@@ -16,6 +16,7 @@ const count = document.querySelector("#count");
 const footerNumber = document.querySelector("#footer-number");
 const status = document.querySelector("#status");
 const achievement = document.querySelector("#achievement-idle");
+const achievementResearcher = document.querySelector("#achievement-researcher");
 const sampleInput = document.querySelector("#sample-input");
 const sampleCount = document.querySelector("#sample-count");
 const keyGate = document.querySelector("#key-gate");
@@ -38,15 +39,15 @@ function readProgress() {
   try {
     const saved = JSON.parse(localStorage.getItem(progressKey) || "{}");
     const restoredClicks = Math.max(0, Number(saved.clicks) || 0);
-    return { clicks: restoredClicks, unlocked: saved.unlocked === true || restoredClicks >= 5 };
+    return { clicks: restoredClicks, unlocked: saved.unlocked === true || restoredClicks >= 5, submitted: saved.submitted === true };
   } catch {
-    return { clicks: 0, unlocked: false };
+    return { clicks: 0, unlocked: false, submitted: false };
   }
 }
 
 function saveProgress(unlocked) {
   try {
-    localStorage.setItem(progressKey, JSON.stringify({ clicks, unlocked }));
+    localStorage.setItem(progressKey, JSON.stringify({ clicks, unlocked, submitted: savedProgress.submitted === true }));
   } catch {
     // 隐私模式或存储被禁用时,不应影响核心功能
   }
@@ -58,6 +59,13 @@ function showAchievement(unlocked) {
   achievement.setAttribute("aria-label", unlocked ? "已解锁：闲着无聊" : "尚未解锁：闲着无聊");
   achievement.querySelector(".achievement-state").textContent = unlocked ? "UNLOCKED" : "LOCKED";
   achievement.querySelector("div span").textContent = unlocked ? "你已经把无聊发展成了一项研究" : "完成 5 次人类观察后解锁";
+}
+
+function showResearcherBadge(unlocked) {
+  achievementResearcher.classList.toggle("unlocked", unlocked);
+  achievementResearcher.classList.toggle("locked", !unlocked);
+  achievementResearcher.setAttribute("aria-label", unlocked ? "已解锁：研究员本人" : "尚未解锁：研究员本人");
+  achievementResearcher.querySelector(".achievement-state").textContent = unlocked ? "UNLOCKED" : "LOCKED";
 }
 
 // AI 输出与动态内容进入 innerHTML 前必须转义
@@ -101,6 +109,10 @@ function archive(item, isOnline) {
   count.textContent = String(clicks).padStart(2, "0");
   footerNumber.textContent = String(1000 + clicks).slice(-4);
   render(item, isOnline);
+  if (isOnline && !savedProgress.submitted) {
+    savedProgress.submitted = true;
+    showResearcherBadge(true);
+  }
   let message;
   if (clicks >= 5 && !savedProgress.unlocked) {
     savedProgress.unlocked = true;
@@ -212,6 +224,7 @@ clicks = savedProgress.clicks;
 count.textContent = String(clicks).padStart(2, "0");
 footerNumber.textContent = clicks ? String(1000 + clicks).slice(-4) : "0000";
 showAchievement(savedProgress.unlocked);
+showResearcherBadge(savedProgress.submitted);
 refreshSampleCount();
 if (readApiKey()) {
   mode = "online";
