@@ -1,4 +1,4 @@
-# AI 后台吐槽日志 · 五只 AI 宠物的内心 OS
+# 潜台词 Subtext · 五只 AI 宠物的内心 OS
 
 We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
@@ -12,7 +12,7 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
 ## 当前版本
 
-核心流程已实现，纯静态、零依赖、无需 API Key，断网也能演示。线上版本：[https://shdh-cmyk.github.io/heikesong-zuopin/](https://shdh-cmyk.github.io/heikesong-zuopin/)
+核心流程已实现，纯静态、零依赖、无需 API Key，断网也能演示。线上版本：[https://subtext.tryworld.com.cn/](https://subtext.tryworld.com.cn/)（备用镜像：GitHub Pages，随 `main` 自动构建）
 
 ## 演示流程
 

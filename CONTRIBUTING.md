@@ -55,13 +55,13 @@ git switch -c feat/your-task
 
 ## 部署（在线演示）
 
-线上演示有两个站点：GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>（提交材料对外使用，随 `main` 自动构建）和 Cloudflare Pages <https://heikesong-zuopin.pages.dev/>（备用，需手动同步）。`main` 有代码更新后，Cloudflare 站点先把运行必需文件复制到仓库外的暂存目录，再整目录上传：
+线上演示的对外入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目名 `subtext`，DNS 为自动生成的 CNAME 指向 `subtext.pages.dev`，需手动同步）；GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>（随 `main` 自动构建）作为备用镜像。`main` 有代码更新后，Cloudflare 站点先把运行必需文件复制到仓库外的暂存目录，再整目录上传：
 
 ```powershell
-New-Item -ItemType Directory -Force ..\.deploy\heikesong\pets | Out-Null
-Copy-Item index.html,styles.css,game.js,THIRD_PARTY_NOTICES.md ..\.deploy\heikesong\
-Copy-Item pets\*.png ..\.deploy\heikesong\pets\
-wrangler pages deploy ..\.deploy\heikesong --project-name=heikesong-zuopin --branch=main
+New-Item -ItemType Directory -Force ..\.deploy\subtext\pets | Out-Null
+Copy-Item index.html,styles.css,game.js,THIRD_PARTY_NOTICES.md ..\.deploy\subtext\
+Copy-Item pets\*.png ..\.deploy\subtext\pets\
+wrangler pages deploy ..\.deploy\subtext --project-name=subtext --branch=main
 ```
 
 需要本机已登录 Cloudflare（`wrangler whoami` 查看账号）。部署完成后在线上地址实测一遍核心流程，并核对线上与 `main` 内容一致。
