@@ -39,7 +39,7 @@
 - 文件：`pets/codex.png`、`pets/diagram-model.png`、`pets/doubao.png`、`pets/workbuddy.png`、`pets/yuanbao.png`。
 - 处理：由 `tools/prep-pets.py` 裁边、补白并统一画布后入库。
 - 生成工具、模型、生成日期、原始出处、授权范围：**待团队补填**。
-- 页面角色名现为“豆包、DeepSeek、WorkBuddy、Codex、元宝”；其中“豆包”“元宝”为戏仿名称，提交前需确认主办方要求；DeepSeek使用团队提供的鲸鱼主题三视图裁切图，页面素材文件为 `pets/diagram-model.png`。对外材料仍需检查旧截图、旧文件名和旧文案。
+- 页面角色名现为“豆包、豆包、工友、方块、金豆”；其中“豆包”“元宝”为戏仿名称，提交前需确认主办方要求；豆包使用团队提供的鲸鱼主题三视图裁切图，页面素材文件为 `pets/diagram-model.png`。对外材料仍需检查旧截图、旧文件名和旧文案。
 
 ### 字体、图标与音效
 
