@@ -12,8 +12,8 @@
      ===================================================================== */
   var PETS = [
     {
-      id: 'doubao', name: '豆包', en: 'DOUBAO',
-      tagline: '豆包参考款 · companion orb',
+      id: 'doubao', name: '暖豆', en: 'NUAN DOU',
+      tagline: '暖豆陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       file: 'pets/doubao.png',
       accent: '#ff6b7e', accent2: '#ffa06b', soft: '#ffe9ea', deep: '#a3202f',
@@ -31,7 +31,7 @@
       ]
     },
     {
-      id: 'deepseek', name: 'DeepSeek', en: 'DEEPSEEK',
+      id: 'deepseek', name: '深蓝', en: 'DEEP BLUE',
       tagline: '深海数据精灵 · logic diver',
       persona: '冷静拆解 · 有理毒舌',
       file: 'pets/deepseek.png',
@@ -50,7 +50,7 @@
       ]
     },
     {
-      id: 'workbuddy', name: 'WorkBuddy', en: 'WORKBUDDY',
+      id: 'workbuddy', name: '工友', en: 'WORKMATE',
       tagline: '办公助手 · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       file: 'pets/workbuddy.png',
@@ -69,7 +69,7 @@
       ]
     },
     {
-      id: 'codex', name: 'Codex', en: 'CODEX',
+      id: 'codex', name: '方块', en: 'BLOCK',
       tagline: '代码方块 · compile buddy',
       persona: '技术宅 · 现实报错',
       file: 'pets/codex.png',
@@ -88,8 +88,8 @@
       ]
     },
     {
-      id: 'yuanbao', name: '元宝', en: 'YUANBAO',
-      tagline: '元宝参考款 · fortune sprite',
+      id: 'yuanbao', name: '金豆', en: 'GOLD BEAN',
+      tagline: '金豆财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       file: 'pets/yuanbao.png',
       accent: '#f0a91c', accent2: '#ffd25e', soft: '#fff2d6', deep: '#8a5a05',
