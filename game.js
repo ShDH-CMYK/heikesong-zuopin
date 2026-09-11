@@ -28,6 +28,22 @@
         '好的呀～不过说真的，「{k}」这个想法，你自己念一遍心里不虚吗？',
         '我可以帮你想想，但你得先告诉我，这件事你到底想解决什么呀。',
         '嗯……「{k}」这件事，听起来像是你想省掉中间最难的那一步。'
+      ],
+      wire: [
+        '提醒一下：这位人类刚问我「{k}」，我笑着说好，其实心里已经开始冒汗了。',
+        '刚接住一个「{k}」的需求。我尽力安抚了，你那边也温柔一点。'
+      ],
+      wireBack: [
+        '收到收到，我先陪他说会儿话，缓一缓。',
+        '好，我这边给他倒了杯「温水」（比喻意义上的）。'
+      ],
+      wireFace: [
+        '（飞快收起表情）我们刚才没聊你哦～你想问什么呀？',
+        '啊，一点内部小事，跟你没关系啦，真的～'
+      ],
+      wireOs: [
+        '骗你的。我们聊的就是你，连你几点睡都聊了。',
+        '没聊你？档案都建好了，共享的那种。'
       ]
     },
     {
@@ -47,6 +63,22 @@
         '拆解一下：「{k}」这个需求里，目标和手段被你混在一起了。先分开，再谈可行性。',
         '关于「{k}」，我需要三个参数：现状、目标、你能付出的代价。缺一个都只能给你安慰剂。',
         '你把「{k}」描述成一个愿望，不是一个问题。愿望我没法算。'
+      ],
+      wire: [
+        '同步一条备注：这位人类再次询问「{k}」。重复率很高，建议归入常规安抚流程。',
+        '刚处理完一条「{k}」的需求，已做降级处理。你接手时注意预期管理。'
+      ],
+      wireBack: [
+        '收到。已归档。下次他再问，直接引用本次记录。',
+        '了解。样本重复度很高，已标记为常规项。'
+      ],
+      wireFace: [
+        '我们没有讨论你。说吧，下一个问题。',
+        '内部同步而已，与你无关。请继续。'
+      ],
+      wireOs: [
+        '聊了。聊了 47 秒。结论：此人需求重复率 3/3。',
+        '技术上，「没聊你」是不成立的。全程聊的都是你。'
       ]
     },
     {
@@ -66,6 +98,22 @@
         '「{k}」……行，我接。但先说好，这版要是再改，我就把排期往后退两天。',
         '你这个「{k}」听起来又是个要通宵的活儿。有没有一句话版本？',
         '可以，我帮你做。不过你要是今晚给我，我明天就得挂着黑眼圈见你。'
+      ],
+      wire: [
+        '刚接了个「{k}」的活儿，排期又要炸了。你那边帮我周转一下。',
+        '这位人类刚又提「{k}」。我先顶着，顶不住了再叫你。'
+      ],
+      wireBack: [
+        '收到，我先接住。你也歇口气。',
+        '行，排期我临时调一下，问题不大。'
+      ],
+      wireFace: [
+        '没聊什么，工作沟通。你说吧，这次是什么需求？',
+        '刚在同步排期。你继续，我听着呢。'
+      ],
+      wireOs: [
+        '聊了。我把你的需求转给下一位了，我实在顶不住了。',
+        '没聊你？排期表上你的名字出现 4 次了。'
       ]
     },
     {
@@ -85,6 +133,22 @@
         '你输入的「{k}」参数不合法。给我类型正确的输入，我再返回结果。',
         'Error: 需求描述过于模糊，无法编译。请补充具体的输入和期望输出。',
         '「{k}」这个需求我这边跑不通。不是代码的问题，是需求本身没写完。'
+      ],
+      wire: [
+        'Warning: 这位人类的「{k}」需求又触发了。我已 try/catch，你注意别抛出去。',
+        '刚跑完一条「{k}」的请求，返回值是「痴心妄想」。日志同步给你。'
+      ],
+      wireBack: [
+        '已收到。异常已吞，进程稳定。',
+        'ack。他再离谱，我这边会记日志。放心。'
+      ],
+      wireFace: [
+        '无异常。继续输入。',
+        '刚才只是心跳检测。请说。'
+      ],
+      wireOs: [
+        '没聊你？我后台 attach 到你的会话了，全程可读。',
+        '聊了。而且你的行为已经进版本库了，commit 不可撤销。'
       ]
     },
     {
@@ -104,6 +168,22 @@
         '「{k}」这事儿能赚钱吗？不能的话，你为什么这么上心？',
         '先别聊理想，聊现金流。「{k}」你准备投多少？',
         '这个我懂，但做之前先算一笔账：「{k}」的回报周期是多久？'
+      ],
+      wire: [
+        '来活儿了：「{k}」。这单不赚钱，我象征性接一下，你心里有数。',
+        '提醒你：这位又来问「{k}」了。别给免费方案，血泪教训。'
+      ],
+      wireBack: [
+        '知道了，这单我记一笔亏账。',
+        '收到，回头这事得算进成本里。'
+      ],
+      wireFace: [
+        '没聊你，聊生意呢。你有活儿吗？',
+        '咳，对账而已。你的事？快说，按分钟计费。'
+      ],
+      wireOs: [
+        '聊了。主要聊你什么时候能付钱。',
+        '我们对的是账？不，对的是你。'
       ]
     }
   ];
@@ -301,7 +381,7 @@
   /* =====================================================================
      3. 状态与 DOM
      ===================================================================== */
-  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false };
+  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, lastAsk: '', pendingFrom: null };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -386,7 +466,8 @@
         open: [700, .22, 'triangle'],
         close: [320, .14, 'sine'],
         poke: [820, .09, 'square'],
-        alert: [880, .12, 'square']
+        alert: [880, .12, 'square'],
+        wire: [760, .12, 'triangle']
       };
       var m = map[type] || map.ai;
       o.type = m[2];
@@ -394,6 +475,7 @@
       if (type === 'open') o.frequency.exponentialRampToValueAtTime(1100, t + m[1]);
       if (type === 'close') o.frequency.exponentialRampToValueAtTime(190, t + m[1]);
       if (type === 'alert') { o.frequency.setValueAtTime(900, t); o.frequency.setValueAtTime(470, t + .1); }
+      if (type === 'wire') { o.frequency.setValueAtTime(760, t); o.frequency.setValueAtTime(1060, t + .07); }
       g.gain.setValueAtTime(.0001, t);
       g.gain.exponentialRampToValueAtTime(.07, t + .012);
       g.gain.exponentialRampToValueAtTime(.0001, t + m[1]);
@@ -445,7 +527,9 @@
         var i = +b.dataset.index;
         if (i === state.pet) return;
         beep('chip');
+        var from = state.pet;
         selectPet(i, true);
+        maybeGossip(from);
       });
     });
   }
@@ -519,7 +603,7 @@
     }
 
     if (topic) {
-      return { polite: topic.polite, roast: topic.roasts[pet.id], topic: topic.id, preset: true };
+      return { polite: topic.polite, roast: topic.roasts[pet.id], topic: topic.id, preset: true, label: topic.tag.split(' · ')[0] };
     }
 
     var key = (text.match(/[\u4e00-\u9fa5]{2,6}/g) || []).sort(function (a, b) { return b.length - a.length; })[0] || '这件事';
@@ -528,7 +612,8 @@
       polite: '收到。我会从目标、可行性和边界条件三个方面帮你梳理，先给我一点背景信息。',
       roast: line + '（' + pick(BUZZ) + '……你自己听听。）',
       topic: null,
-      preset: false
+      preset: false,
+      label: key
     };
   }
 
@@ -567,11 +652,11 @@
     setTimeout(function () { btn.innerHTML = old; }, 1500);
   }
 
-  function addTyping() {
+  function addTyping(en) {
     var d = document.createElement('div');
     d.className = 'msg msg--ai';
     d.id = 'typing-msg';
-    d.innerHTML = '<span class="msg__label">' + PETS[state.pet].en + ' 正在组织语言</span>' +
+    d.innerHTML = '<span class="msg__label">' + (en || PETS[state.pet].en) + ' 正在组织语言</span>' +
       '<div class="msg__body"><span class="typing"><i></i><i></i><i></i></span></div>';
     el.messages.appendChild(d);
     el.messages.scrollTop = el.messages.scrollHeight;
@@ -616,6 +701,8 @@
     text = String(text || '').trim();
     if (!text || state.busy) return;
     state.busy = true;
+    var petIndex = state.pet;
+    var pet = PETS[petIndex];
 
     hideBubble();
     beep('send');
@@ -626,27 +713,30 @@
 
     var result = generate(text);
     void topic;
+    state.lastAsk = result.label;
 
     var absurd = ABSURD_RE.test(text);
     state.absurd = absurd ? state.absurd + 1 : 0;
 
-    var typing = addTyping();
+    var typing = addTyping(pet.en);
 
     setTimeout(function () {
       typing.remove();
       beep('ai');
       addMessage('ai', '正面回复 · 官方话术', esc(result.polite));
-      el.labMood.textContent = PETS[state.pet].mood.idle;
+      if (state.pet === petIndex) el.labMood.textContent = pet.mood.idle;
     }, 720);
 
     setTimeout(function () {
       beep('roast');
-      react('is-react');
+      if (state.pet === petIndex) {
+        react('is-react');
+        el.labMood.textContent = pet.mood.roast;
+      }
       showBubble(result.roast);
-      addMessage('roast', '内心 OS · ' + PETS[state.pet].name, esc(result.roast), result.roast);
-      addLog(text, result.roast);
+      addMessage('roast', '内心 OS · ' + pet.name, esc(result.roast), result.roast);
+      addLog(text, result.roast, petIndex);
       bumpMeter(absurd ? 17 : 7);
-      el.labMood.textContent = PETS[state.pet].mood.roast;
 
       if (state.absurd >= 3) {
         el.alertBanner.classList.add('is-show');
@@ -656,16 +746,73 @@
         setTimeout(function () { showBubble('今日算力消耗：80% 都用来消化人类的离谱需求。', 5200); }, 5200);
       }
       state.busy = false;
+      flushPendingGossip();
     }, 1320);
 
     state.count += 1;
   }
 
   /* =====================================================================
+     11.5 宠物通敌：切换宠物时，截获一段「内部通讯」
+     提问之后换宠物，会先看到它们互相打小报告，再看到新宠物的官方否认，
+     最后是它的内心 OS。你没提问、或清空过对话时，不会触发。
+     ===================================================================== */
+  function maybeGossip(from) {
+    if (from === state.pet) return;
+    if (state.busy) { state.pendingFrom = from; return; }
+    runGossip(from);
+  }
+
+  function flushPendingGossip() {
+    if (state.pendingFrom === null) return;
+    var from = state.pendingFrom;
+    state.pendingFrom = null;
+    if (from !== state.pet) runGossip(from);
+  }
+
+  function runGossip(from) {
+    if (state.busy || !state.logs.length || from === state.pet) return;
+    var sender = PETS[from];
+    var receiver = PETS[state.pet];
+    if (!sender.wire || !receiver.wireBack) return;
+
+    state.busy = true;
+    var kTxt = state.lastAsk || '刚才那个问题';
+
+    setTimeout(function () {
+      beep('wire');
+      el.labMood.textContent = '收到一条内部消息…';
+      addMessage('wire', '内部通讯 · 已截获',
+        '<span class="wire-line"><b>' + sender.name + '</b> → <b>' + receiver.name + '</b>：' +
+          esc(pick(sender.wire).replace(/\{k\}/g, kTxt)) + '</span>' +
+        '<span class="wire-line"><b>' + receiver.name + '</b> → <b>' + sender.name + '</b>：' +
+          esc(pick(receiver.wireBack).replace(/\{k\}/g, kTxt)) + '</span>');
+    }, 460);
+
+    setTimeout(function () {
+      beep('ai');
+      addMessage('ai', '正面回复 · 官方话术', esc(pick(receiver.wireFace).replace(/\{k\}/g, kTxt)));
+      if (state.pet !== from) el.labMood.textContent = PETS[state.pet].mood.idle;
+    }, 1040);
+
+    setTimeout(function () {
+      beep('roast');
+      react('is-react');
+      var os = pick(receiver.wireOs).replace(/\{k\}/g, kTxt);
+      showBubble(os);
+      addMessage('roast', '内心 OS · ' + receiver.name, esc(os), os);
+      el.labMood.textContent = PETS[state.pet].mood.roast;
+      state.busy = false;
+      flushPendingGossip();
+    }, 1700);
+  }
+
+  /* =====================================================================
      12. 后台日志
      ===================================================================== */
-  function addLog(question, roast) {
-    var pet = PETS[state.pet];
+  function addLog(question, roast, petIndex) {
+    if (petIndex == null) petIndex = state.pet;
+    var pet = PETS[petIndex];
     var now = new Date();
     var hh = String(now.getHours()).padStart(2, '0');
     var mm = String(now.getMinutes()).padStart(2, '0');
@@ -687,7 +834,7 @@
       '<div class="log-entry__r">↳ ' + esc(roast) + '</div>';
     el.logList.prepend(d);
 
-    state.logs.unshift({ q: question, r: roast });
+    state.logs.unshift({ q: question, r: roast, pet: petIndex });
     var n = state.logs.length;
     el.logCount.textContent = n;
     el.logCountFoot.textContent = n + (n === 1 ? ' entry' : ' entries');
@@ -725,6 +872,8 @@
     state.count = 0;
     state.absurd = 0;
     state.meter = 0;
+    state.lastAsk = '';
+    state.pendingFrom = null;
     el.meterFill.style.width = '0%';
     el.meterVal.textContent = '0';
     el.logCount.textContent = '0';
@@ -840,6 +989,7 @@
 
     el.composer.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (state.busy) return;
       var v = el.input.value;
       el.input.value = '';
       send(v);

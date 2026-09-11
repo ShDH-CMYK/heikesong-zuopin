@@ -556,6 +556,19 @@ h1,h2,h3,p{ margin:0; }
   color:var(--accent-deep); border-bottom-left-radius:5px;
   font-weight:600;
 }
+
+/* 内部通讯：被「截获」的暗色电报，刻意不跟随主题色 */
+.msg--wire{ align-self:flex-start; max-width:92%; }
+.msg--wire .msg__label{ color:#6a55c9; }
+.msg--wire .msg__body{
+  background:#241d3d; border:1px solid rgba(255,255,255,.14);
+  color:#d8cdf0; border-bottom-left-radius:5px;
+  font:400 12.2px/1.7 var(--mono);
+  box-shadow:0 18px 34px -20px rgba(36,29,61,.6);
+}
+.msg--wire b{ color:#fff; font-weight:700; }
+.wire-line{ display:block; }
+.wire-line + .wire-line{ margin-top:9px; padding-top:9px; border-top:1px dashed rgba(255,255,255,.16); }
 .msg__copy{
   display:inline-flex; align-items:center; gap:5px; margin-top:7px; margin-left:2px;
   padding:4px 9px; border-radius:8px; border:1px solid transparent; background:transparent;
