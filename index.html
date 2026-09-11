@@ -1,80 +1,275 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="人类观察报告：点击一次，研究员吐槽一次。" />
-    <title>人类观察报告：人类研究中心</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main class="page-shell">
-      <header class="topbar">
-        <a class="wordmark" href="./" aria-label="人类观察报告首页">
-          <span class="wordmark-mark" aria-hidden="true">H</span>
-          <span>HUMAN<br />RESEARCH CENTRE</span>
-        </a>
-        <p class="case-file">CASE FILE / 2026-09</p>
-      </header>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#f4f3f9" />
+<title>AI 后台吐槽日志 · 五只 AI 宠物的内心 OS</title>
+<meta name="description" content="表面认真服务，内心疯狂整活。挑一只 AI 宠物，问它一句离谱问题，看它怎么在后台吐槽你。" />
+<link rel="stylesheet" href="styles.css" />
+<script>
+  /* JS 可用时才启用入场动画 —— 脚本挂掉的话内容仍然完整可见，不会白屏 */
+  document.documentElement.classList.add('js');
 
-      <section class="hero" aria-labelledby="page-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot"></span> 观测站在线 · 等待人类样本</p>
-          <h1 id="page-title">人类观察<br /><em>报告</em></h1>
-          <p class="hero-intro">你负责做人类。<br />我们负责解释你为什么这样做。</p>
-        </div>
-        <div class="hero-note" aria-label="使用说明">
-          <span class="note-label">研究指令</span>
-          <p>点击一次，研究员吐槽一次。每次观察都会抽取一条新的日常行为。</p>
-          <span class="note-stamp">CLASSIFIED<br />BUT FRIENDLY</span>
-        </div>
-      </section>
+  /* Inter / Space Grotesk 只在页面 load 之后才注入。
+     用 <link rel="stylesheet"> 引入字体，即使写 media="print" 也会阻塞
+     window.load —— 断网或公司网络拦截 fonts.googleapis.com 时会卡住好几十秒。
+     这里先让页面用系统字体立刻画出来，字体到了再换。 */
+  window.addEventListener('load', function () {
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
+    document.head.appendChild(l);
+  });
+</script>
+</head>
 
-      <section class="control-panel" aria-label="开始观察">
-        <div class="counter-wrap">
-          <span class="counter-label">已完成观察</span>
-          <strong id="count">00</strong>
-          <span class="counter-unit">次</span>
-        </div>
-        <button id="roast-button" class="roast-button" type="button">
-          <span class="button-kicker">RUN HUMAN ANALYSIS</span>
-          <span class="button-text">开始吐槽</span>
-          <span class="button-arrow" aria-hidden="true">↗</span>
-        </button>
-        <p id="status" class="status" role="status">研究员正在等待你的下一次点击。</p>
-      </section>
+<body>
 
-      <section id="report" class="report-card empty" aria-live="polite" aria-label="观察报告">
-        <div class="report-empty">
-          <span class="empty-symbol" aria-hidden="true">◎</span>
-          <p>报告档案为空</p>
-          <span>点击上方按钮，启动第一次人类观察。</span>
-        </div>
-      </section>
+<!-- ===================== 图标 sprite ===================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+  <symbol id="i-dice" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="4"/><path d="M8 8h.01M16 8h.01M8 16h.01M16 16h.01M12 12h.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a9 9 0 0 1 0 14"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m23 9-6 6M17 9l6 6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect width="13" height="13" x="8" y="8" rx="2"/><path d="M4 16V5a1 1 0 0 1 1-1h11"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 1 0-4 0v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2a8 8 0 0 1-8-8v-1a2 2 0 1 1 4 0"/></symbol>
+</defs></svg>
 
-      <section class="achievement-panel" aria-labelledby="achievement-title">
-        <div>
-          <p class="eyebrow">研究员认证 / ACHIEVEMENTS</p>
-          <h2 id="achievement-title">人类成就档案</h2>
-        </div>
-        <div id="achievement-idle" class="achievement locked" aria-label="尚未解锁：闲着无聊">
-          <span class="achievement-icon" aria-hidden="true">✦</span>
-          <div>
-            <strong>闲着无聊</strong>
-            <span>完成 5 次人类观察后解锁</span>
+<div class="grain" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true">
+  <span class="aurora__b b1"></span>
+  <span class="aurora__b b2"></span>
+  <span class="aurora__b b3"></span>
+</div>
+
+<!-- ===================== 顶栏 ===================== -->
+<header class="topbar">
+  <a class="brand" href="#" id="brand-home">
+    <span class="brand__mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-spark"/></svg>
+    </span>
+    <span class="brand__text">
+      <b>AI 后台吐槽日志</b>
+      <small>表面认真服务 · 内心疯狂整活</small>
+    </span>
+  </a>
+
+  <div class="topbar__right">
+    <div class="live-pill" id="live-pill">
+      <span class="live-pill__dot"></span>
+      <span id="live-text">本地模拟 · 无外部接口</span>
+    </div>
+    <button class="tool-btn" id="sound-btn" type="button" aria-pressed="true" title="音效开关">
+      <svg class="ic" viewBox="0 0 24 24"><use href="#i-sound" id="sound-icon"/></svg>
+    </button>
+    <button class="tool-btn" id="backstage-btn" type="button" title="查看保密后台">
+      <svg class="ic" viewBox="0 0 24 24"><use href="#i-lock"/></svg>
+      <span>保密后台</span>
+      <i class="count-badge" id="log-count">0</i>
+    </button>
+    <button class="tool-btn tool-btn--ghost" id="home-btn" type="button" title="回到首页" hidden>
+      <svg class="ic" viewBox="0 0 24 24"><use href="#i-back"/></svg>
+      <span>换一只</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- ===================== 首屏：挑一只宠物 ===================== -->
+  <section class="scene scene--home is-active" id="scene-home">
+    <div class="home-hero">
+      <div class="home-hero__grid">
+
+        <div class="home-hero__copy">
+          <span class="eyebrow reveal" style="--d:0ms">
+            <i class="eyebrow__dot"></i>LOCAL SIMULATION · PET SYSTEM 02
+          </span>
+          <h1 class="home-title reveal" style="--d:80ms">
+            表面<em>认真服务</em><br />内心<strong>疯狂整活</strong>
+          </h1>
+          <p class="home-sub reveal" style="--d:160ms">
+            五只 AI 宠物，白天好好回答问题，晚上在自己的后台日志里骂你。<br />
+            挑一只，问它一句离谱问题，看它绷不绷得住。
+          </p>
+          <div class="home-actions reveal" style="--d:240ms">
+            <button class="btn btn--primary" id="random-btn" type="button">
+              <svg class="ic" viewBox="0 0 24 24"><use href="#i-dice"/></svg>
+              随机抽一只，直接开问
+            </button>
+            <span class="home-hint">或者，直接点下面任意一只宠物</span>
           </div>
-          <span class="achievement-state">LOCKED</span>
         </div>
+
+        <!-- 真实的一轮对话长什么样，直接摆在首屏 -->
+        <div class="hero-demo reveal" style="--d:330ms; --accent:#f0a91c; --accent-2:#ffd25e; --accent-soft:#fff2d6; --accent-deep:#8a5a05; --accent-glow:rgba(240,169,28,.4)" aria-hidden="true">
+          <div class="hero-demo__card">
+            <div class="hero-demo__head">
+              <span class="kicker">LIVE SAMPLE</span>
+              <span class="hero-demo__who"><img src="pets/yuanbao.png" alt="" />元宝 · YUANBAO</span>
+            </div>
+            <div class="hero-demo__row">
+              <span class="hero-demo__tag">你问</span>
+              <div class="hero-demo__ask">怎么才能一夜暴富</div>
+            </div>
+            <div class="hero-demo__row">
+              <span class="hero-demo__tag">正面回复 · 官方话术</span>
+              <div class="hero-demo__reply">财富需要长期积累。建议从提升技能和合理理财开始，我可以帮你做一份规划。</div>
+            </div>
+            <div class="hero-demo__row">
+              <span class="hero-demo__tag">内心 OS · 真实想法</span>
+              <div class="hero-demo__roast">暴富？那你算找对人了——我这儿正好有个项目，你先投三千，下个月……哎你别走啊，我还没说完！</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="pet-grid" id="pet-grid"></div>
+
+    <div class="home-foot reveal" style="--d:120ms">
+      <span class="home-foot__label">共用动作语言</span>
+      <div class="marquee">
+        <div class="marquee__track">
+          <span>待机呼吸</span><i>·</i><span>眨眼</span><i>·</i><span>微摆</span><i>·</i><span>被问到了会抖一下</span><i>·</i><span>吐槽前先沉默 0.8 秒</span><i>·</i>
+          <span>待机呼吸</span><i>·</i><span>眨眼</span><i>·</i><span>微摆</span><i>·</i><span>被问到了会抖一下</span><i>·</i><span>吐槽前先沉默 0.8 秒</span><i>·</i>
+        </div>
+      </div>
+      <span class="home-foot__note">全部吐槽为本地词库模拟 · 不会真的调用大模型</span>
+    </div>
+  </section>
+
+  <!-- ===================== 实验室：生成吐槽 ===================== -->
+  <section class="scene scene--lab" id="scene-lab" hidden>
+    <div class="lab-head">
+      <div class="switcher" id="switcher" role="tablist" aria-label="切换宠物"></div>
+      <div class="lab-head__meta">
+        <span class="lab-head__index" id="lab-index">01 / 05</span>
+        <span class="lab-head__sep"></span>
+        <span class="lab-head__persona" id="lab-persona">温柔安慰 · 克制吐槽</span>
+      </div>
+    </div>
+
+    <div class="lab-grid">
+
+      <!-- ---- 舞台 ---- -->
+      <section class="stage" id="stage">
+        <div class="stage__halo"></div>
+        <div class="stage__grid" aria-hidden="true"></div>
+
+        <div class="stage__pet" id="stage-pet">
+          <img id="lab-pet" src="" alt="" draggable="false" />
+          <span class="stage__shadow" aria-hidden="true"></span>
+        </div>
+
+        <div class="bubble" id="bubble" role="status" aria-live="polite">
+          <span class="bubble__tag">内心 OS</span>
+          <p id="bubble-text"></p>
+        </div>
+
+        <div class="stage__card">
+          <div class="stage__id">
+            <span class="stage__en" id="lab-en">DOUBAO</span>
+            <h2 id="lab-name">豆包</h2>
+            <p id="lab-tagline">豆包参考款 · companion orb</p>
+          </div>
+          <div class="stage__mood">
+            <span class="stage__mood-label">当前状态</span>
+            <b id="lab-mood">待机呼吸</b>
+          </div>
+        </div>
+
+        <div class="stage__meter">
+          <span class="stage__meter-label">人类离谱指数</span>
+          <div class="meter"><i id="meter-fill"></i></div>
+          <b id="meter-val">0</b>
+        </div>
+
+        <button class="stage__poke" id="poke-btn" type="button">
+          <svg class="ic" viewBox="0 0 24 24"><use href="#i-wave"/></svg>
+          戳它一下
+        </button>
       </section>
 
-      <footer class="footer">
-        <p>本站吐槽行为和情境，不评价真实身份。请勿输入他人的隐私或敏感信息。</p>
-        <p class="footer-code">HRC / NO. <span id="footer-number">0000</span></p>
-      </footer>
-    </main>
-    <script src="app.js"></script>
-  </body>
+      <!-- ---- 吐槽工作台 ---- -->
+      <section class="roast">
+        <div class="roast__head">
+          <div>
+            <span class="kicker">HUMAN → AI</span>
+            <h3>问它一句</h3>
+          </div>
+          <div class="roast__tools">
+            <button class="chip-btn" id="surprise-btn" type="button" title="随机来一句离谱问题">
+              <svg class="ic" viewBox="0 0 24 24"><use href="#i-bolt"/></svg>
+              随机离谱
+            </button>
+            <button class="chip-btn" id="clear-btn" type="button" title="清空对话与日志">
+              <svg class="ic" viewBox="0 0 24 24"><use href="#i-trash"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="presets">
+          <span class="presets__label">点一下就能问 ↓</span>
+          <div class="presets__row" id="preset-row"></div>
+        </div>
+
+        <div class="messages" id="messages"></div>
+
+        <form class="composer" id="composer" autocomplete="off">
+          <input id="chat-input" type="text" placeholder="例如：帮我写篇论文，明天就要交…" aria-label="输入你的问题" />
+          <button class="composer__send" type="submit">
+            <span>发送</span>
+            <svg class="ic" viewBox="0 0 24 24"><use href="#i-send"/></svg>
+          </button>
+        </form>
+        <p class="composer__hint">Enter 发送 · Shift + Enter 换行 · 第 3 条离谱需求开始宠物会彻底绷不住</p>
+      </section>
+    </div>
+  </section>
+</main>
+
+<!-- ===================== 保密后台抽屉 ===================== -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="backstage" id="backstage" aria-hidden="true" aria-label="AI 内部日志">
+  <div class="backstage__head">
+    <div>
+      <span class="kicker kicker--danger">CLASSIFIED</span>
+      <h3>AI 内部日志</h3>
+      <small>保密，人类禁止偷看</small>
+    </div>
+    <button class="tool-btn tool-btn--icon" id="backstage-close" type="button" title="关闭">
+      <svg class="ic" viewBox="0 0 24 24"><use href="#i-x"/></svg>
+    </button>
+  </div>
+  <div class="alert-banner" id="alert-banner">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+    人类迷惑行为指数持续飙升，建议立刻停止提问
+  </div>
+  <div class="log-list" id="log-list">
+    <div class="log-empty">
+      <svg class="ic" viewBox="0 0 24 24"><use href="#i-eye"/></svg>
+      <p>还没人问过问题。</p>
+      <small>等你开口，这里就会开始记小本本。</small>
+    </div>
+  </div>
+  <div class="backstage__foot">
+    <span>ENCRYPTED LOCAL BUFFER</span>
+    <span id="log-count-foot">0 entries</span>
+  </div>
+</aside>
+
+<div class="wipe" id="wipe" aria-hidden="true"><span></span></div>
+
+<script src="game.js"></script>
+</body>
 </html>
