@@ -55,7 +55,7 @@ git switch -c feat/your-task
 
 ## 部署（在线演示）
 
-线上演示位为 Cloudflare Pages：<https://heikesong-zuopin.pages.dev/>。`main` 有代码更新后，先把运行必需文件复制到仓库外的暂存目录，再整目录上传：
+线上演示有两个站点：GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>（提交材料对外使用，随 `main` 自动构建）和 Cloudflare Pages <https://heikesong-zuopin.pages.dev/>（备用，需手动同步）。`main` 有代码更新后，Cloudflare 站点先把运行必需文件复制到仓库外的暂存目录，再整目录上传：
 
 ```powershell
 New-Item -ItemType Directory -Force ..\.deploy\heikesong\pets | Out-Null
