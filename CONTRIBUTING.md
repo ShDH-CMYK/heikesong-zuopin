@@ -52,3 +52,16 @@ git switch -c feat/your-task
 - 使用 API 后再建立 `.env.example`；示例文件仅写配置名称、说明与占位值。不要把服务端密钥写入浏览器代码。
 - 按主办方要求维护 [AI 使用与素材记录](docs/AI使用与素材记录.md)（实际使用的工具、人工改动、第三方素材及授权来源）；初稿已建，其中「待补填 / 待确认」事项须在提交前补齐。完整聊天、真实用户资料和未经授权的截图不默认公开。
 - 新技术栈确定后补 README、依赖与忽略规则；尚未选择时不预设框架、不创建无用源码目录。
+
+## 部署（在线演示）
+
+线上演示位为 Cloudflare Pages：<https://heikesong-zuopin.pages.dev/>。`main` 有代码更新后，先把运行必需文件复制到仓库外的暂存目录，再整目录上传：
+
+```powershell
+New-Item -ItemType Directory -Force ..\.deploy\heikesong\pets | Out-Null
+Copy-Item index.html,styles.css,game.js,THIRD_PARTY_NOTICES.md ..\.deploy\heikesong\
+Copy-Item pets\*.png ..\.deploy\heikesong\pets\
+wrangler pages deploy ..\.deploy\heikesong --project-name=heikesong-zuopin --branch=main
+```
+
+需要本机已登录 Cloudflare（`wrangler whoami` 查看账号）。部署完成后在线上地址实测一遍核心流程，并核对线上与 `main` 内容一致。

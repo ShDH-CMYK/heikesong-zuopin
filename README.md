@@ -7,7 +7,7 @@
 - 比赛仓库：[ShDH-CMYK/heikesong-zuopin](https://github.com/ShDH-CMYK/heikesong-zuopin)
 - 主办方资料：[We Young 黑客松 2026 选手指南](https://my.feishu.cn/wiki/GCwZwKKG9iZ5ZMkV86wcjjLDnqf)
 - 作品提交截止：**2026 年 9 月 13 日 14:00**。赛程若有调整，以主办方最新指南和群内通知为准。
-- 在线体验：待部署后补充。
+- 在线体验：<https://heikesong-zuopin.pages.dev/>（Cloudflare Pages，已部署当前 `main` 版本；本地/断网演示见「运行方式」）
 
 ## 作品一句话
 
@@ -58,7 +58,7 @@ python -m http.server 8000     # 然后访问 http://127.0.0.1:8000/
 
 | 文件 | 作用 |
 | --- | --- |
-| [index.html](index.html) | 页面结构、图标 sprite、首屏与实验室两个场景 |
+| [index.html](index.html) | 页面结构、图标 sprite、内联 favicon、首屏与实验室两个场景 |
 | [styles.css](styles.css) | 全部样式与响应式断点（1000/1024/1080px 起为多列） |
 | [game.js](game.js) | 宠物档案、词库、对话与状态、音效、保密后台（普通脚本，非 ES module） |
 | `pets/*.png` | 五只宠物立绘，已抠背景并统一到同一视觉基线 |
@@ -75,7 +75,6 @@ python -m http.server 8000     # 然后访问 http://127.0.0.1:8000/
 
 ## 已知限制
 
-- 未提供 favicon，浏览器会请求 `/favicon.ico` 并得到 404，不影响功能；
 - 网页字体在 `load` 之后才异步注入 `fonts.googleapis.com`，拉不到时自动退回系统字体，排版不塌；
 - 窄屏（<1024px）为单列堆叠布局，已验证可用，但未逐机型走查；
 - 无自动化测试，验证方式为真实浏览器手工走查；
@@ -92,3 +91,5 @@ python -m http.server 8000     # 然后访问 http://127.0.0.1:8000/
 这个仓库是公开的。提交前检查暂存区，只上传与项目有关的代码、文档和可公开素材。完整聊天记录、未脱敏截图、账号密码及 API Key 不应提交。
 
 团队尚未为自有作品选择开源许可证。宠物立绘为 AI 生成素材，来源与授权信息已列入[素材记录](docs/AI使用与素材记录.md)的待确认清单，提交前须补齐。
+
+页面图标 sprite 的路径源自开源图标库 [Lucide](https://lucide.dev)（ISC 许可，早期版本路径，部分经改写简化），许可声明见[素材记录 2.3 节](docs/AI使用与素材记录.md)。
