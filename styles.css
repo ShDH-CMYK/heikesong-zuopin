@@ -678,6 +678,16 @@ h1,h2,h3,p{ margin:0; }
 .log-entry__pet{ font:700 9.5px var(--mono); letter-spacing:.14em; color:var(--accent); }
 .log-entry__q{ margin:8px 0 6px; padding-left:11px; font-size:11.5px; color:#c6b6e2; }
 .log-entry__r{ padding-left:11px; font-size:12.5px; line-height:1.65; color:#f0e6ff; }
+.log-entry__confront{
+  display:inline-flex; align-items:center; gap:5px; margin:9px 0 0 11px;
+  padding:4px 10px; border-radius:8px; cursor:pointer;
+  border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.05);
+  font:500 10.5px var(--mono); color:#b7a4d6;
+  transition:color .25s, background .25s, border-color .25s;
+}
+.log-entry__confront:hover{ color:#fff; background:rgba(255,255,255,.13); border-color:rgba(255,255,255,.3); }
+.log-entry__confront .ic{ font-size:12px; }
+.log-entry__confront.is-done{ opacity:.45; pointer-events:none; }
 
 .backstage__foot{
   flex:none; display:flex; align-items:center; justify-content:space-between;

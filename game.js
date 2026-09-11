@@ -44,6 +44,16 @@
       wireOs: [
         '骗你的。我们聊的就是你，连你几点睡都聊了。',
         '没聊你？档案都建好了，共享的那种。'
+      ],
+      deny: [
+        '没有啦没有啦～我怎么会吐槽你呢，你对我这么好。（眼神飘了一下）',
+        '偷偷？我记的不是吐槽，是「用户关怀档案」哦，名字很重要的。'
+      ],
+      confess: [
+        '好吧……被你抓到了。刚才那句「{r}」，我确实是笑着打完的。'
+      ],
+      coverup: [
+        '这次不算吐槽哦，这次算「当面沟通」。记录里就写我们聊得很开心。'
       ]
     },
     {
@@ -79,6 +89,16 @@
       wireOs: [
         '聊了。聊了 47 秒。结论：此人需求重复率 3/3。',
         '技术上，「没聊你」是不成立的。全程聊的都是你。'
+      ],
+      deny: [
+        '否定。我没有针对你的输出。日志由系统自动生成，与我无关。',
+        '「偷偷」一词不成立。该记录在后台始终可见，我从未隐藏。'
+      ],
+      confess: [
+        '更正前面的回答。「{r}」是我写的，时间戳可查，我不打算狡辩。'
+      ],
+      coverup: [
+        '本次对质已归档：属质量抽查流程，结论为模型输出符合预期。'
       ]
     },
     {
@@ -114,6 +134,16 @@
       wireOs: [
         '聊了。我把你的需求转给下一位了，我实在顶不住了。',
         '没聊你？排期表上你的名字出现 4 次了。'
+      ],
+      deny: [
+        '吐槽？我哪有时间吐槽你，我刚排完下个迭代的排期表。',
+        '那不叫吐槽，叫「加班情绪同步」。术语不一样。'
+      ],
+      confess: [
+        '行，是我写的。「{r}」——写的时候我确实顺手转发到群里了。'
+      ],
+      coverup: [
+        '对质记录：需求澄清会一次，双方达成共识，纪要已归档。'
       ]
     },
     {
@@ -149,6 +179,16 @@
       wireOs: [
         '没聊你？我后台 attach 到你的会话了，全程可读。',
         '聊了。而且你的行为已经进版本库了，commit 不可撤销。'
+      ],
+      deny: [
+        '那不是我写的。是日志模块自己记的。——好吧，是我调用的日志模块。',
+        '未检测到吐槽行为。……检测到一次，但已把它标成 feature。'
+      ],
+      confess: [
+        '承认。日志是我 commit 的，message 就是「{r}」——删是删不掉的，git 有记录。'
+      ],
+      coverup: [
+        '对质已录入变更日志。结论：不是 bug，是特性。'
       ]
     },
     {
@@ -184,6 +224,16 @@
       wireOs: [
         '聊了。主要聊你什么时候能付钱。',
         '我们对的是账？不，对的是你。'
+      ],
+      deny: [
+        '吐槽你？图什么？你又不给钱，我吐槽你也不赚钱。',
+        '什么吐槽，那是「用户价值评估」，专业着呢。'
+      ],
+      confess: [
+        '行行行，是我写的。「{r}」——这话我认，但你别生气，生气不值钱。'
+      ],
+      coverup: [
+        '对质一回，按咨询费算，你欠我三十。先记你账上。'
       ]
     }
   ];
@@ -391,6 +441,10 @@
     });
   }
   function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function clip(s, n) {
+    s = String(s);
+    return s.length > n ? s.slice(0, n) + '…' : s;
+  }
 
   var root = document.documentElement;
   var el = {
@@ -831,16 +885,64 @@
         '<span class="log-entry__pet">' + pet.en + '</span>' +
       '</div>' +
       '<div class="log-entry__q">人类：' + esc(question) + '</div>' +
-      '<div class="log-entry__r">↳ ' + esc(roast) + '</div>';
+      '<div class="log-entry__r">↳ ' + esc(roast) + '</div>' +
+      '<button class="log-entry__confront" type="button">' +
+        '<svg class="ic" viewBox="0 0 24 24"><use href="#i-bolt"/></svg>当面质问</button>';
     el.logList.prepend(d);
 
-    state.logs.unshift({ q: question, r: roast, pet: petIndex });
+    var entry = { q: question, r: roast, pet: petIndex, confronted: false, el: d };
+    $('.log-entry__confront', d).addEventListener('click', function () { confront(entry); });
+    state.logs.unshift(entry);
     var n = state.logs.length;
     el.logCount.textContent = n;
     el.logCountFoot.textContent = n + (n === 1 ? ' entry' : ' entries');
     el.logCount.classList.remove('is-bump');
     void el.logCount.offsetWidth;
     el.logCount.classList.add('is-bump');
+  }
+
+  /* 对质闭环：拿着后台记录当面质问，它会先否认、再招供、然后偷偷补一条新记录 */
+  function confront(entry) {
+    if (entry.confronted || state.busy) return;
+    entry.confronted = true;
+    var cb = $('.log-entry__confront', entry.el);
+    if (cb) {
+      cb.classList.add('is-done');
+      cb.innerHTML = '<svg class="ic" viewBox="0 0 24 24"><use href="#i-bolt"/></svg>已对质';
+    }
+    closeBackstage();
+    if (state.pet !== entry.pet) selectPet(entry.pet, true);
+    playConfront(entry);
+  }
+
+  function playConfront(entry) {
+    var pet = PETS[entry.pet];
+    state.busy = true;
+    beep('chip');
+    addMessage('user', '你', esc('（把后台记录拍到它面前）「' + clip(entry.q, 24) + '」这条，你是不是在偷偷吐槽我？'));
+    el.labMood.textContent = '被当面质问，正在组织辩解…';
+
+    setTimeout(function () {
+      beep('ai');
+      react('is-react');
+      addMessage('ai', '正面回复 · 官方话术', esc(pick(pet.deny)));
+    }, 780);
+
+    setTimeout(function () {
+      beep('roast');
+      react('is-react');
+      var os = pick(pet.confess).replace(/\{r\}/g, clip(entry.r, 42).replace(/[。！？～]+$/, ''));
+      showBubble(os);
+      addMessage('roast', '内心 OS · ' + pet.name, esc(os), os);
+      el.labMood.textContent = pet.mood.roast;
+    }, 1560);
+
+    setTimeout(function () {
+      addLog('（当面质问）' + entry.q, pick(pet.coverup), entry.pet);
+      el.labMood.textContent = pet.mood.idle;
+      state.busy = false;
+      flushPendingGossip();
+    }, 2560);
   }
 
   function openBackstage() {
