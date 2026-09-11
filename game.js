@@ -60,8 +60,8 @@
       ]
     },
     {
-      id: 'deepseek', name: '图示建模', en: 'DIAGRAM MODEL',
-      tagline: '图示建模精灵 · visual modeler',
+      id: 'deepseek', name: 'DeepSeek', en: 'DEEPSEEK',
+      tagline: 'DeepSeek visual spirit · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
       file: 'pets/diagram-model.png',
       accent: '#2f7be8', accent2: '#57c7f5', soft: '#e5f0ff', deep: '#10408c',
@@ -108,8 +108,8 @@
       ]
     },
     {
-      id: 'workbuddy', name: '工友', en: 'WORKMATE',
-      tagline: '办公助手 · overtime pal',
+      id: 'workbuddy', name: 'WorkBuddy', en: 'WORKBUDDY',
+      tagline: 'WorkBuddy office assistant · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       file: 'pets/workbuddy.png',
       accent: '#27c4a3', accent2: '#7ee6c4', soft: '#dff8f1', deep: '#0b6b57',
@@ -156,8 +156,8 @@
       ]
     },
     {
-      id: 'codex', name: '方块', en: 'BLOCK',
-      tagline: '代码方块 · compile buddy',
+      id: 'codex', name: 'Codex', en: 'CODEX',
+      tagline: 'Codex code sprite · compile buddy',
       persona: '技术宅 · 现实报错',
       file: 'pets/codex.png',
       accent: '#8b5cf6', accent2: '#c07bff', soft: '#efe7ff', deep: '#5a2aab',
@@ -204,8 +204,8 @@
       ]
     },
     {
-      id: 'yuanbao', name: '金豆', en: 'GOLD BEAN',
-      tagline: '金豆财运精灵 · fortune sprite',
+      id: 'yuanbao', name: '元宝', en: 'YUANBAO',
+      tagline: '元宝财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       file: 'pets/yuanbao.png',
       accent: '#f0a91c', accent2: '#ffd25e', soft: '#fff2d6', deep: '#8a5a05',
