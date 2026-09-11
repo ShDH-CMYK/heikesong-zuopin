@@ -12,8 +12,8 @@
      ===================================================================== */
   var PETS = [
     {
-      id: 'doubao', name: '暖豆', en: 'NUAN DOU',
-      tagline: '暖豆陪伴型 · companion orb',
+      id: 'doubao', name: '豆包', en: 'DOUBAO',
+      tagline: '豆包陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       file: 'pets/doubao.png',
       accent: '#ff6b7e', accent2: '#ffa06b', soft: '#ffe9ea', deep: '#a3202f',
