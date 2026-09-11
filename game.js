@@ -60,8 +60,8 @@
       ]
     },
     {
-      id: 'deepseek', name: '豆包', en: 'DOUBAO',
-      tagline: '豆包视觉助手 · visual modeler',
+      id: 'deepseek', name: 'WorkBuddy', en: 'WORKBUDDY',
+      tagline: 'WorkBuddy 视觉助手 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
       file: 'pets/diagram-model.png',
       accent: '#2f7be8', accent2: '#57c7f5', soft: '#e5f0ff', deep: '#10408c',
