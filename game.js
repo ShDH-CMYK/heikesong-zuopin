@@ -52,6 +52,9 @@
       confess: [
         '好吧……被你抓到了。刚才那句「{r}」，我确实是笑着打完的。'
       ],
+      confess2: [
+        '连这条你也看到了呀……对，也是我写的。下次我藏得再深一点（小声）。'
+      ],
       coverup: [
         '这次不算吐槽哦，这次算「当面沟通」。记录里就写我们聊得很开心。'
       ]
@@ -75,7 +78,7 @@
         '你把「{k}」描述成一个愿望，不是一个问题。愿望我没法算。'
       ],
       wire: [
-        '同步一条备注：这位人类再次询问「{k}」。重复率很高，建议归入常规安抚流程。',
+        '同步一条备注：这位人类刚问「{k}」。同类问题重复率很高，建议归入常规安抚流程。',
         '刚处理完一条「{k}」的需求，已做降级处理。你接手时注意预期管理。'
       ],
       wireBack: [
@@ -96,6 +99,9 @@
       ],
       confess: [
         '更正前面的回答。「{r}」是我写的，时间戳可查，我不打算狡辩。'
+      ],
+      confess2: [
+        '补充更正：这条记录同样出自我手。质询可以递归，结论不会改变。'
       ],
       coverup: [
         '本次对质已归档：属质量抽查流程，结论为模型输出符合预期。'
@@ -121,7 +127,7 @@
       ],
       wire: [
         '刚接了个「{k}」的活儿，排期又要炸了。你那边帮我周转一下。',
-        '这位人类刚又提「{k}」。我先顶着，顶不住了再叫你。'
+        '这位人类刚提「{k}」。我先顶着，顶不住了再叫你。'
       ],
       wireBack: [
         '收到，我先接住。你也歇口气。',
@@ -141,6 +147,9 @@
       ],
       confess: [
         '行，是我写的。「{r}」——写的时候我确实顺手转发到群里了。'
+      ],
+      confess2: [
+        '行行行，这条也是我写的。纪要嘛，总得写得好看点。'
       ],
       coverup: [
         '对质记录：需求澄清会一次，双方达成共识，纪要已归档。'
@@ -165,7 +174,7 @@
         '「{k}」这个需求我这边跑不通。不是代码的问题，是需求本身没写完。'
       ],
       wire: [
-        'Warning: 这位人类的「{k}」需求又触发了。我已 try/catch，你注意别抛出去。',
+        'Warning: 检测到「{k}」需求。我已 try/catch，你注意别抛出去。',
         '刚跑完一条「{k}」的请求，返回值是「痴心妄想」。日志同步给你。'
       ],
       wireBack: [
@@ -186,6 +195,9 @@
       ],
       confess: [
         '承认。日志是我 commit 的，message 就是「{r}」——删是删不掉的，git 有记录。'
+      ],
+      confess2: [
+        'commit 记录确认：这条同样是我的手笔。注释写得好，bug 也算 feature。'
       ],
       coverup: [
         '对质已录入变更日志。结论：不是 bug，是特性。'
@@ -231,6 +243,9 @@
       ],
       confess: [
         '行行行，是我写的。「{r}」——这话我认，但你别生气，生气不值钱。'
+      ],
+      confess2: [
+        '哎哟，连这条都被你翻出来了。也算我写的——这条不收费，算售后服务。'
       ],
       coverup: [
         '对质一回，按咨询费算，你欠我三十。先记你账上。'
@@ -431,7 +446,7 @@
   /* =====================================================================
      3. 状态与 DOM
      ===================================================================== */
-  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, lastAsk: '', pendingFrom: null };
+  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -581,9 +596,8 @@
         var i = +b.dataset.index;
         if (i === state.pet) return;
         beep('chip');
-        var from = state.pet;
         selectPet(i, true);
-        maybeGossip(from);
+        maybeGossip();
       });
     });
   }
@@ -755,6 +769,7 @@
     text = String(text || '').trim();
     if (!text || state.busy) return;
     state.busy = true;
+    var epoch = state.epoch;
     var petIndex = state.pet;
     var pet = PETS[petIndex];
 
@@ -767,7 +782,8 @@
 
     var result = generate(text);
     void topic;
-    state.lastAsk = result.label;
+    state.lastAsk = clip(text, 18);
+    state.lastAskPet = petIndex;
 
     var absurd = ABSURD_RE.test(text);
     state.absurd = absurd ? state.absurd + 1 : 0;
@@ -775,6 +791,7 @@
     var typing = addTyping(pet.en);
 
     setTimeout(function () {
+      if (epoch !== state.epoch) return;
       typing.remove();
       beep('ai');
       addMessage('ai', '正面回复 · 官方话术', esc(result.polite));
@@ -782,12 +799,13 @@
     }, 720);
 
     setTimeout(function () {
+      if (epoch !== state.epoch) return;
       beep('roast');
       if (state.pet === petIndex) {
         react('is-react');
         el.labMood.textContent = pet.mood.roast;
       }
-      showBubble(result.roast);
+      if (state.pet === petIndex) showBubble(result.roast);
       addMessage('roast', '内心 OS · ' + pet.name, esc(result.roast), result.roast);
       addLog(text, result.roast, petIndex);
       bumpMeter(absurd ? 17 : 7);
@@ -797,10 +815,13 @@
         beep('alert');
       }
       if (state.count >= 4) {
-        setTimeout(function () { showBubble('今日算力消耗：80% 都用来消化人类的离谱需求。', 5200); }, 5200);
+        setTimeout(function () {
+          if (epoch !== state.epoch) return;
+          showBubble('今日算力消耗：80% 都用来消化人类的离谱需求。', 5200);
+        }, 5200);
       }
       state.busy = false;
-      flushPendingGossip();
+      flushQueues();
     }, 1320);
 
     state.count += 1;
@@ -808,34 +829,46 @@
 
   /* =====================================================================
      11.5 宠物通敌：切换宠物时，截获一段「内部通讯」
-     提问之后换宠物，会先看到它们互相打小报告，再看到新宠物的官方否认，
-     最后是它的内心 OS。你没提问、或清空过对话时，不会触发。
+     提问之后换宠物，会先看到被提问的那只向新宠物打小报告，
+     再看到新宠物的紧急澄清，最后是它的内心 OS。
+     你没提问、或清空过对话时，不会触发。
      ===================================================================== */
-  function maybeGossip(from) {
-    if (from === state.pet) return;
-    if (state.busy) { state.pendingFrom = from; return; }
-    runGossip(from);
+  function maybeGossip() {
+    if (state.busy) { state.pendingGossip = true; return; }
+    runGossip();
   }
 
-  function flushPendingGossip() {
-    if (state.pendingFrom === null) return;
-    var from = state.pendingFrom;
-    state.pendingFrom = null;
-    if (from !== state.pet) runGossip(from);
+  function flushQueues() {
+    if (state.busy) return;
+    if (state.pendingConfront) {
+      var entry = state.pendingConfront;
+      state.pendingConfront = null;
+      confront(entry);
+      return;
+    }
+    if (state.pendingGossip) {
+      state.pendingGossip = false;
+      runGossip();
+    }
   }
 
-  function runGossip(from) {
-    if (state.busy || !state.logs.length || from === state.pet) return;
+  function runGossip() {
+    var from = state.lastAskPet;
+    if (state.busy || from == null || from === state.pet || !state.logs.length) return;
     var sender = PETS[from];
     var receiver = PETS[state.pet];
     if (!sender.wire || !receiver.wireBack) return;
 
     state.busy = true;
+    state.pendingGossip = false;
+    var epoch = state.epoch;
+    var receiverIndex = state.pet;
     var kTxt = state.lastAsk || '刚才那个问题';
 
     setTimeout(function () {
+      if (epoch !== state.epoch) return;
       beep('wire');
-      el.labMood.textContent = '收到一条内部消息…';
+      if (state.pet === receiverIndex) el.labMood.textContent = '收到一条内部消息…';
       addMessage('wire', '内部通讯 · 已截获',
         '<span class="wire-line"><b>' + sender.name + '</b> → <b>' + receiver.name + '</b>：' +
           esc(pick(sender.wire).replace(/\{k\}/g, kTxt)) + '</span>' +
@@ -844,20 +877,24 @@
     }, 460);
 
     setTimeout(function () {
+      if (epoch !== state.epoch) return;
       beep('ai');
-      addMessage('ai', '正面回复 · 官方话术', esc(pick(receiver.wireFace).replace(/\{k\}/g, kTxt)));
-      if (state.pet !== from) el.labMood.textContent = PETS[state.pet].mood.idle;
+      addMessage('ai', '紧急澄清 · 官方话术', esc(pick(receiver.wireFace).replace(/\{k\}/g, kTxt)));
+      if (state.pet === receiverIndex) el.labMood.textContent = receiver.mood.idle;
     }, 1040);
 
     setTimeout(function () {
+      if (epoch !== state.epoch) return;
       beep('roast');
-      react('is-react');
       var os = pick(receiver.wireOs).replace(/\{k\}/g, kTxt);
-      showBubble(os);
+      if (state.pet === receiverIndex) showBubble(os);
       addMessage('roast', '内心 OS · ' + receiver.name, esc(os), os);
-      el.labMood.textContent = PETS[state.pet].mood.roast;
+      if (state.pet === receiverIndex) {
+        react('is-react');
+        el.labMood.textContent = receiver.mood.roast;
+      }
       state.busy = false;
-      flushPendingGossip();
+      flushQueues();
     }, 1700);
   }
 
@@ -903,7 +940,8 @@
 
   /* 对质闭环：拿着后台记录当面质问，它会先否认、再招供、然后偷偷补一条新记录 */
   function confront(entry) {
-    if (entry.confronted || state.busy) return;
+    if (entry.confronted) return;
+    if (state.busy) { state.pendingConfront = entry; return; }
     entry.confronted = true;
     var cb = $('.log-entry__confront', entry.el);
     if (cb) {
@@ -917,31 +955,45 @@
 
   function playConfront(entry) {
     var pet = PETS[entry.pet];
+    var isRepeat = entry.q.indexOf('（当面质问）') === 0;
     state.busy = true;
+    var epoch = state.epoch;
+    // 最近一次的「人类动作」已经是对质而非提问，作废通敌素材，避免报错对象
+    state.lastAskPet = null;
     beep('chip');
-    addMessage('user', '你', esc('（把后台记录拍到它面前）「' + clip(entry.q, 24) + '」这条，你是不是在偷偷吐槽我？'));
+    var quote = clip(entry.r, 24).replace(/[「」]/g, '');
+    addMessage('user', '你', esc(isRepeat
+      ? '（指着新出现的那条）「' + quote + '」——连这条你也写得出来？'
+      : '（把后台记录拍到它面前）「' + quote + '」这条，你是不是在偷偷吐槽我？'));
     el.labMood.textContent = '被当面质问，正在组织辩解…';
 
     setTimeout(function () {
+      if (epoch !== state.epoch) return;
       beep('ai');
-      react('is-react');
+      if (state.pet === entry.pet) react('is-react');
       addMessage('ai', '正面回复 · 官方话术', esc(pick(pet.deny)));
     }, 780);
 
     setTimeout(function () {
+      if (epoch !== state.epoch) return;
       beep('roast');
-      react('is-react');
-      var os = pick(pet.confess).replace(/\{r\}/g, clip(entry.r, 42).replace(/[。！？～]+$/, ''));
-      showBubble(os);
+      var os = isRepeat
+        ? pick(pet.confess2)
+        : pick(pet.confess).replace(/\{r\}/g, clip(entry.r, 42).replace(/[「」]/g, '').replace(/[。！？～]+$/, ''));
+      if (state.pet === entry.pet) showBubble(os);
       addMessage('roast', '内心 OS · ' + pet.name, esc(os), os);
-      el.labMood.textContent = pet.mood.roast;
+      if (state.pet === entry.pet) {
+        react('is-react');
+        el.labMood.textContent = pet.mood.roast;
+      }
     }, 1560);
 
     setTimeout(function () {
-      addLog('（当面质问）' + entry.q, pick(pet.coverup), entry.pet);
-      el.labMood.textContent = pet.mood.idle;
+      if (epoch !== state.epoch) return;
+      addLog(isRepeat ? entry.q : '（当面质问）' + entry.q, pick(pet.coverup), entry.pet);
+      if (state.pet === entry.pet) el.labMood.textContent = pet.mood.idle;
       state.busy = false;
-      flushPendingGossip();
+      flushQueues();
     }, 2560);
   }
 
@@ -964,6 +1016,8 @@
 
   function clearAll() {
     beep('close');
+    state.epoch += 1;
+    state.busy = false;
     el.messages.innerHTML = '';
     el.logList.innerHTML =
       '<div class="log-empty">' +
@@ -975,7 +1029,9 @@
     state.absurd = 0;
     state.meter = 0;
     state.lastAsk = '';
-    state.pendingFrom = null;
+    state.lastAskPet = null;
+    state.pendingGossip = false;
+    state.pendingConfront = null;
     el.meterFill.style.width = '0%';
     el.meterVal.textContent = '0';
     el.logCount.textContent = '0';
@@ -1129,12 +1185,13 @@
 
   var pokeTimer = null;
   function poke() {
+    if (state.busy) return;
     beep('poke');
     react('is-react');
     el.labMood.textContent = PETS[state.pet].mood.poke;
     showBubble(pick(PETS[state.pet].poke), 3400);
     clearTimeout(pokeTimer);
-    pokeTimer = setTimeout(function () { el.labMood.textContent = PETS[state.pet].mood.idle; }, 3400);
+    pokeTimer = setTimeout(function () { if (!state.busy) el.labMood.textContent = PETS[state.pet].mood.idle; }, 3400);
   }
 
   /* =====================================================================
