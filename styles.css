@@ -410,20 +410,20 @@ h1,h2,h3,p{ margin:0; }
 
 /* 内心 OS 气泡 */
 .bubble{
-  position:absolute; z-index:6; left:clamp(14px,4%,34px); top:clamp(14px,5%,30px);
+  position:absolute; z-index:6; right:clamp(14px,4%,34px); top:clamp(14px,5%,30px);
   max-width:min(340px,58%);
-  padding:14px 17px 15px; border-radius:20px 20px 20px 6px;
+  padding:14px 17px 15px; border-radius:20px 20px 6px 20px;
   background:rgba(255,255,255,.94);
   backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
   border:1px solid rgba(255,255,255,.9);
   box-shadow:0 26px 54px -26px rgba(21,20,43,.5);
-  opacity:0; transform:translateY(10px) scale(.96); transform-origin:left bottom;
+  opacity:0; transform:translateY(10px) scale(.96); transform-origin:right bottom;
   transition:opacity .4s var(--ease), transform .4s var(--ease);
   pointer-events:none;
 }
 .bubble.is-show{ opacity:1; transform:none; }
 .bubble::after{
-  content:''; position:absolute; left:22px; bottom:-7px; width:14px; height:14px;
+  content:''; position:absolute; right:22px; bottom:-7px; width:14px; height:14px;
   background:inherit; border-right:inherit; border-bottom:inherit;
   border-radius:0 0 4px 0; transform:rotate(45deg);
 }
