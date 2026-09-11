@@ -60,10 +60,10 @@
       ]
     },
     {
-      id: 'deepseek', name: '深蓝', en: 'DEEP BLUE',
-      tagline: '深海数据精灵 · logic diver',
+      id: 'deepseek', name: '图示建模', en: 'DIAGRAM MODEL',
+      tagline: '图示建模精灵 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
-      file: 'pets/deepseek.png',
+      file: 'pets/diagram-model.png',
       accent: '#2f7be8', accent2: '#57c7f5', soft: '#e5f0ff', deep: '#10408c',
       glow: 'rgba(47,123,232,.35)',
       mood: { idle: '数据链路空闲', hover: '正在扫描你的意图', roast: '结论已生成', poke: '别戳，采样中' },

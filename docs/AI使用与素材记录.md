@@ -36,10 +36,10 @@
 
 ### 宠物立绘
 
-- 文件：`pets/codex.png`、`pets/deepseek.png`、`pets/doubao.png`、`pets/workbuddy.png`、`pets/yuanbao.png`。
+- 文件：`pets/codex.png`、`pets/diagram-model.png`、`pets/doubao.png`、`pets/workbuddy.png`、`pets/yuanbao.png`。
 - 处理：由 `tools/prep-pets.py` 裁边、补白并统一画布后入库。
 - 生成工具、模型、生成日期、原始出处、授权范围：**待团队补填**。
-- 页面角色名已改为通用化名“暖豆、深蓝、工友、方块、金豆”；对外材料仍需检查旧截图、文件名和旧文案。
+- 页面角色名已改为通用化名“暖豆、图示建模、工友、方块、金豆”；图示建模使用团队提供的鲸鱼主题三视图裁切图，页面素材文件为 `pets/diagram-model.png`。对外材料仍需检查旧截图、旧文件名和旧文案。
 
 ### 字体、图标与音效
 
