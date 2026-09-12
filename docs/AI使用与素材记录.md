@@ -10,8 +10,8 @@
 
 | 项目 | 当前事实 |
 | --- | --- |
-| 运行时在线 AI | 无 |
-| 运行时外部接口 | 无；网页字体可能从 Google Fonts 加载，失败会回退系统字体 |
+| 运行时在线 AI | 无；回复不调用大模型 |
+| 运行时外部接口 | 网页字体可能从 Google Fonts 加载，失败回退系统字体；DeepSeek 可选 3D 从 unpkg 加载 Three.js 与 `pets/deepseek-lowpoly.glb`，失败回退立绘 |
 | 用户输入是否上传 | 否，留在当前页面状态 |
 | 运行时密钥 | 无 |
 | 音频文件 | 无，实时合成 |
@@ -36,10 +36,11 @@
 
 ### 宠物立绘
 
-- 文件：`pets/codex.png`、`pets/diagram-model.png`、`pets/doubao.png`、`pets/workbuddy.png`、`pets/yuanbao.png`。
+- 当前页面使用：`pets/doubao.png`（豆包）、`pets/deepseek.png` 及侧视/背视 `pets/deepseek-side.png`、`pets/deepseek-back.png`（DeepSeek）、`pets/workbuddy.png`（WorkBuddy）、`pets/codex.png`（Codex）、`pets/yuanbao.png`（元宝）。
+- DeepSeek 另有可选低面数模型 `pets/deepseek-lowpoly.glb`；加载失败时回退上述立绘。仓库中仍保留旧文件 `pets/diagram-model.png`，页面已不再引用。
 - 处理：由 `tools/prep-pets.py` 裁边、补白并统一画布后入库。
 - 生成工具、模型、生成日期、原始出处、授权范围：**待团队补填**。
-- 页面角色名现为“豆包、WorkBuddy、工友、方块、金豆”；其中“豆包”“WorkBuddy”“元宝”为戏仿名称，提交前需确认主办方要求；豆包使用团队提供的鲸鱼主题三视图裁切图，页面素材文件为 `pets/diagram-model.png`。对外材料仍需检查旧截图、旧文件名和旧文案。
+- 页面角色名现为“豆包、DeepSeek、WorkBuddy、Codex、元宝”；其中豆包、DeepSeek、Codex、元宝为戏仿名称，提交前需确认主办方要求。DeepSeek 使用团队提供的鲸鱼主题三视图（`pets/deepseek.png` 等）。对外材料仍需检查旧截图、旧文件名和旧文案（图示建模 / 工友 / 方块 / 金豆）。
 
 ### 字体、图标与音效
 
