@@ -1,7 +1,7 @@
 /* =========================================================================
    潜台词 Subtext · v2
-   普通脚本（不是 ES module）—— file:// 双击也能直接跑，
-   不再需要本地 HTTP 服务器，也不会被 CORS 拦掉。
+   本地对话使用普通脚本；三维角色使用 ES module 和 GLB，
+   请通过 HTTP 静态服务器预览完整功能。
    ========================================================================= */
 (function () {
   'use strict';
@@ -743,8 +743,7 @@
     applyTheme(i);
 
     var views = p.views || [p.file];
-    el.stagePet.classList.toggle('has-3d-model', p.id === 'deepseek');
-    el.stagePet.classList.toggle('stage__pet--3d', p.id === 'deepseek' && document.getElementById('stage-model-3d') && document.getElementById('stage-model-3d').classList.contains('is-ready') && !document.getElementById('stage-model-3d').classList.contains('is-fallback'));
+    el.stagePet.classList.toggle('stage__pet--3d', p.id === 'deepseek');
     el.stagePet.classList.remove('is-dragging');
     el.stageModel.style.setProperty('--model-rot', '0deg');
     el.stageModel.style.setProperty('--model-tilt', '0deg');
@@ -906,7 +905,12 @@
     el.bubble.classList.remove('is-show');
   }
 
-  function react(cls) {
+  function react(cls, userInitiated) {
+    if (PETS[state.pet].id === 'deepseek') {
+      el.stagePet.dispatchEvent(new CustomEvent('pet-model-react', {
+        detail: { userInitiated: Boolean(userInitiated) }
+      }));
+    }
     el.stagePet.classList.remove('is-react', 'is-swap');
     void el.stagePet.offsetWidth;
     el.stagePet.classList.add(cls || 'is-react');
@@ -1334,6 +1338,7 @@
 
     el.pokeBtn.addEventListener('click', function () { poke(); });
     el.labPet.addEventListener('click', function () { poke(); });
+    el.stagePet.addEventListener('pet-model-poke', function () { poke(); });
 
     el.stagePet.addEventListener('pointerenter', function () {
       el.labMood.textContent = PETS[state.pet].mood.hover;
@@ -1347,7 +1352,7 @@
   function poke() {
     if (state.busy) return;
     beep('poke');
-    react('is-react');
+    react('is-react', true);
     el.labMood.textContent = PETS[state.pet].mood.poke;
     showBubble(pick(PETS[state.pet].poke), 3400);
     clearTimeout(pokeTimer);

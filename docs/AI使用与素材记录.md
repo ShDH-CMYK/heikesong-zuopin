@@ -11,7 +11,7 @@
 | 项目 | 当前事实 |
 | --- | --- |
 | 运行时在线 AI | 无；回复不调用大模型 |
-| 运行时外部接口 | 网页字体可能从 Google Fonts 加载，失败回退系统字体；拆镜可选 3D 从 unpkg 加载 Three.js 与 `pets/deepseek-lowpoly.glb`，失败回退立绘 |
+| 运行时外部接口 | 网页字体可能从 Google Fonts 加载，失败回退系统字体；拆镜的 Three.js 0.180.0 从本地 `vendor/three/` 加载，角色加载同站点的 `pets/deepseek.glb`；三维加载或渲染失败时保留立绘 |
 | 用户输入是否上传 | 否，留在当前页面状态 |
 | 运行时密钥 | 无 |
 | 音频文件 | 无，实时合成 |
@@ -23,9 +23,11 @@
 | 环节 | 工具 / 模型 / 版本 | AI 参与内容 | 人工工作与验证 | 证据位置 |
 | --- | --- | --- | --- | --- |
 | 需求与交互构思 | 待团队补填 | 生成候选创意、流程和文案方向 | 选择“后台吐槽日志”方向，确定赛道和演示流程 | 对话记录 / 待整理 |
-| HTML/CSS/JS 原型 | 待团队补填 | 协助生成页面结构、样式、角色逻辑和本地词库 | 调整视觉层级、角色文案、交互状态并通过浏览器检查 | Git 提交 / 待补链接 |
-| QA 与修复 | 待团队补填 | 协助定位布局、输入、计数和日志问题 | 人工在 Chromium 完成主流程与窄屏走查 | 截图 / 待补 |
+| HTML/CSS/JS 原型 | 待团队补填 | 协助生成页面结构、样式、角色逻辑和本地词库 | 调整视觉层级、角色文案和交互状态；既往浏览器检查的版本与证据待补，不据此声明本次三维更新已验证 | Git 提交 / 待补链接 |
+| QA 与修复 | 待团队补填 | 协助定位布局、输入、计数和日志问题 | 既往 Chromium 主流程与窄屏走查记录待团队核验；本次三维版本需记录独立测试结果 | 截图 / 待补 |
 | 角色立绘 | 待团队补填（生图工具与模型） | 生成五张角色立绘 | 筛选、裁边、统一画布、决定是否可公开使用 | `tools/prep-pets.py` / 待补原始记录 |
+| 拆镜三维角色与动画 | Codex 辅助编写 Python；Blender 4.5.10 LTS 执行建模与导出 | 根据团队提供的三视图编写实体网格、服装和发束生成逻辑，建立 UV、14 根骨骼、权重与 `Idle` / `React` 动作 | 团队提供参考图与功能要求；本轮由 AI 代理执行构建与离线渲染检查，团队造型验收及浏览器验证结果需另据证据记录 | `tools/build-deepseek.py`、`pets/deepseek.blend`、`output/model-review/` |
+| 拆镜绘制贴图 | Codex 辅助编写 Python；Pillow 执行栅格绘制 | 使用渐变、曲线和确定性纹理绘制虹膜、鲸鱼围裙、头发与裙摆纹样 | 参考图用于配色和图案位置判断，没有把三视图直接贴到身体；脚本重复运行的四张 PNG 哈希一致 | `tools/build-deepseek-textures.py`、`pets/textures/` |
 | 文案与词库 | 待团队补填 | 辅助提出吐槽初稿 | 人工筛选、改写为善意且不针对身份的表达 | `game.js` / 待补版本 |
 
 ## 创作过程留存
@@ -37,10 +39,20 @@
 ### 宠物立绘
 
 - 当前页面使用：`pets/doubao.png`（暖球）、`pets/deepseek.png` 及侧视/背视 `pets/deepseek-side.png`、`pets/deepseek-back.png`（拆镜）、`pets/workbuddy.png`（班班）、`pets/codex.png`（报错）、`pets/yuanbao.png`（小金）。文件名是仓库内部资源名，不作为对外角色名。
-- 拆镜页面使用已验证的可交互模型 `pets/deepseek-lowpoly.glb`；加载失败时回退上述立绘。仓库中另有高细节工程 `pets/deepseek-high-detail.blend` / `pets/deepseek-high-detail.glb`（队友仍在 refining，当前页面不引用），以及旧文件 `pets/diagram-model.png`。
+- 拆镜当前网页模型为 `pets/deepseek.glb`，源工程为 `pets/deepseek.blend`；首次成功绘制三维模型前继续显示立绘，失败时保留立绘。旧 `pets/deepseek-lowpoly.glb`、`pets/deepseek-high-detail.blend`、`pets/deepseek-high-detail.glb` 仅作历史迭代保留。仓库中仍保留旧文件 `pets/diagram-model.png`，页面已不再引用。
 - 处理：由 `tools/prep-pets.py` 裁边、补白并统一画布后入库。
 - 生成工具、模型、生成日期、原始出处、授权范围：**待团队补填**。
 - 页面角色名为原创名「暖球、拆镜、班班、报错、小金」，不对应任何第三方品牌。对外录屏和截图须使用新名，不要出现豆包 / DeepSeek / Codex / 元宝 / WorkBuddy。
+
+### 拆镜三维模型与贴图
+
+- 建模来源：团队提供正面、侧面、背面三张鲸鱼女仆参考图。脚本按参考图重建具有厚度的头脸、眼睛、嘴部、分层头发、裙装、围裙、蕾丝、蝴蝶结、袖口、尾巴与尾鳍；参考图片仅作为 Blender 对齐对象，未作为身体平面导出。
+- 制作方式：AI 辅助编写 Blender Python 脚本并执行。称为“脚本建模 / 风格化三维解读”，不记作人工雕刻或商业高精度复刻。
+- 当前资产：`pets/deepseek.blend` 与 `pets/deepseek.glb`；14 根骨骼，实际蒙皮权重；循环待机 `Idle`（4 秒）及点击反应 `React`（2 秒）。
+- 贴图：`pets/textures/deepseek-iris.png`、`deepseek-apron.png`、`deepseek-hair.png`、`deepseek-skirt.png`。使用可复现的曲线、渐变、织纹及发丝细节绘制；模型材质内嵌四张图像，没有运行时外链贴图。
+- 参考图的原始作者、生成工具和授权范围仍由团队补充；程序绘制和三维重建不会自动补足参考设计本身的来源信息。
+- 工具链：Blender 4.5.10 LTS（建模、蒙皮、动画与 glTF 导出）；Python + Pillow（贴图）；Three.js 0.180.0（网页渲染），详见 [第三方组件与许可声明](../THIRD_PARTY_NOTICES.md)。
+- 可复建脚本、UV、骨骼和限制见 [DeepSeek 三维模型说明](DeepSeek三维模型.md)。`output/model-review/` 的图片是 Blender 离线渲染，不能作为浏览器交互已通过的证据。
 
 ### 字体、图标与音效
 
