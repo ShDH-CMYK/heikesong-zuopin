@@ -66,11 +66,15 @@ python tools/regression.py http://127.0.0.1:8890/index.html
 
 从仓库根目录执行 `python -m http.server 8000 --bind 127.0.0.1`，通过 <http://127.0.0.1:8000/> 预览。三维模块依赖 HTTP 资源加载，直接双击 `index.html` 不作为完整验证方式。普通页面预览不需要 npm 安装或前端构建。
 
-修改 DeepSeek 模型时保留 `tools/build-deepseek.py`、`tools/build-deepseek-textures.py` 与 `.blend` 源工程；复建顺序和工具版本见 [模型说明](docs/DeepSeek三维模型.md)。记录真实构建统计、四方向渲染、骨骼与动画验证、浏览器交互结果。离线渲染能确认外观，不能证明触摸、点击或资源失败回退已通过。
+修改拆镜模型（内部资源名 `deepseek`）时保留 `tools/prepare-blue-textures.py`、`tools/build-deepseek-blue.py` 与 `.blend` 源工程。当前造型来自用户提供的 `Blue.rar`，复建需要解压后的 OBJ、MTL 与四张 PBR PNG，通过 `--source` 指定目录；脚本顺序和工具版本见 [模型说明](docs/DeepSeek三维模型.md)。源工程的隐藏 `SOURCE` 集合保留约 100 万面原网格与 4K 贴图，网页副本采用约 18 万面网格、2K 贴图和小幅骨骼动作。修改时保留原始数据及来源说明，记录真实构建统计、四方向渲染、骨骼与动画验证、浏览器交互结果。离线渲染能确认外观，不能证明触摸、点击或资源失败回退已通过。
+
+旧 `tools/build-deepseek.py`、`tools/build-deepseek-textures.py` 和 `pets/textures/` 属于上一轮脚本造型，保留作历史记录；它们会写入相同的最终模型路径，不应再次运行来覆盖 Blue 版本。本轮证据使用 `output/blue-review/` 与 `output/playwright/blue-*.png`，不要把 `output/model-review/` 的旧截图或旧统计当作本轮验证。
 
 ## 部署（在线演示）
 
-当前主入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目 `subtext`，生产域名 `subtext-8up.pages.dev`，2026-09-12 已与 `main` 同步并在线验证）。备用镜像是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>，随 `main` 自动构建；推送成功不等于页面已经更新，要核对线上资源版本。部署后核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证选择拆镜、旋转、缩放、点击动作和返回其他角色的流程。
+当前主入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目 `subtext`，生产域名 `subtext-8up.pages.dev`）。备用镜像是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>，随 `main` 自动构建；推送成功不等于页面已经更新，要核对线上资源版本。部署后核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证选择拆镜、旋转、缩放、点击动作和返回其他角色的流程。
+
+本轮 Blue 模型更新先在 GitHub Pages 验收；Cloudflare 的 Blue 版本同步与验证单独记录，不能沿用前一版的同步状态。
 
 部署使用仓库外的**新暂存目录**复制必要静态文件，必须包含 `vendor/three/` 与回复表情所在的 `assets/`：
 

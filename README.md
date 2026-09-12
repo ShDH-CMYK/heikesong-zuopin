@@ -12,7 +12,9 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
 ## 当前版本
 
-核心流程使用本地词库，无需 API Key。当前演示主入口是 [subtext.tryworld.com.cn](https://subtext.tryworld.com.cn/)（Cloudflare Pages，已与 `main` 同步）；备用镜像是 [GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/)，随 `main` 自动构建。拆镜使用可旋转、缩放并播放骨骼动作的三维角色；其余四只宠物继续使用立绘。
+核心流程使用本地词库，无需 API Key。当前演示主入口是 [subtext.tryworld.com.cn](https://subtext.tryworld.com.cn/)（Cloudflare Pages）；备用镜像是 [GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/)，随 `main` 自动构建。拆镜使用可旋转、缩放并播放骨骼动作的三维角色；其余四只宠物继续使用立绘。
+
+本轮 Blue 模型更新与验收目标为 GitHub Pages；Cloudflare 入口的本次模型版本仍需单独同步和验证，不能据历史部署记录判断其已更新。
 
 网页采用静态部署，Three.js 0.180.0 及模型、贴图均随站点提供。用本地 HTTP 服务打开完整副本时，交互和三维角色可在断开互联网后使用；Google Fonts 不可用时回退系统字体。
 
@@ -76,8 +78,8 @@ python -m http.server 8000 --bind 127.0.0.1
 
 ## Blender 三维角色
 
-当前网页加载 [`pets/deepseek.glb`](pets/deepseek.glb)（角色「拆镜」）。对应可编辑工程为 [`pets/deepseek.blend`](pets/deepseek.blend)，使用 Blender 4.5 LTS 通过可重复执行的 Python 脚本建立头脸、分层发束、女仆服装、围裙、蕾丝、蝴蝶结、袖口和鲸鱼尾鳍。它具有正侧背方向的实体体积，使用 14 根骨骼和蒙皮权重，包含 `Idle`（4 秒）与 `React`（2 秒）两段动作，以及四张绘制贴图。
+当前网页加载 [`pets/deepseek.glb`](pets/deepseek.glb)（角色「拆镜」，`deepseek` 为内部资源名），造型与 UV 来自用户提供的 **Blue.rar 三维模型包**。本轮在 Blender 4.5 LTS 中导入原始实体网格、统一坐标、重新连接 PBR 材质，为网页副本建立 14 根骨骼、蒙皮权重及 `Idle`（4 秒）与 `React`（2 秒）动作。点击反应采用轻微点头、身体微摆与尾部响应。
 
-这是按三视图制作的风格化脚本建模版本，不是手工雕刻或商业高精度复刻。当前没有嘴型表情驱动、布料物理或完整动作库。源工程保留独立部件；网页导出按材质合并网格以减少绘制调用。旧 `deepseek-lowpoly.glb`、`deepseek-high-detail.blend` 和 `deepseek-high-detail.glb` 仅保留为历史迭代，网页不加载。
+可编辑工程 [`pets/deepseek.blend`](pets/deepseek.blend) 保留原始 **998,232 个三角面和四张 4K PBR 贴图**，原网格放在隐藏的 `SOURCE` 集合中；另有用于网页的简化与绑定副本。网页模型为 **179,680 个三角面**，使用三张内嵌 2K 贴图，经 Draco 压缩后约 **5.8 MB**。本轮属于对用户提供的实体资产进行整理、绑定和网页适配；原作者、生成工具及授权范围仍待团队补充。当前没有面部形态键、嘴型同步或布料物理，融合的原始拓扑适合现有小幅动作。
 
-建模方法、UV 方向、骨骼结构、复建步骤和限制见 [DeepSeek 三维模型说明](docs/DeepSeek三维模型.md)。渲染检查图与构建统计位于 `output/model-review/`；这些离线渲染不代替浏览器交互验证。
+复建使用 `tools/prepare-blue-textures.py` 和 `tools/build-deepseek-blue.py`，步骤与限制见 [拆镜三维模型说明](docs/DeepSeek三维模型.md)。本轮渲染检查图与构建统计位于 `output/blue-review/`；这些离线渲染不代替浏览器交互验证。旧 `build-deepseek.py`、旧贴图生成脚本、`output/model-review/` 及旧 `deepseek-lowpoly` / `deepseek-high-detail` 文件保留为历史记录，不能用旧脚本覆盖当前模型。

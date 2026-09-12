@@ -1,0 +1,22 @@
+{
+  "source": "Blue.rar supplied by user",
+  "sourceObjSHA256": "02f6fc44f829f9ad99e30d3c1cb048fd0dd630fbfc8f4ed30f354f72aef3a4d3",
+  "original": {
+    "vertices": 499046,
+    "triangles": 998232
+  },
+  "web": {
+    "vertices": 89770,
+    "triangles": 179680,
+    "glbBytes": 5758428
+  },
+  "bones": 14,
+  "animations": {
+    "Idle": 4,
+    "React": 2
+  },
+  "textures": "original 4K packed in blend; web 2K basecolor, normal, packed roughness/metallic",
+  "orientation": "Blender Z up, front -Y; glTF Y up, front +Z",
+  "normalStrength": 0.65,
+  "notes": "Original topology and UV retained; export decimated to 18%. Fused topology uses gentle motions, no full humanoid retargeting."
+}

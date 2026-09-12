@@ -26,8 +26,8 @@
 | HTML/CSS/JS 原型 | 待团队补填 | 协助生成页面结构、样式、角色逻辑和本地词库 | 调整视觉层级、角色文案和交互状态；既往浏览器检查的版本与证据待补，不据此声明本次三维更新已验证 | Git 提交 / 待补链接 |
 | QA 与修复 | 待团队补填 | 协助定位布局、输入、计数和日志问题 | 既往 Chromium 主流程与窄屏走查记录待团队核验；本次三维版本需记录独立测试结果 | 截图 / 待补 |
 | 角色立绘 | 待团队补填（生图工具与模型） | 生成五张角色立绘 | 筛选、裁边、统一画布、决定是否可公开使用 | `tools/prep-pets.py` / 待补原始记录 |
-| 拆镜三维角色与动画 | Codex 辅助编写 Python；Blender 4.5.10 LTS 执行建模与导出 | 根据团队提供的三视图编写实体网格、服装和发束生成逻辑，建立 UV、14 根骨骼、权重与 `Idle` / `React` 动作 | 团队提供参考图与功能要求；本轮由 AI 代理执行构建与离线渲染检查，团队造型验收及浏览器验证结果需另据证据记录 | `tools/build-deepseek.py`、`pets/deepseek.blend`、`output/model-review/` |
-| 拆镜绘制贴图 | Codex 辅助编写 Python；Pillow 执行栅格绘制 | 使用渐变、曲线和确定性纹理绘制虹膜、鲸鱼围裙、头发与裙摆纹样 | 参考图用于配色和图案位置判断，没有把三视图直接贴到身体；脚本重复运行的四张 PNG 哈希一致 | `tools/build-deepseek-textures.py`、`pets/textures/` |
+| 拆镜三维资产整理与动画 | Codex 辅助编写 Python；Blender 4.5.10 LTS 执行导入、绑定与导出 | 导入用户 `Blue.rar` 的实体网格与既有 UV，统一坐标、重接 PBR 材质、简化网页副本，添加 14 根骨骼、权重与 `Idle` / `React` 小幅动作 | 用户提供模型包与使用要求；原包没有骨骼。本轮由 AI 代理执行资产审计、构建与离线渲染，团队造型验收及浏览器验证结果另据证据记录；不将原网格创作记作本轮 AI 工作 | `tools/build-deepseek-blue.py`、`pets/deepseek.blend`、`output/blue-review/` |
+| 拆镜网页贴图处理 | Codex 辅助编写 Python；Pillow 处理图像 | 将用户四张 4K PBR 原贴图制成 2K base color、normal 与 ORM；缩放后归一化法线，按 glTF 通道打包 roughness / metallic | 原图未改动，网页图像按通道与哈希检查；原贴图的作者、生成工具和许可待团队补充，不记作本轮从零绘制 | `tools/prepare-blue-textures.py`、`pets/blue-textures/` |
 | 文案与词库 | 待团队补填 | 辅助提出吐槽初稿 | 人工筛选、改写为善意且不针对身份的表达 | `game.js` / 待补版本 |
 
 ## 创作过程留存
@@ -46,13 +46,14 @@
 
 ### 拆镜三维模型与贴图
 
-- 建模来源：团队提供正面、侧面、背面三张鲸鱼女仆参考图。脚本按参考图重建具有厚度的头脸、眼睛、嘴部、分层头发、裙装、围裙、蕾丝、蝴蝶结、袖口、尾巴与尾鳍；参考图片仅作为 Blender 对齐对象，未作为身体平面导出。
-- 制作方式：AI 辅助编写 Blender Python 脚本并执行。称为“脚本建模 / 风格化三维解读”，不记作人工雕刻或商业高精度复刻。
-- 当前资产：`pets/deepseek.blend` 与 `pets/deepseek.glb`；14 根骨骼，实际蒙皮权重；循环待机 `Idle`（4 秒）及点击反应 `React`（2 秒）。
-- 贴图：`pets/textures/deepseek-iris.png`、`deepseek-apron.png`、`deepseek-hair.png`、`deepseek-skirt.png`。使用可复现的曲线、渐变、织纹及发丝细节绘制；模型材质内嵌四张图像，没有运行时外链贴图。
-- 参考图的原始作者、生成工具和授权范围仍由团队补充；程序绘制和三维重建不会自动补足参考设计本身的来源信息。
-- 工具链：Blender 4.5.10 LTS（建模、蒙皮、动画与 glTF 导出）；Python + Pillow（贴图）；Three.js 0.180.0（网页渲染），详见 [第三方组件与许可声明](../THIRD_PARTY_NOTICES.md)。
-- 可复建脚本、UV、骨骼和限制见 [DeepSeek 三维模型说明](DeepSeek三维模型.md)。`output/model-review/` 的图片是 Blender 离线渲染，不能作为浏览器交互已通过的证据。
+- 当前来源：用户提供的 `Blue.rar`，包含 `bcc6d7b2890c0919444227f3cca98e2c.obj`、`material.mtl` 和四张 4096 × 4096 PBR PNG。OBJ 为 499,046 个顶点、998,232 个三角面，已有完整 UV，没有骨骼或动画。原网格与贴图的作者、生成工具、原始出处及授权范围：**待团队补填**；不根据文件名或外观猜测制作平台。
+- 本轮处理：AI 辅助编写并运行 Blender Python 脚本，保留用户资产的造型与 UV，统一坐标、计算平滑法线、重接 PBR 材质，为网页简化副本添加骨骼与动画。应称为“用户三维资产整理、绑定与网页适配”，不记作从零雕刻或从零生成角色。
+- 当前资产：`pets/deepseek.blend` 保留隐藏的原始高面网格及四张 4K 贴图，并包含网页副本；`pets/deepseek.glb` 使用 179,680 个三角面、14 根骨骼与实际蒙皮权重。`Idle`（4 秒）为轻微呼吸与点头摆动，`React`（2 秒）为点头、微摆和尾部反应；融合拓扑适合小幅动作，没有面部形态键或嘴型同步。
+- 网页贴图：`pets/blue-textures/basecolor.jpg`、`normal.png`、`orm.png`，均为 2048 × 2048。normal 在缩放后重新归一化；ORM 红通道为 255（无烘焙 AO），绿通道为原 roughness，蓝通道为原 metallic。三张图内嵌 GLB，Draco 压缩后的模型为 5,758,428 字节，网页无需外链贴图。
+- 本轮不修改源包里的四张 4K PNG；贴图处理和格式转换不会自动补足原始设计与资产的授权信息。
+- 工具链：Blender 4.5.10 LTS（导入、材质、蒙皮、动画与 glTF 导出）；Python + Pillow（网页贴图处理）；Three.js 0.180.0（网页渲染），详见 [第三方组件与许可声明](../THIRD_PARTY_NOTICES.md)。
+- 可复建脚本、UV、骨骼和限制见 [拆镜三维模型说明](DeepSeek三维模型.md)。本轮离线渲染和构建统计位于 `output/blue-review/`，浏览器证据使用 `output/playwright/blue-*.png`；离线渲染本身不代表网页交互测试通过。
+- 历史版本：此前按三视图脚本建模、程序绘制虹膜与服装贴图的记录保留在 `tools/build-deepseek.py`、`tools/build-deepseek-textures.py`、`pets/textures/` 和 `output/model-review/`。这些旧脚本不再用于构建当前模型，旧统计与截图不代表 Blue 版本。
 
 ### 字体、图标与音效
 
@@ -69,5 +70,6 @@
 - [ ] AI 工具名称、版本、用途和具体作用真实可核验。
 - [ ] 写清 AI 参与环节，以及团队的筛选、改写、测试和整合。
 - [ ] 五张立绘的来源、生成记录和授权范围已确认。
+- [ ] `Blue.rar` 三维网格与四张 PBR 贴图的原作者、来源和使用授权已确认。
 - [ ] 对外录屏和截图不含旧品牌名、私人信息、密钥或未授权素材。
 - [ ] 任何不确定的版权、品牌或人物问题已在提交前咨询主办方。

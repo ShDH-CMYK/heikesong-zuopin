@@ -30,7 +30,7 @@ if (host && stage && lab) {
     const canvas = renderer.domElement;
     canvas.tabIndex = 0;
     canvas.setAttribute('role', 'img');
-    canvas.setAttribute('aria-label', 'DeepSeek 三维角色。拖动旋转，滚轮或双指缩放；方向键旋转，加减号缩放，Home 键复位。');
+    canvas.setAttribute('aria-label', '拆镜三维角色。拖动旋转，滚轮或双指缩放；方向键旋转，加减号缩放，Home 键复位。');
     host.prepend(canvas);
     const scene = new THREE.Scene();
     scene.add(new THREE.HemisphereLight(0xeaf1ff, 0x5b507a, 2.1));
@@ -40,6 +40,9 @@ if (host && stage && lab) {
     const rim = new THREE.DirectionalLight(0x91b9ff, 1.8);
     rim.position.set(-3, 3, -4);
     scene.add(rim);
+    const backFill = new THREE.DirectionalLight(0xeaf1ff, 1.4);
+    backFill.position.set(2, 3, -6);
+    scene.add(backFill);
     const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 100);
     const controls = new OrbitControls(camera, canvas);
     controls.enablePan = false;
@@ -57,6 +60,7 @@ if (host && stage && lab) {
     const touches = new Map();
     let model, mixer, idle, reaction;
     let frame = 0, previousTime = 0, radius = 1, fitDistance = 6;
+    const modelSize = new THREE.Vector3(3.2, 3.2, 3.2);
     let failed = false, inViewport = true, reacting = false, hasFit = false;
     let moved = false, multiTouch = false, clickTimer = 0;
     const reset = document.createElement('button');
@@ -81,7 +85,8 @@ if (host && stage && lab) {
       const halfVertical = THREE.MathUtils.degToRad(camera.fov / 2);
       const halfHorizontal = Math.atan(Math.tan(halfVertical) * camera.aspect);
       const previousFit = fitDistance;
-      fitDistance = radius / Math.sin(Math.min(halfVertical, halfHorizontal)) * 1.12;
+      fitDistance = (Math.max(modelSize.y / (2 * Math.tan(halfVertical)),
+        modelSize.x / (2 * Math.tan(halfHorizontal))) + modelSize.z / 2) * 1.14;
       controls.minDistance = radius * 1.35;
       controls.maxDistance = fitDistance * 2.5;
       camera.near = radius * 0.015;
@@ -238,7 +243,7 @@ if (host && stage && lab) {
     const draco = new DRACOLoader();
     draco.setDecoderPath(new URL('./vendor/three/draco/', import.meta.url).href);
     draco.setWorkerLimit(2);
-    new GLTFLoader().setDRACOLoader(draco).load('pets/deepseek.glb?v=20260912-rigged-v1', (gltf) => {
+    new GLTFLoader().setDRACOLoader(draco).load('pets/deepseek.glb?v=20260912-blue-v1', (gltf) => {
       try {
         model = gltf.scene;
         pivot.add(model);
@@ -249,6 +254,7 @@ if (host && stage && lab) {
         pivot.scale.setScalar(3.2 / height);
         pivot.updateMatrixWorld(true);
         const bounds = new THREE.Box3().setFromObject(pivot);
+        bounds.getSize(modelSize);
         pivot.position.sub(bounds.getCenter(new THREE.Vector3()));
         pivot.updateMatrixWorld(true);
         radius = bounds.getBoundingSphere(new THREE.Sphere()).radius;

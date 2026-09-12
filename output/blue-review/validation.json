@@ -1,0 +1,153 @@
+{
+  "passed": true,
+  "errors": [],
+  "method": "Final compressed GLB metadata plus numeric arrays in supplied decoded companion. Python does not decode Draco. Companion provenance must be established by the external decoder invocation; matching descriptors alone do not prove provenance.",
+  "final": {
+    "path": "pets/deepseek.glb",
+    "bytes": 5758428,
+    "sha256": "762efa52d679281da81dc9e5c73872fd66abfdb9e4d3facd7f0f433439aecb37"
+  },
+  "decodedCompanion": {
+    "path": "output/blue-review/decoded.glb",
+    "bytes": 13850396,
+    "sha256": "28f12afa85194692135cda837d82e22cc25d554e95cff843e4b9dc6675af0612"
+  },
+  "generatedAtUtc": "2026-09-12T08:26:25.835250+00:00",
+  "skinCount": 1,
+  "jointNames": [
+    [
+      "root",
+      "spine",
+      "head",
+      "hair",
+      "tail",
+      "flukes",
+      "arm.L",
+      "forearm.L",
+      "hand.L",
+      "arm.R",
+      "forearm.R",
+      "hand.R",
+      "leg.L",
+      "leg.R"
+    ]
+  ],
+  "weightTolerance": 0.0001,
+  "maximumWeightSumError": 1.0760501027107239e-05,
+  "totals": {
+    "vertices": 140906,
+    "triangles": 179680,
+    "mixedWeightVertices": 84759,
+    "invalidJointVertices": 0,
+    "invalidWeightVertices": 0,
+    "unweightedVertices": 0,
+    "weightSumFailures": 0
+  },
+  "mixedWeightGroups": {
+    "head + spine": 17999,
+    "hair + spine": 18561,
+    "hair + spine + tail": 34,
+    "flukes + hair + spine + tail": 8648,
+    "hair + head + spine": 6203,
+    "hair + head": 1067,
+    "arm.R + forearm.R + hair + spine": 64,
+    "forearm.R + hair + spine": 255,
+    "arm.R + forearm.R + spine": 1418,
+    "arm.R + spine": 567,
+    "arm.R + hair + spine": 24,
+    "arm.R + head + spine": 864,
+    "arm.R + hair + head + spine": 21,
+    "flukes + spine + tail": 3955,
+    "leg.R + spine": 7793,
+    "flukes + leg.R + spine + tail": 74,
+    "leg.L + spine": 7631,
+    "forearm.R + spine": 3332,
+    "forearm.L + spine": 3326,
+    "forearm.L + hair + spine": 283,
+    "arm.L + hair + head + spine": 22,
+    "arm.L + spine": 556,
+    "arm.L + head + spine": 859,
+    "arm.L + forearm.L + hair + spine": 28,
+    "arm.L + hair + spine": 9,
+    "arm.L + forearm.L + spine": 1072,
+    "flukes + leg.L + spine + tail": 94
+  },
+  "meshLocalBounds": {
+    "min": [
+      -1.8122762441635132,
+      1.9341587176313624e-05,
+      -1.561147928237915
+    ],
+    "max": [
+      1.811439871788025,
+      4.699777126312256,
+      1.5608360767364502
+    ],
+    "size": [
+      3.623716115951538,
+      4.6997577847250795,
+      3.1219840049743652
+    ]
+  },
+  "animations": [
+    {
+      "name": "Idle",
+      "durationSeconds": 4.0,
+      "channels": 42,
+      "changingChannels": 6,
+      "targetBones": [
+        "arm.L",
+        "arm.R",
+        "flukes",
+        "forearm.L",
+        "forearm.R",
+        "hair",
+        "hand.L",
+        "hand.R",
+        "head",
+        "leg.L",
+        "leg.R",
+        "root",
+        "spine",
+        "tail"
+      ]
+    },
+    {
+      "name": "React",
+      "durationSeconds": 2.0,
+      "channels": 42,
+      "changingChannels": 8,
+      "targetBones": [
+        "arm.L",
+        "arm.R",
+        "flukes",
+        "forearm.L",
+        "forearm.R",
+        "hair",
+        "hand.L",
+        "hand.R",
+        "head",
+        "leg.L",
+        "leg.R",
+        "root",
+        "spine",
+        "tail"
+      ]
+    }
+  ],
+  "primitives": [
+    {
+      "mesh": "node_0.001",
+      "vertices": 140906,
+      "triangles": 179680,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 84759,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    }
+  ]
+}

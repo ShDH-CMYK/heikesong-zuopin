@@ -1472,6 +1472,8 @@
       el.sceneHome.hidden = true;
       el.sceneLab.hidden = false;
       el.sceneLab.classList.add('is-active');
+      // Start the new scene at its model, including after a scrolled mobile card.
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       el.homeBtn.hidden = false;
       el.labMood.textContent = PETS[state.pet].mood.idle;
       if (!state.count) { el.messages.innerHTML = ''; greet(); }
