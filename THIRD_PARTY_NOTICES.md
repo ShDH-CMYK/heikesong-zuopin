@@ -74,16 +74,19 @@ SOFTWARE.
 网页使用 [Three.js 0.180.0](https://github.com/mrdoob/three.js/tree/r180)（MIT License）。运行必需的发布文件以原始模块形式保存在 `vendor/three/`：
 
 - `build/three.module.js`、`build/three.core.js`；
-- `addons/loaders/GLTFLoader.js`；
+- `addons/loaders/GLTFLoader.js`、`addons/loaders/DRACOLoader.js`；
 - `addons/controls/OrbitControls.js`；
 - `addons/utils/BufferGeometryUtils.js`。
 
 完整版权和许可文本随代码保存在 [`vendor/three/LICENSE`](vendor/three/LICENSE)。重新分发或部署时须保留该文件。运行时从本地同站点加载这些模块，不依赖 unpkg。
 
-## 5. DeepSeek 三维资产制作工具与素材记录
+## 5. 拆镜三维资产制作工具与素材记录（内部资源名 deepseek）
 
-`tools/build-deepseek.py` 由 AI 辅助编写，使用 Blender 4.5 LTS 的 Python API 建立网格、材质、UV、骨骼、权重及动画，再通过 Blender 自带 glTF 导出器生成 `pets/deepseek.glb`。`tools/build-deepseek-textures.py` 使用 Pillow 绘制四张基色贴图。
+当前拆镜网格、UV 及 PBR 贴图来自用户提供的 `Blue.rar`。压缩包包含一个 OBJ、一个 MTL 与四张 4K PNG，未附带可确认的作者、生成工具或许可证说明；这些来源与授权范围由团队补充，不应将本仓库中的工具许可证视作该角色资产的许可证。
+
+`tools/build-deepseek-blue.py` 由 AI 辅助编写，使用 Blender 4.5 LTS 的 Python API 导入用户实体资产、整理朝向与材质、生成网页简化副本、添加骨骼、权重和小幅动画，再通过 Blender 自带 glTF 导出器生成 `pets/deepseek.glb`。`tools/prepare-blue-textures.py` 使用 Pillow 缩放用户原贴图、重新归一化法线并打包 roughness / metallic 通道。源 `.blend` 保留原始网格与 4K 贴图，网页使用三张 2K 内嵌贴图。本轮资产整理不记作从零创作该角色网格或贴图。
 
 - [Blender](https://www.blender.org/about/license/)：GNU GPL，作为制作工具使用，不随网页分发程序。
-- [Pillow](https://pillow.readthedocs.io/en/stable/about.html#license)：HPND，作为贴图生成工具使用，不随网页分发库。
-- 团队提供的三视图、角色设计与原立绘的出处和授权情况见 [AI 使用与素材记录](docs/AI使用与素材记录.md)。模型由程序重建，贴图由曲线和栅格绘制；工具许可证不等同于参考设计的授权。
+- [Pillow](https://pillow.readthedocs.io/en/stable/about.html#license)：HPND，作为贴图处理工具使用，不随网页分发库。
+- `Blue.rar` 三维资产、团队提供的三视图、角色设计与原立绘的出处和授权情况见 [AI 使用与素材记录](docs/AI使用与素材记录.md)。
+- 旧 `tools/build-deepseek.py`、`tools/build-deepseek-textures.py` 和 `pets/textures/` 记录上一轮按参考图进行脚本建模与程序绘图的过程；当前网页模型已经切换为 Blue 资产的整理与绑定版本。
