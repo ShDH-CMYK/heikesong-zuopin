@@ -61,9 +61,9 @@ git switch -c feat/your-task
 
 ## 部署（在线演示）
 
-本轮用户指定的主入口是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>。将完成检查的提交同步到 `main` 后，检查 GitHub Pages 的实际部署状态及在线资源版本；推送成功不等于页面已经更新。核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证选择 DeepSeek、旋转、缩放、点击动作和返回其他角色的流程。
+当前主入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目 `subtext`，生产域名 `subtext-8up.pages.dev`，2026-09-12 已与 `main` 同步并在线验证）。备用镜像是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>，随 `main` 自动构建；推送成功不等于页面已经更新，要核对线上资源版本。部署后核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证选择拆镜、旋转、缩放、点击动作和返回其他角色的流程。
 
-历史 Cloudflare Pages 项目仍为 `subtext`，自定义域名 <https://subtext.tryworld.com.cn/>，生产域名 `subtext-8up.pages.dev`。本轮未同步该站点，因此不能默认与 GitHub Pages 相同。如果后续安排同步，使用仓库外的**新暂存目录**复制必要静态文件，并包含 `vendor/three/` 与回复表情所在的 `assets/`：
+部署使用仓库外的**新暂存目录**复制必要静态文件，必须包含 `vendor/three/` 与回复表情所在的 `assets/`：
 
 ```powershell
 $stageDir = Join-Path (Split-Path -Parent (Get-Location).Path) ('.deploy/subtext-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))

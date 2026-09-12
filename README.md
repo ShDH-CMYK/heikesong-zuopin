@@ -12,9 +12,9 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
 ## 当前版本
 
-核心流程使用本地词库，无需 API Key。当前演示主入口是 [GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/)。拆镜使用可旋转、缩放并播放骨骼动作的三维角色；其余四只宠物继续使用立绘。
+核心流程使用本地词库，无需 API Key。当前演示主入口是 [subtext.tryworld.com.cn](https://subtext.tryworld.com.cn/)（Cloudflare Pages，已与 `main` 同步）；备用镜像是 [GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/)，随 `main` 自动构建。拆镜使用可旋转、缩放并播放骨骼动作的三维角色；其余四只宠物继续使用立绘。
 
-网页采用静态部署，Three.js 0.180.0 及模型、贴图均随站点提供。用本地 HTTP 服务打开完整副本时，交互和三维角色可在断开互联网后使用；Google Fonts 不可用时回退系统字体。历史 Cloudflare 地址 [subtext.tryworld.com.cn](https://subtext.tryworld.com.cn/) 本轮尚未同步，不能据该地址判断本次模型是否更新。
+网页采用静态部署，Three.js 0.180.0 及模型、贴图均随站点提供。用本地 HTTP 服务打开完整副本时，交互和三维角色可在断开互联网后使用；Google Fonts 不可用时回退系统字体。
 
 ## 演示流程
 
