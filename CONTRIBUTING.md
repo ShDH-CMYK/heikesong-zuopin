@@ -44,6 +44,15 @@ git switch -c feat/your-task
 
 由另一位成员检查后合并；如果暂时只有一人可处理，至少自行检查文件差异和验证结果。`main` 尽量保持可使用，已有代码后应在合并前按项目运行说明验证核心流程。
 
+改动 `game.js`、`styles.css`、`index.html` 或 `model3d.js` 后，先起本地服务再跑核心链路回归：
+
+```powershell
+python -m http.server 8890 --bind 127.0.0.1
+python tools/regression.py http://127.0.0.1:8890/index.html
+```
+
+脚本用 Playwright 走一遍选宠物、提问、内心 OS、通敌、对质、清空与窄屏布局，输出每项 PASS/FAIL，全部通过时退出码为 0。需要本机已安装 `playwright` 与 Chromium。
+
 若远程有新提交，先拉取并检查差异。遇到冲突保留双方工作、逐项协调，不使用强制推送覆盖他人提交。依赖锁文件应随依赖修改一同提交。
 
 ## 配置与记录
