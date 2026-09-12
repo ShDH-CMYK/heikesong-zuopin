@@ -777,3 +777,4 @@ h1,h2,h3,p{ margin:0; }
 }
 .stage__model-3d{display:none;position:absolute;inset:0;z-index:3;touch-action:none;cursor:grab}.stage__model-3d canvas{width:100%;height:100%;display:block}.stage__model-3d:active{cursor:grabbing}.stage__pet--3d .stage__model,.stage__pet--3d>img{display:none}.stage__pet--3d .stage__model-3d{display:block}
 
+.stage__model-3d.is-fallback{display:none}.stage__pet--3d.is-fallback .stage__model{display:block}

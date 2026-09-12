@@ -1254,7 +1254,7 @@
 
     el.pokeBtn.addEventListener('click', function () { poke(); });
     el.labPet.addEventListener('click', function () { poke(); });
-    bindModel3d();
+    // 3D 角色由 model3d.js 接管交互，避免旧图片旋转监听抢占指针。
 
     el.stagePet.addEventListener('pointerenter', function () {
       el.labMood.textContent = PETS[state.pet].mood.hover;
