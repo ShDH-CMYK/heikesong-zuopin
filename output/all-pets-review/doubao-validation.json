@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "errors": [],
+  "asset": {
+    "path": "C:/Users/sj/blue-publish-20260913/pets/doubao.glb",
+    "bytes": 815088,
+    "sha256": "91a0d88ef6aa830824f59b33e2aac77b2b0dc3cc615cdd99a2753583d22cd0b8"
+  },
+  "triangles": 18588,
+  "vertices": 12855,
+  "unweightedVertices": 0,
+  "invalidWeightsOrJoints": 0,
+  "bones": 7,
+  "animations": [
+    {
+      "name": "Idle",
+      "durationSeconds": 4.0,
+      "changingChannels": 4
+    },
+    {
+      "name": "React",
+      "durationSeconds": 2.0,
+      "changingChannels": 6
+    }
+  ],
+  "binding": "Rigid toy parts intentionally use single-bone weights; no tail/forearm blend requirement."
+}

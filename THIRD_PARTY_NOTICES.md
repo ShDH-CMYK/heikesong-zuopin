@@ -90,3 +90,7 @@ SOFTWARE.
 - [Pillow](https://pillow.readthedocs.io/en/stable/about.html#license)：HPND，作为贴图处理工具使用，不随网页分发库。
 - `Blue.rar` 三维资产、团队提供的三视图、角色设计与原立绘的出处和授权情况见 [AI 使用与素材记录](docs/AI使用与素材记录.md)。
 - 旧 `tools/build-deepseek.py`、`tools/build-deepseek-textures.py` 和 `pets/textures/` 记录上一轮按参考图进行脚本建模与程序绘图的过程；当前网页模型已经切换为 Blue 资产的整理与绑定版本。
+
+## 6. 四个新增三维角色
+
+`pets/doubao.glb`、`pets/workbuddy.glb`、`pets/codex.glb`、`pets/yuanbao.glb` 是本轮由 Codex 辅助编写 Blender Python、参考仓库现有四张角色立绘制作的程序式实体几何。造型包含推定的背面和分件动画，未引入外部网格库或第三方动作库。制作工具为 Blender 4.5 LTS；对应脚本、源工程与事实限制见 [五角色三维交互](docs/五角色三维交互.md)。原立绘及设计来源仍由团队按 [素材记录](docs/AI使用与素材记录.md) 补齐；Blender 或 Three.js 的许可证不能替代参考素材的授权。

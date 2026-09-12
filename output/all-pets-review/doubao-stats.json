@@ -1,0 +1,13 @@
+{
+  "id": "doubao",
+  "triangles": 18588,
+  "vertices": 9488,
+  "meshes": 9,
+  "bones": 7,
+  "glbBytes": 815088,
+  "animations": {
+    "Idle": 4,
+    "React": 2
+  },
+  "method": "Stylized solid-mesh reconstruction from supplied front portrait; unseen sides inferred; simple rigid part weights; no texture projection"
+}

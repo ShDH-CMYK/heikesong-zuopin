@@ -1,0 +1,1511 @@
+{
+  "generatedAt": "2026-09-12T16:50:25.399Z",
+  "method": "Khronos glTF Validator plus glTF-Transform decoded accessor audit",
+  "limitations": "Technical asset checks do not certify visual likeness, seam quality or animation intersections.",
+  "models": [
+    {
+      "id": "doubao",
+      "file": "pets/doubao.glb",
+      "bytes": 815088,
+      "sha256": "91a0d88ef6aa830824f59b33e2aac77b2b0dc3cc615cdd99a2753583d22cd0b8",
+      "headerValid": true,
+      "externalURIs": [],
+      "generator": "Khronos glTF Blender I/O v4.5.51",
+      "extensions": [],
+      "khronos": {
+        "version": "2.0.0-dev.3.10",
+        "numErrors": 0,
+        "numWarnings": 9,
+        "numInfos": 9,
+        "numHints": 0,
+        "messages": [
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/1/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/2/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/3/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/4/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/5/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/6/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/7/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/8/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/7"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/8"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/9"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/10"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/11"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/12"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/13"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/14"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/15"
+          }
+        ],
+        "truncated": false
+      },
+      "geometry": {
+        "triangles": 18588,
+        "vertices": 12855,
+        "primitives": 9,
+        "meshes": 9,
+        "bounds": {
+          "min": [
+            -1.2699999809265137,
+            0,
+            -0.6999994516372681
+          ],
+          "max": [
+            0.8632996082305908,
+            3.3899998664855957,
+            0.5960000157356262
+          ],
+          "size": [
+            2.1332995891571045,
+            3.3899998664855957,
+            1.2959994673728943
+          ]
+        },
+        "primitivesWithUV": 9,
+        "missingTextureUV": 0,
+        "invalidUVs": 0,
+        "invalidNormals": 0
+      },
+      "skin": {
+        "skins": 1,
+        "joints": [
+          [
+            "root",
+            "body",
+            "head",
+            "halo",
+            "arm.L",
+            "arm.R",
+            "scarf"
+          ]
+        ],
+        "primitivesWithSkin": 9,
+        "skinVertices": 12855,
+        "mixedVertices": 0,
+        "invalidWeights": 0,
+        "invalidJoints": 0,
+        "maxWeightSumError": 0,
+        "activeJoints": [
+          "head",
+          "body",
+          "arm.L",
+          "arm.R",
+          "scarf"
+        ]
+      },
+      "materials": [
+        {
+          "name": "Ink brown hair",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Hair soft edge",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Peach cheeks",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Chocolate eyes",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Eye glints",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Warm porcelain skin",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Scarlet trim",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Vermilion scarf",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Ivory wool",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        }
+      ],
+      "textures": [],
+      "animations": [
+        {
+          "name": "Idle",
+          "durationSeconds": 4,
+          "channels": 21,
+          "changedChannels": 4,
+          "targetCounts": {
+            "translation": 7,
+            "rotation": 7,
+            "scale": 7
+          }
+        },
+        {
+          "name": "React",
+          "durationSeconds": 2,
+          "channels": 21,
+          "changedChannels": 6,
+          "targetCounts": {
+            "translation": 7,
+            "rotation": 7,
+            "scale": 7
+          }
+        }
+      ],
+      "requiredAnimations": true,
+      "nodeBounds": [
+        {
+          "name": "Bob back",
+          "min": [
+            -0.7800000905990601,
+            1.8399999141693115,
+            -0.6999994516372681
+          ],
+          "max": [
+            0.7799999713897705,
+            3.3899998664855957,
+            0.5149999856948853
+          ]
+        },
+        {
+          "name": "Bob edge",
+          "min": [
+            -0.7454822659492493,
+            2.0289041996002197,
+            0.005788743495941162
+          ],
+          "max": [
+            0.7454822659492493,
+            3.0494322776794434,
+            0.25430619716644287
+          ]
+        },
+        {
+          "name": "Cheek",
+          "min": [
+            -0.42399999499320984,
+            2.3940000534057617,
+            0.5069999694824219
+          ],
+          "max": [
+            0.42399999499320984,
+            2.4660000801086426,
+            0.5429999828338623
+          ]
+        },
+        {
+          "name": "Eye",
+          "min": [
+            -0.26500001549720764,
+            2.3620119094848633,
+            0.515999972820282
+          ],
+          "max": [
+            0.26500001549720764,
+            2.6357998847961426,
+            0.591988205909729
+          ]
+        },
+        {
+          "name": "Eye sparkle",
+          "min": [
+            -0.25200000405311584,
+            2.5820000171661377,
+            0.578000009059906
+          ],
+          "max": [
+            0.2240000069141388,
+            2.628000020980835,
+            0.5960000157356262
+          ]
+        },
+        {
+          "name": "Leg",
+          "min": [
+            -0.8299999237060547,
+            0.12000000476837158,
+            -0.4249994158744812
+          ],
+          "max": [
+            0.8299999237060547,
+            3.240000009536743,
+            0.5549997091293335
+          ]
+        },
+        {
+          "name": "Pleated red skirt",
+          "min": [
+            -1.2699999809265137,
+            0.5400000214576721,
+            -0.3851984441280365
+          ],
+          "max": [
+            0.8632996082305908,
+            2.0395283699035645,
+            0.4375
+          ]
+        },
+        {
+          "name": "Red boot",
+          "min": [
+            -1.173835039138794,
+            0,
+            -0.3700000047683716
+          ],
+          "max": [
+            0.47999995946884155,
+            2.0799999237060547,
+            0.44898882508277893
+          ]
+        },
+        {
+          "name": "Wool sock",
+          "min": [
+            -0.7902092933654785,
+            0.09999999403953552,
+            -0.3700000047683716
+          ],
+          "max": [
+            0.7902092933654785,
+            1.8192355632781982,
+            0.3700000047683716
+          ]
+        }
+      ],
+      "passed": true,
+      "performanceNotes": []
+    },
+    {
+      "id": "deepseek",
+      "file": "pets/deepseek.glb",
+      "bytes": 5758428,
+      "sha256": "762efa52d679281da81dc9e5c73872fd66abfdb9e4d3facd7f0f433439aecb37",
+      "headerValid": true,
+      "externalURIs": [],
+      "generator": "Khronos glTF Blender I/O v4.5.51",
+      "extensions": [
+        "KHR_draco_mesh_compression"
+      ],
+      "khronos": {
+        "version": "2.0.0-dev.3.10",
+        "numErrors": 0,
+        "numWarnings": 2,
+        "numInfos": 2,
+        "numHints": 0,
+        "messages": [
+          {
+            "code": "UNSUPPORTED_EXTENSION",
+            "message": "Cannot validate an extension as it is not supported by the validator: 'KHR_draco_mesh_compression'.",
+            "severity": 2,
+            "pointer": "/extensionsUsed/0"
+          },
+          {
+            "code": "MESH_PRIMITIVE_GENERATED_TANGENT_SPACE",
+            "message": "Material requires a tangent space but the mesh primitive does not provide it. Runtime-generated tangent space may be non-portable across implementations.",
+            "severity": 1,
+            "pointer": "/meshes/0/primitives/0/material"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/14"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/0"
+          }
+        ],
+        "truncated": false
+      },
+      "geometry": {
+        "triangles": 179680,
+        "vertices": 140906,
+        "primitives": 1,
+        "meshes": 1,
+        "bounds": {
+          "min": [
+            -1.8122762441635132,
+            1.9341587176313624e-05,
+            -1.561147928237915
+          ],
+          "max": [
+            1.811439871788025,
+            4.699777126312256,
+            1.5608360767364502
+          ],
+          "size": [
+            3.623716115951538,
+            4.6997577847250795,
+            3.1219840049743652
+          ]
+        },
+        "primitivesWithUV": 1,
+        "missingTextureUV": 0,
+        "invalidUVs": 0,
+        "invalidNormals": 0
+      },
+      "skin": {
+        "skins": 1,
+        "joints": [
+          [
+            "root",
+            "spine",
+            "head",
+            "hair",
+            "tail",
+            "flukes",
+            "arm.L",
+            "forearm.L",
+            "hand.L",
+            "arm.R",
+            "forearm.R",
+            "hand.R",
+            "leg.L",
+            "leg.R"
+          ]
+        ],
+        "primitivesWithSkin": 1,
+        "skinVertices": 140906,
+        "mixedVertices": 84754,
+        "invalidWeights": 0,
+        "invalidJoints": 0,
+        "maxWeightSumError": 1.0760501027107239e-05,
+        "activeJoints": [
+          "head",
+          "spine",
+          "hair",
+          "tail",
+          "flukes",
+          "forearm.R",
+          "arm.R",
+          "leg.R",
+          "leg.L",
+          "forearm.L",
+          "arm.L"
+        ]
+      },
+      "materials": [
+        {
+          "name": "Blue | web 2K PBR",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": "basecolor"
+        }
+      ],
+      "textures": [
+        {
+          "name": "normal",
+          "mimeType": "image/png",
+          "bytes": 1796116,
+          "size": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "name": "basecolor",
+          "mimeType": "image/jpeg",
+          "bytes": 968528,
+          "size": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "name": "orm",
+          "mimeType": "image/png",
+          "bytes": 1567321,
+          "size": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "animations": [
+        {
+          "name": "Idle",
+          "durationSeconds": 4,
+          "channels": 42,
+          "changedChannels": 5,
+          "targetCounts": {
+            "translation": 14,
+            "rotation": 14,
+            "scale": 14
+          }
+        },
+        {
+          "name": "React",
+          "durationSeconds": 2,
+          "channels": 42,
+          "changedChannels": 7,
+          "targetCounts": {
+            "translation": 14,
+            "rotation": 14,
+            "scale": 14
+          }
+        }
+      ],
+      "requiredAnimations": true,
+      "nodeBounds": [
+        {
+          "name": "DeepSeek | Blue web mesh",
+          "min": [
+            -1.8122762441635132,
+            1.9341587176313624e-05,
+            -1.561147928237915
+          ],
+          "max": [
+            1.811439871788025,
+            4.699777126312256,
+            1.5608360767364502
+          ]
+        }
+      ],
+      "passed": true,
+      "performanceNotes": [
+        "More than 150k triangles; reduce hidden geometry or add a mobile LOD after visual review."
+      ]
+    },
+    {
+      "id": "workbuddy",
+      "file": "pets/workbuddy.glb",
+      "bytes": 105252,
+      "sha256": "c896e36e2b8a969f91141a43ebdfc3cb8a062b1c75bf047d41996e1762e9cd74",
+      "headerValid": true,
+      "externalURIs": [],
+      "generator": "Khronos glTF Blender I/O v4.5.51",
+      "extensions": [
+        "KHR_draco_mesh_compression"
+      ],
+      "khronos": {
+        "version": "2.0.0-dev.3.10",
+        "numErrors": 0,
+        "numWarnings": 1,
+        "numInfos": 17,
+        "numHints": 0,
+        "messages": [
+          {
+            "code": "UNSUPPORTED_EXTENSION",
+            "message": "Cannot validate an extension as it is not supported by the validator: 'KHR_draco_mesh_compression'.",
+            "severity": 2,
+            "pointer": "/extensionsUsed/0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/1/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/2/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/3/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/4/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/5/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/6/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/7/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/9"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/1"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/2"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/3"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/4"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/5"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/6"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/7"
+          }
+        ],
+        "truncated": false
+      },
+      "geometry": {
+        "triangles": 16352,
+        "vertices": 10459,
+        "primitives": 8,
+        "meshes": 1,
+        "bounds": {
+          "min": [
+            -1.13100004196167,
+            0,
+            -0.6075000166893005
+          ],
+          "max": [
+            1.130995750427246,
+            3.984999656677246,
+            0.7989829778671265
+          ],
+          "size": [
+            2.261995792388916,
+            3.984999656677246,
+            1.406482994556427
+          ]
+        },
+        "primitivesWithUV": 8,
+        "missingTextureUV": 0,
+        "invalidUVs": 0,
+        "invalidNormals": 0
+      },
+      "skin": {
+        "skins": 1,
+        "joints": [
+          [
+            "root",
+            "body",
+            "head",
+            "arm.L",
+            "forearm.L",
+            "arm.R",
+            "forearm.R",
+            "leg.L",
+            "leg.R"
+          ]
+        ],
+        "primitivesWithSkin": 8,
+        "skinVertices": 10459,
+        "mixedVertices": 0,
+        "invalidWeights": 0,
+        "invalidJoints": 0,
+        "maxWeightSumError": 0,
+        "activeJoints": [
+          "leg.R",
+          "forearm.R",
+          "arm.R",
+          "leg.L",
+          "forearm.L",
+          "arm.L",
+          "head",
+          "body"
+        ]
+      },
+      "materials": [
+        {
+          "name": "mint enamel",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "mint highlights",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "petrol recess",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "warm ivory",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "eye slate",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "eye shine",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "amber warning",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "screw chrome",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        }
+      ],
+      "textures": [],
+      "animations": [
+        {
+          "name": "Idle",
+          "durationSeconds": 4,
+          "channels": 27,
+          "changedChannels": 3,
+          "targetCounts": {
+            "translation": 9,
+            "rotation": 9,
+            "scale": 9
+          }
+        },
+        {
+          "name": "React",
+          "durationSeconds": 2,
+          "channels": 27,
+          "changedChannels": 4,
+          "targetCounts": {
+            "translation": 9,
+            "rotation": 9,
+            "scale": 9
+          }
+        }
+      ],
+      "requiredAnimations": true,
+      "nodeBounds": [
+        {
+          "name": "workbuddy_MechanicalMesh",
+          "min": [
+            -1.13100004196167,
+            0,
+            -0.6075000166893005
+          ],
+          "max": [
+            1.130995750427246,
+            3.984999656677246,
+            0.7989829778671265
+          ]
+        }
+      ],
+      "passed": true,
+      "performanceNotes": []
+    },
+    {
+      "id": "codex",
+      "file": "pets/codex.glb",
+      "bytes": 128452,
+      "sha256": "ba5ba67f67fb1cae5418158abfde346c38eff3b0742ce65a9d1335db87085a57",
+      "headerValid": true,
+      "externalURIs": [],
+      "generator": "Khronos glTF Blender I/O v4.5.51",
+      "extensions": [
+        "KHR_draco_mesh_compression",
+        "KHR_materials_emissive_strength"
+      ],
+      "khronos": {
+        "version": "2.0.0-dev.3.10",
+        "numErrors": 0,
+        "numWarnings": 1,
+        "numInfos": 21,
+        "numHints": 0,
+        "messages": [
+          {
+            "code": "UNSUPPORTED_EXTENSION",
+            "message": "Cannot validate an extension as it is not supported by the validator: 'KHR_draco_mesh_compression'.",
+            "severity": 2,
+            "pointer": "/extensionsUsed/0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/1/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/2/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/3/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/4/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/5/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/6/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/7/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/8/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/9/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/9"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/1"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/2"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/3"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/4"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/5"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/6"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/7"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/8"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/bufferViews/9"
+          }
+        ],
+        "truncated": false
+      },
+      "geometry": {
+        "triangles": 22476,
+        "vertices": 15657,
+        "primitives": 10,
+        "meshes": 1,
+        "bounds": {
+          "min": [
+            -1.128015398979187,
+            0,
+            -0.7099999785423279
+          ],
+          "max": [
+            1.1168291568756104,
+            3.884999990463257,
+            0.7350000739097595
+          ],
+          "size": [
+            2.2448445558547974,
+            3.884999990463257,
+            1.4450000524520874
+          ]
+        },
+        "primitivesWithUV": 10,
+        "missingTextureUV": 0,
+        "invalidUVs": 0,
+        "invalidNormals": 0
+      },
+      "skin": {
+        "skins": 1,
+        "joints": [
+          [
+            "root",
+            "body",
+            "head",
+            "arm.L",
+            "forearm.L",
+            "arm.R",
+            "forearm.R",
+            "leg.L",
+            "leg.R"
+          ]
+        ],
+        "primitivesWithSkin": 10,
+        "skinVertices": 15657,
+        "mixedVertices": 0,
+        "invalidWeights": 0,
+        "invalidJoints": 0,
+        "maxWeightSumError": 0,
+        "activeJoints": [
+          "leg.R",
+          "forearm.R",
+          "leg.L",
+          "forearm.L",
+          "head",
+          "body",
+          "arm.R",
+          "arm.L"
+        ]
+      },
+      "materials": [
+        {
+          "name": "violet enamel",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "indigo casing",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "orchid trim",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "cobalt trim",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "screen violet",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "pixel glow",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "vent graphite",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "screen glass",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "cyan diode",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "screw chrome",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        }
+      ],
+      "textures": [],
+      "animations": [
+        {
+          "name": "Idle",
+          "durationSeconds": 4,
+          "channels": 27,
+          "changedChannels": 3,
+          "targetCounts": {
+            "translation": 9,
+            "rotation": 9,
+            "scale": 9
+          }
+        },
+        {
+          "name": "React",
+          "durationSeconds": 2,
+          "channels": 27,
+          "changedChannels": 4,
+          "targetCounts": {
+            "translation": 9,
+            "rotation": 9,
+            "scale": 9
+          }
+        }
+      ],
+      "requiredAnimations": true,
+      "nodeBounds": [
+        {
+          "name": "codex_MechanicalMesh",
+          "min": [
+            -1.128015398979187,
+            0,
+            -0.7099999785423279
+          ],
+          "max": [
+            1.1168291568756104,
+            3.884999990463257,
+            0.7350000739097595
+          ]
+        }
+      ],
+      "passed": true,
+      "performanceNotes": []
+    },
+    {
+      "id": "yuanbao",
+      "file": "pets/yuanbao.glb",
+      "bytes": 649316,
+      "sha256": "f4999dc7c86af481af1280997674dbbfe41afedd762ffa70f7f25c372c633ffb",
+      "headerValid": true,
+      "externalURIs": [],
+      "generator": "Khronos glTF Blender I/O v4.5.51",
+      "extensions": [],
+      "khronos": {
+        "version": "2.0.0-dev.3.10",
+        "numErrors": 0,
+        "numWarnings": 7,
+        "numInfos": 7,
+        "numHints": 0,
+        "messages": [
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/0/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/1/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/2/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/3/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/4/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/5/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "UNUSED_OBJECT",
+            "message": "This object may be unused.",
+            "severity": 2,
+            "pointer": "/meshes/6/primitives/0/attributes/TEXCOORD_0"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/7"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/8"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/9"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/10"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/11"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/12"
+          },
+          {
+            "code": "NODE_SKINNED_MESH_NON_ROOT",
+            "message": "Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh.",
+            "severity": 1,
+            "pointer": "/nodes/13"
+          }
+        ],
+        "truncated": false
+      },
+      "geometry": {
+        "triangles": 13220,
+        "vertices": 10335,
+        "primitives": 7,
+        "meshes": 7,
+        "bounds": {
+          "min": [
+            -1.3524121046066284,
+            0,
+            -0.5899999737739563
+          ],
+          "max": [
+            1.3524121046066284,
+            3.4928252696990967,
+            0.8130000233650208
+          ],
+          "size": [
+            2.704824209213257,
+            3.4928252696990967,
+            1.402999997138977
+          ]
+        },
+        "primitivesWithUV": 7,
+        "missingTextureUV": 0,
+        "invalidUVs": 0,
+        "invalidNormals": 0
+      },
+      "skin": {
+        "skins": 1,
+        "joints": [
+          [
+            "root",
+            "body",
+            "head",
+            "halo",
+            "arm.L",
+            "arm.R",
+            "scarf"
+          ]
+        ],
+        "primitivesWithSkin": 7,
+        "skinVertices": 10335,
+        "mixedVertices": 0,
+        "invalidWeights": 0,
+        "invalidJoints": 0,
+        "maxWeightSumError": 0,
+        "activeJoints": [
+          "head",
+          "body",
+          "arm.L",
+          "arm.R",
+          "halo"
+        ]
+      },
+      "materials": [
+        {
+          "name": "Peach cheeks",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Golden cream face",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Eye glints",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Chocolate eyes",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Amber seams",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Gold edge",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        },
+        {
+          "name": "Warm polished gold",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColorTexture": null
+        }
+      ],
+      "textures": [],
+      "animations": [
+        {
+          "name": "Idle",
+          "durationSeconds": 4,
+          "channels": 21,
+          "changedChannels": 4,
+          "targetCounts": {
+            "translation": 7,
+            "rotation": 7,
+            "scale": 7
+          }
+        },
+        {
+          "name": "React",
+          "durationSeconds": 2,
+          "channels": 21,
+          "changedChannels": 6,
+          "targetCounts": {
+            "translation": 7,
+            "rotation": 7,
+            "scale": 7
+          }
+        }
+      ],
+      "requiredAnimations": true,
+      "nodeBounds": [
+        {
+          "name": "Cheek.001",
+          "min": [
+            -0.48899999260902405,
+            2.253999948501587,
+            0.7239999771118164
+          ],
+          "max": [
+            0.48899999260902405,
+            2.3259999752044678,
+            0.7599999904632568
+          ]
+        },
+        {
+          "name": "Cream round face",
+          "min": [
+            -0.7019993662834167,
+            1.9129998683929443,
+            0.5110001564025879
+          ],
+          "max": [
+            0.7019997835159302,
+            2.806999921798706,
+            0.7709999084472656
+          ]
+        },
+        {
+          "name": "Eye sparkle.001",
+          "min": [
+            -0.31700000166893005,
+            2.441999912261963,
+            0.7950000166893005
+          ],
+          "max": [
+            0.289000004529953,
+            2.48799991607666,
+            0.8130000233650208
+          ]
+        },
+        {
+          "name": "Eye.001",
+          "min": [
+            -0.3680000305175781,
+            2.2220118045806885,
+            0.7329999804496765
+          ],
+          "max": [
+            0.36800000071525574,
+            2.5429201126098633,
+            0.8089882135391235
+          ]
+        },
+        {
+          "name": "Face gold rim",
+          "min": [
+            -0.7499997019767761,
+            1.869999885559082,
+            0.44700002670288086
+          ],
+          "max": [
+            0.7499998807907104,
+            2.8499999046325684,
+            0.6869999170303345
+          ]
+        },
+        {
+          "name": "Gold foot",
+          "min": [
+            -1.222217321395874,
+            0,
+            -0.5149999856948853
+          ],
+          "max": [
+            1.222217321395874,
+            3.4928252696990967,
+            0.5659983158111572
+          ]
+        },
+        {
+          "name": "Gold leg",
+          "min": [
+            -1.3524121046066284,
+            0.030000001192092896,
+            -0.5899999737739563
+          ],
+          "max": [
+            1.3524121046066284,
+            3.110276699066162,
+            0.5899999737739563
+          ]
+        }
+      ],
+      "passed": true,
+      "performanceNotes": []
+    }
+  ],
+  "passed": true
+}

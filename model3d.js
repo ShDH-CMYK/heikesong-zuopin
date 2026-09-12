@@ -8,12 +8,21 @@ if (host && stage && lab) {
   status.setAttribute('role', 'status');
   status.textContent = '正在准备 3D 角色…';
   host.appendChild(status);
+  const retry = document.createElement('button');
+  retry.type = 'button';
+  retry.className = 'stage__3d-retry';
+  retry.textContent = '重试 3D';
+  retry.hidden = true;
+  let retryModel;
+  retry.addEventListener('click', () => retryModel ? retryModel() : location.reload());
+  host.appendChild(retry);
   const fallback = (error) => {
     stage.classList.remove('is-model-ready');
     host.classList.remove('is-ready');
     host.dataset.state = 'fallback';
+    retry.hidden = false;
     status.textContent = '已显示角色立绘 · 3D 暂时不可用';
-    console.warn('DeepSeek 3D unavailable:', error);
+    console.warn('Pet 3D unavailable:', error);
   };
   // Dynamic imports catch dependency/network failure; no CDN is required.
   Promise.all([
@@ -30,7 +39,8 @@ if (host && stage && lab) {
     const canvas = renderer.domElement;
     canvas.tabIndex = 0;
     canvas.setAttribute('role', 'img');
-    canvas.setAttribute('aria-label', '拆镜三维角色。拖动旋转，滚轮或双指缩放；方向键旋转，加减号缩放，Home 键复位。');
+    const controlHint = '拖动旋转，滚轮或双指缩放；方向键旋转，加减号缩放，Home 键复位。';
+    canvas.setAttribute('aria-label', '宠物三维角色。' + controlHint);
     host.prepend(canvas);
     const scene = new THREE.Scene();
     scene.add(new THREE.HemisphereLight(0xeaf1ff, 0x5b507a, 2.1));
@@ -59,6 +69,16 @@ if (host && stage && lab) {
     const raycaster = new THREE.Raycaster();
     const touches = new Map();
     let model, mixer, idle, reaction;
+    let selectedId = '', selection = 0, contextLost = false;
+    const assets = {
+      doubao: 'pets/doubao.glb?v=20260913-all-pets-v2',
+      deepseek: 'pets/deepseek.glb?v=20260913-all-pets-v2',
+      workbuddy: 'pets/workbuddy.glb?v=20260913-all-pets-v2',
+      codex: 'pets/codex.glb?v=20260913-all-pets-v2',
+      yuanbao: 'pets/yuanbao.glb?v=20260913-all-pets-v2'
+    };
+    // One renderer; at most five lazily loaded assets, shared across switches.
+    const loaded = new Map();
     let frame = 0, previousTime = 0, radius = 1, fitDistance = 6;
     const modelSize = new THREE.Vector3(3.2, 3.2, 3.2);
     let failed = false, inViewport = true, reacting = false, hasFit = false;
@@ -71,7 +91,7 @@ if (host && stage && lab) {
     host.appendChild(reset);
 
     function active() {
-      return !failed && model && !document.hidden && !lab.hidden &&
+      return !failed && !contextLost && model && !document.hidden && !lab.hidden &&
         stage.classList.contains('stage__pet--3d') && inViewport;
     }
     function requestFrame() {
@@ -125,6 +145,7 @@ if (host && stage && lab) {
         // First successful render is the only gate hiding the portrait.
         if (!stage.classList.contains('is-model-ready')) {
           host.dataset.state = 'ready';
+          retry.hidden = true;
           host.classList.add('is-ready');
           stage.classList.add('is-model-ready');
           status.textContent = '拖动旋转 · 滚轮/双指缩放 · 点击互动';
@@ -151,6 +172,7 @@ if (host && stage && lab) {
     function playReaction(event) {
       if (!active() || !reaction || (motion.matches && !event.detail?.userInitiated)) return;
       reacting = true;
+      host.dataset.action = 'React';
       reaction.reset().setEffectiveTimeScale(1).setEffectiveWeight(1).fadeIn(0.12).play();
       if (idle) idle.fadeOut(0.12);
       requestFrame();
@@ -161,7 +183,10 @@ if (host && stage && lab) {
     controls.addEventListener('end', () => { host.classList.remove('is-dragging'); requestFrame(); });
     new ResizeObserver(() => fit()).observe(host);
     new MutationObserver(visibilityChanged).observe(stage, { attributes: true, attributeFilter: ['class'] });
-    new MutationObserver(visibilityChanged).observe(lab, { attributes: true, attributeFilter: ['hidden'] });
+    new MutationObserver(() => {
+      if (!lab.hidden) selectModel();
+      visibilityChanged();
+    }).observe(lab, { attributes: true, attributeFilter: ['hidden'] });
     new IntersectionObserver(([entry]) => {
       inViewport = entry.isIntersecting;
       visibilityChanged();
@@ -174,12 +199,15 @@ if (host && stage && lab) {
     });
     canvas.addEventListener('webglcontextlost', (event) => {
       event.preventDefault();
+      contextLost = true;
       fail('WebGL context lost');
     });
     canvas.addEventListener('webglcontextrestored', () => {
-      failed = false;
+      contextLost = false;
+      failed = !model;
       previousTime = 0;
-      visibilityChanged();
+      if (model) visibilityChanged();
+      else selectModel();
     });
 
     canvas.addEventListener('pointerdown', (event) => {
@@ -243,11 +271,83 @@ if (host && stage && lab) {
     const draco = new DRACOLoader();
     draco.setDecoderPath(new URL('./vendor/three/draco/', import.meta.url).href);
     draco.setWorkerLimit(2);
-    new GLTFLoader().setDRACOLoader(draco).load('pets/deepseek.glb?v=20260912-blue-v1', (gltf) => {
+    const loader = new GLTFLoader().setDRACOLoader(draco);
+    function fetchModel(id) {
+      if (!loaded.has(id)) {
+        const controller = new AbortController();
+        const deadline = setTimeout(() => controller.abort(), 30000);
+        // Fetch with a real deadline: FileLoader deduplicates hanging URLs,
+        // so evicting only our Promise cache cannot retry a stalled download.
+        const pending = fetch(assets[id], { signal: controller.signal })
+          .then((response) => {
+            if (!response.ok) throw new Error('Model HTTP ' + response.status);
+            return response.arrayBuffer();
+          })
+          .then((buffer) => loader.parseAsync(buffer, new URL('./pets/', import.meta.url).href))
+          .catch((error) => {
+            // A late rejection cannot evict a newer retry for this same pet.
+            if (loaded.get(id) === pending) loaded.delete(id);
+            throw error;
+          }).finally(() => clearTimeout(deadline));
+        loaded.set(id, pending);
+      }
+      return loaded.get(id);
+    }
+    function clearModel() {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      previousTime = 0;
+      clearTimeout(clickTimer);
+      touches.clear();
+      moved = true;
+      reacting = false;
+      if (mixer) {
+        mixer.stopAllAction();
+        mixer.uncacheRoot(model);
+      }
+      if (model) pivot.remove(model);
+      model = mixer = idle = reaction = undefined;
+      pivot.position.set(0, 0, 0);
+      pivot.scale.setScalar(1);
+      pivot.updateMatrixWorld(true);
+      stage.classList.remove('is-model-ready');
+      host.classList.remove('is-ready', 'is-dragging');
+      host.dataset.animations = '';
+      host.dataset.action = '';
+      hasFit = false;
+    }
+    async function selectModel() {
+      const id = stage.dataset.modelId;
+      if (lab.hidden) return; // Homepage cards do not download the 3D assets.
+      if (!Object.hasOwn(assets, id)) return;
+      if (id === selectedId && !failed) return;
+      const ticket = ++selection;
+      selectedId = id;
+      clearModel();
+      failed = false;
+      host.dataset.pet = id;
+      host.dataset.state = 'loading';
+      retry.hidden = true;
+      const name = stage.dataset.modelName || '宠物';
+      host.setAttribute('aria-label', '可互动的' + name + '三维模型');
+      canvas.setAttribute('aria-label', name + '三维角色。' + controlHint);
+      status.textContent = '正在准备' + name + '的 3D 模型…';
+      let timeout;
+      const pending = fetchModel(id);
       try {
+        const gltf = await Promise.race([
+          pending,
+          new Promise((_, reject) => {
+            timeout = setTimeout(() => {
+              if (loaded.get(id) === pending) loaded.delete(id);
+              reject(new Error('Model loading timed out'));
+            }, 30000);
+          })
+        ]);
+        // A slow previous download must never replace the newly selected pet.
+        if (ticket !== selection) return;
         model = gltf.scene;
         pivot.add(model);
-        // Normalize a parent group; preserve every animated node/bone transform.
         const originalBounds = new THREE.Box3().setFromObject(pivot);
         const height = originalBounds.getSize(new THREE.Vector3()).y;
         if (!Number.isFinite(height) || height <= 0) throw new Error('Invalid model bounds');
@@ -258,34 +358,47 @@ if (host && stage && lab) {
         pivot.position.sub(bounds.getCenter(new THREE.Vector3()));
         pivot.updateMatrixWorld(true);
         radius = bounds.getBoundingSphere(new THREE.Sphere()).radius;
-        mixer = new THREE.AnimationMixer(model);
         const idleClip = THREE.AnimationClip.findByName(gltf.animations, 'Idle');
         const reactClip = THREE.AnimationClip.findByName(gltf.animations, 'React');
-        if (idleClip) { idle = mixer.clipAction(idleClip); idle.play(); idle.paused = motion.matches; }
-        if (reactClip) {
-          reaction = mixer.clipAction(reactClip);
-          reaction.setLoop(THREE.LoopOnce, 1);
-          reaction.clampWhenFinished = true;
-        }
+        if (!idleClip || !reactClip) throw new Error('Model is missing Idle or React animation');
+        mixer = new THREE.AnimationMixer(model);
+        idle = mixer.clipAction(idleClip);
+        idle.play();
+        idle.paused = motion.matches;
+        reaction = mixer.clipAction(reactClip);
+        reaction.setLoop(THREE.LoopOnce, 1);
+        reaction.clampWhenFinished = true;
+        const currentMixer = mixer;
         mixer.addEventListener('finished', (event) => {
-          if (event.action !== reaction) return;
+          if (ticket !== selection || event.action !== reaction) return;
           reacting = false;
+          host.dataset.action = 'Idle';
           reaction.fadeOut(0.2);
-          if (idle) {
-            idle.reset().setEffectiveWeight(1).fadeIn(0.2).play();
-            idle.paused = motion.matches;
-          }
+          idle.reset().setEffectiveWeight(1).fadeIn(0.2).play();
+          idle.paused = motion.matches;
           if (motion.matches) {
             reaction.stop();
-            if (idle) idle.stopFading().setEffectiveWeight(1);
-            // Complete pose restoration after the current mixer update returns.
-            queueMicrotask(() => { mixer.update(0); requestFrame(); });
+            idle.stopFading().setEffectiveWeight(1);
+            queueMicrotask(() => {
+              if (ticket === selection) { currentMixer.update(0); requestFrame(); }
+            });
           }
         });
         host.dataset.animations = gltf.animations.map((clip) => clip.name).join(',');
-        fit(true);
+        host.dataset.action = 'Idle';
+        resetView();
         visibilityChanged();
-      } catch (error) { fail(error); }
-    }, undefined, fail);
+      } catch (error) {
+        if (ticket === selection) {
+          if (loaded.get(id) === pending) loaded.delete(id);
+          fail(error);
+        }
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+    stage.addEventListener('pet-model-select', selectModel);
+    retryModel = selectModel;
+    selectModel(); // Handles game.js selecting a pet before module imports finish.
   }).catch(fallback);
 }

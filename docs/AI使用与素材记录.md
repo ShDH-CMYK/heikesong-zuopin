@@ -11,7 +11,7 @@
 | 项目 | 当前事实 |
 | --- | --- |
 | 运行时在线 AI | 无；回复不调用大模型 |
-| 运行时外部接口 | 网页字体可能从 Google Fonts 加载，失败回退系统字体；拆镜的 Three.js 0.180.0 从本地 `vendor/three/` 加载，角色加载同站点的 `pets/deepseek.glb`；三维加载或渲染失败时保留立绘 |
+| 运行时外部接口 | 网页字体可能从 Google Fonts 加载，失败回退系统字体；五角色共用的 Three.js 0.180.0 从本地 `vendor/three/` 加载，按需加载同站点的各角色 GLB；三维加载或渲染失败时保留立绘 |
 | 用户输入是否上传 | 否，留在当前页面状态 |
 | 运行时密钥 | 无 |
 | 音频文件 | 无，实时合成 |
@@ -54,6 +54,14 @@
 - 工具链：Blender 4.5.10 LTS（导入、材质、蒙皮、动画与 glTF 导出）；Python + Pillow（网页贴图处理）；Three.js 0.180.0（网页渲染），详见 [第三方组件与许可声明](../THIRD_PARTY_NOTICES.md)。
 - 可复建脚本、UV、骨骼和限制见 [拆镜三维模型说明](DeepSeek三维模型.md)。本轮离线渲染和构建统计位于 `output/blue-review/`，浏览器证据使用 `output/playwright/blue-*.png`；离线渲染本身不代表网页交互测试通过。
 - 历史版本：此前按三视图脚本建模、程序绘制虹膜与服装贴图的记录保留在 `tools/build-deepseek.py`、`tools/build-deepseek-textures.py`、`pets/textures/` 和 `output/model-review/`。这些旧脚本不再用于构建当前模型，旧统计与截图不代表 Blue 版本。
+
+### 暖球、班班、报错、小金的三维重建与互动
+
+- 参考来源：本仓库 `pets/doubao.png`、`workbuddy.png`、`codex.png`、`yuanbao.png` 四张立绘。原立绘来源和授权记录仍按上文核验。
+- 本轮 AI 工作：Codex 编写 Blender Python 脚本，按立绘的配色、轮廓和特征生成实体几何、材质、部件层级与待机/点击动作。用户要求为所有角色添加拆镜同款互动，AI 代理执行复建、运行集成与自动验证。
+- 新网格为程序式风格化重建，背面属于根据轮廓推定的补建；不声称由参考立绘恢复了唯一真实网格，也不声称与 Blue 的高面数/PBR 资产具有相同制作精度。
+- 四个角色通过部件节点动画播放 `Idle` / `React`；拆镜继续使用既有骨骼蒙皮。没有新增真人或声音资产、外部模型下载或运行时生成接口。
+- 工具与证据：`tools/build-organic-pets.py`、`tools/build-robot-pets.py`、对应 `.blend` 工程、`model3d.js`、`tools/check-pet-interactions.py`、`output/all-pets-review/`。
 
 ### 字体、图标与音效
 

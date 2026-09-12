@@ -72,9 +72,9 @@ python tools/regression.py http://127.0.0.1:8890/index.html
 
 ## 部署（在线演示）
 
-当前主入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目 `subtext`，生产域名 `subtext-8up.pages.dev`）。备用镜像是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>，随 `main` 自动构建；推送成功不等于页面已经更新，要核对线上资源版本。部署后核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证选择拆镜、旋转、缩放、点击动作和返回其他角色的流程。
+当前主入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目 `subtext`，生产域名 `subtext-8up.pages.dev`）。备用镜像是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>，随 `main` 自动构建；推送成功不等于页面已经更新，要核对线上资源版本。部署后核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证五个角色的加载、旋转、缩放、点击动作、快速切换和错误回退。
 
-本轮 Blue 模型更新先在 GitHub Pages 验收；Cloudflare 的 Blue 版本同步与验证单独记录，不能沿用前一版的同步状态。
+本轮五角色模型更新先在 GitHub Pages 验收；Cloudflare 的五角色版本同步与验证单独记录，不能沿用前一版的同步状态。
 
 部署使用仓库外的**新暂存目录**复制必要静态文件，必须包含 `vendor/three/` 与回复表情所在的 `assets/`：
 
@@ -82,7 +82,7 @@ python tools/regression.py http://127.0.0.1:8890/index.html
 $stageDir = Join-Path (Split-Path -Parent (Get-Location).Path) ('.deploy/subtext-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
 New-Item -ItemType Directory -Force (Join-Path $stageDir 'pets') | Out-Null
 Copy-Item index.html,styles.css,game.js,model3d.js,THIRD_PARTY_NOTICES.md -Destination $stageDir
-Copy-Item pets\*.png,pets\deepseek.glb -Destination (Join-Path $stageDir 'pets')
+Copy-Item pets\*.png,pets\doubao.glb,pets\deepseek.glb,pets\workbuddy.glb,pets\codex.glb,pets\yuanbao.glb -Destination (Join-Path $stageDir 'pets')
 Copy-Item -LiteralPath assets,vendor -Destination $stageDir -Recurse
 wrangler pages deploy $stageDir --project-name=subtext --branch=main
 ```
@@ -90,3 +90,9 @@ wrangler pages deploy $stageDir --project-name=subtext --branch=main
 Three.js 模块依赖关系与 MIT 许可证都在 `vendor/three/` 内，不能只复制 `three.module.js`。`deepseek.glb` 已内嵌网页所需贴图；`.blend`、生成脚本、参考 JPG、构建日志和离线渲染无需上传到 Cloudflare 静态站点。
 
 Cloudflare 部署需要本机已登录（`wrangler whoami` 查看账号）。部署后分别验证两个入口；只有实际更新并检查过的地址才能记为已同步。修改脚本、样式或模型时同步调整引用版本号，避免浏览器旧缓存掩盖更新。
+
+## 五角色互动复建与验证
+
+新增 `tools/build-organic-pets.py` 与 `tools/build-robot-pets.py` 分别制作暖球/小金、班班/报错；Blender 工程分别为 `pets/organic-pets.blend`、`pets/robot-pets.blend`。具体命令、造型限制见 [五角色说明](docs/五角色三维交互.md)。不要用这些脚本覆盖 Blue 源工程。
+
+新增或修改模型需保留 `Idle` 和 `React` 两段动画，并验证在角色切换后停止旧动画、播放新角色动画。运行 `python tools/check-pet-interactions.py http://127.0.0.1:8000/` 检查五角色、缓存、过期请求、失败重试、点击与拖动区别、手机布局和减少动态效果；再运行现有 `tools/regression.py` 检查完整对话流程。使用 Playwright 与 Chromium，验证截图和结果写入 `output/playwright/all-pets/`。

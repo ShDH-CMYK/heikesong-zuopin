@@ -1,0 +1,72 @@
+[
+  {
+    "check": "Keyboard and wheel zoom, Home reset",
+    "passed": true,
+    "detail": true
+  },
+  {
+    "check": "暖球 model, orbit, keyboard interaction and return to idle",
+    "passed": true,
+    "detail": "doubao"
+  },
+  {
+    "check": "拆镜 model, orbit, keyboard interaction and return to idle",
+    "passed": true,
+    "detail": "deepseek"
+  },
+  {
+    "check": "班班 model, orbit, keyboard interaction and return to idle",
+    "passed": true,
+    "detail": "workbuddy"
+  },
+  {
+    "check": "报错 model, orbit, keyboard interaction and return to idle",
+    "passed": true,
+    "detail": "codex"
+  },
+  {
+    "check": "小金 model, orbit, keyboard interaction and return to idle",
+    "passed": true,
+    "detail": "yuanbao"
+  },
+  {
+    "check": "Repeated switches reuse five assets and one renderer",
+    "passed": true,
+    "detail": 5
+  },
+  {
+    "check": "Pointer drag does not poke; model click plays React",
+    "passed": true,
+    "detail": true
+  },
+  {
+    "check": "Stale failed request cannot replace or hide the selected character",
+    "passed": true,
+    "detail": true
+  },
+  {
+    "check": "A later selection retries failed downloads",
+    "passed": true,
+    "detail": true
+  },
+  {
+    "check": "503 keeps portrait; Retry restores model and switching still works",
+    "passed": true,
+    "detail": true
+  },
+  {
+    "check": "All five models visible on mobile without horizontal overflow",
+    "passed": true,
+    "detail": "390x844"
+  },
+  {
+    "check": "Real touch pinch does not accidentally poke",
+    "passed": true,
+    "detail": true
+  },
+  {
+    "check": "Desktop flow has no JavaScript exceptions",
+    "passed": true,
+    "detail": []
+  }
+]
