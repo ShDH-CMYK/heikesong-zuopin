@@ -775,3 +775,4 @@ h1,h2,h3,p{ margin:0; }
   .composer{ margin:0 16px 14px; }
   .home-foot__note{ margin-left:0; }
 }
+.stage__model-3d{position:absolute;inset:0;z-index:3;touch-action:none;cursor:grab}.stage__model-3d canvas{width:100%;height:100%;display:block}.stage__model-3d:active{cursor:grabbing}.stage__pet--3d .stage__model,.stage__pet--3d>img{display:none}
