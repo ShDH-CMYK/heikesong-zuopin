@@ -18,7 +18,7 @@ if (host) {
   const root = new THREE.Group();
   scene.add(root);
   let model = null;
-  let targetRotation = Math.PI;
+  let targetRotation = 0;
   let currentRotation = Math.PI;
   let targetZoom = 7.5;
   let currentZoom = 7.5;
@@ -143,4 +143,5 @@ if (host) {
   }
   render();
 }
+
 
