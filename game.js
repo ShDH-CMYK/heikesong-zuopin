@@ -12,10 +12,10 @@
      ===================================================================== */
   var PETS = [
     {
-      id: 'doubao', name: '豆包', en: 'DOUBAO',
+      id: 'doubao', name: '暖球', en: 'ORB',
       opener: '先认真听你说。',
       greeting: '你好呀，我是 {name}。',
-      tagline: '豆包陪伴型 · companion orb',
+      tagline: '暖球陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       politeGeneric: [
         '好呀，我在。你慢慢说，我们先把最卡住的那一步找出来。',
@@ -85,10 +85,10 @@
       ]
     },
     {
-      id: 'deepseek', name: 'DeepSeek', en: 'DEEPSEEK',
+      id: 'deepseek', name: '拆镜', en: 'PRISM',
       opener: '先把问题拆开看。',
       greeting: '系统已就绪，我是 {name}。',
-      tagline: 'DeepSeek 视觉助手 · visual modeler',
+      tagline: '拆镜视觉助手 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
       politeGeneric: [
         '已记录。请补充现状、目标、你能付出的代价。缺一项我只能给安慰剂。',
@@ -159,10 +159,10 @@
       ]
     },
     {
-      id: 'workbuddy', name: 'WorkBuddy', en: 'WORKBUDDY',
+      id: 'workbuddy', name: '班班', en: 'SHIFT',
       opener: '先说需求，我来排期。',
       greeting: '我上线了，我是 {name}。',
-      tagline: 'WorkBuddy office assistant · overtime pal',
+      tagline: '班班加班同事 · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       politeGeneric: [
         '收到。先给一句话版本和截止日期，我再排。说不清的需求，排期一定炸。',
@@ -232,10 +232,10 @@
       ]
     },
     {
-      id: 'codex', name: 'Codex', en: 'CODEX',
+      id: 'codex', name: '报错', en: 'TRACE',
       opener: '先跑一遍输入检查。',
       greeting: '进程启动，我是 {name}。',
-      tagline: 'Codex code sprite · compile buddy',
+      tagline: '报错代码精灵 · compile buddy',
       persona: '技术宅 · 现实报错',
       politeGeneric: [
         '收到。请补充输入和期望输出。描述过糊，编译器拒绝合作。',
@@ -305,10 +305,10 @@
       ]
     },
     {
-      id: 'yuanbao', name: '元宝', en: 'YUANBAO',
+      id: 'yuanbao', name: '小金', en: 'COIN',
       opener: '先算清楚这笔账。',
       greeting: '来算账吧，我是 {name}。',
-      tagline: '元宝财运精灵 · fortune sprite',
+      tagline: '小金财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       politeGeneric: [
         '可以聊。先报预算和回报周期。没有数字的理想，我只当故事听。',
