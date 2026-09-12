@@ -168,7 +168,11 @@
         <div class="stage__grid" aria-hidden="true"></div>
 
         <div class="stage__pet" id="stage-pet">
-          <img id="lab-pet" src="" alt="" draggable="false" />
+          <div class="stage__model" id="stage-model">
+            <img id="lab-pet" src="" alt="" draggable="false" />
+            <img id="lab-pet-side" src="" alt="" draggable="false" aria-hidden="true" />
+            <img id="lab-pet-back" src="" alt="" draggable="false" aria-hidden="true" />
+          </div>
           <span class="stage__shadow" aria-hidden="true"></span>
         </div>
 
@@ -272,7 +276,7 @@
 <div class="wipe" id="wipe" aria-hidden="true"><span></span></div>
 
 <!-- 静态资源带版本号：Cloudflare 给静态文件 4 小时浏览器缓存，改完 game.js/styles.css 记得同步改 v= -->
-<script src="game.js?v=20260912-model-v3"></script>
+<script src="game.js?v=20260912-model-3d-v1"></script>
 </body>
 </html>
 
