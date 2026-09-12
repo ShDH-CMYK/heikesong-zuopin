@@ -18,9 +18,25 @@
       tagline: '豆包陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       politeGeneric: [
-        '好的呀。先把这件事拆成现状、目标和你能付出的时间，我陪你慢慢理。',
-        '收到。我可以帮你想想，你先告诉我：最让你卡住的那一步是哪一步？'
+        '好呀，我在。你慢慢说，我们先把最卡住的那一步找出来。',
+        '收到啦。我先陪你把现状、目标和你能拿出的时间摊开看看。'
       ],
+      voice: {
+        paper: '好的呀，我可以先帮你搭论文框架。你把题目、字数和参考文献格式发我，我们今晚先把骨架立住。',
+        rich: '财富更像长期功课。我可以陪你从技能和理财习惯开始，先做一份你看得懂的小规划。',
+        replace: '我更愿意把 AI 当成助手。创造力、判断和那些半夜需要被接住的时刻，还是你自己的。',
+        magic: '物理上人穿不过墙。如果你其实是想绕开某件事，我们换条路走走看。',
+        lottery: '开奖是随机的，我没法给你下期号码。不过你要是想少花点冤枉钱，我可以陪你把这笔账算清楚。',
+        love: '先别找话术。听完她在生气什么，再决定你要说什么，会比一套完美句子有用。',
+        overtime: '先把今晚必须做和可以推的分开。需要的话，我陪你想一版怎么跟上级谈工作量。',
+        bug: '我可以尽量写得稳一点，再补上测试和边界情况。绝对没有 bug 我不敢保证，但能少炸几次。',
+        slim: '健康减重大约每周 0.5 到 1 公斤。太快会伤身体，我们按你吃得下去的节奏来。',
+        flirt: '可以写。你先告诉我你们最近的一件小事，我按那个写，会比套模板像人话。',
+        startup: '创业都会有风险。我们可以先拿很小的一步去试，把初始投入按住。',
+        slack: '活干完再歇，是可以的。被抓到我护不住你，所以节奏我们自己先排好。',
+        meaning: '这个问题很大。不如先从今天有没有一件让你觉得还行的小事开始，意义经常是从那儿长出来的。',
+        memorize: '三天可以先抓框架。用回忆而不是反复看，先把目录装进脑子，细节再往里填。'
+      },
       file: 'pets/doubao.png',
       emotionIcon: 'assets/emojis/doubao.svg', roastIcon: 'assets/emojis/roast-surprised.svg', statusIcon: 'assets/status/success.png',
       accent: '#ff6b7e', accent2: '#ffa06b', soft: '#ffe9ea', deep: '#a3202f',
@@ -75,9 +91,25 @@
       tagline: 'DeepSeek 视觉助手 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
       politeGeneric: [
-        '收到。请补充三个参数：现状、目标、你能付出的代价。缺一个只能给安慰剂。',
-        '已记录。先把目标和手段分开，我再评估可行性。'
+        '已记录。请补充现状、目标、你能付出的代价。缺一项我只能给安慰剂。',
+        '先把目标和手段拆开。拆完我再评估可行性，不先给方案。'
       ],
+      voice: {
+        paper: '可以搭框架。请提供题目、字数、文献格式。缺参数只能输出提纲，不能冒充成稿。',
+        rich: '长期积累是目前唯一可验证路径。技能与理财可以规划；一夜暴富不在可计算区间。',
+        replace: 'AI 替代的是可定义的重复劳动，不是判断力。具体岗位要看任务能不能被精确描述。',
+        magic: '人体无法穿过实体墙。若目标是到达墙另一侧，绕行、开门、拆墙的成功率都高于穿墙。',
+        lottery: '开奖不可预测。历史号码对下一期没有信息量。任何自称可预测的策略，优先怀疑。',
+        love: '先确认命题：是「我错在哪」还是「让她停止生气」。两个问题解法不同，请选一个。',
+        overtime: '先列任务优先级，再决定谈不谈。加班本身不是策略，是资源配给失败的结果。',
+        bug: '可以写得更健壮，并补测试。无 bug 无法证明，只能降低已知失败路径。',
+        slim: '每周 0.5–1 公斤是代谢可承受区间。超过该区间，减掉的往往不是你以为的那种重量。',
+        flirt: '给我三件真实细节。没有上下文的情话，效力接近群发模板。',
+        startup: '先做小范围验证，控制本金。零风险与创业互斥，请把「零」改成你能承受的数字。',
+        slack: '完成必做项后再休息。不被发现不是目标；被发现也不可替代，才是目标。',
+        meaning: '意义需要被定义，不是被检索。你可以先选一个今天能完成的小定义。',
+        memorize: '先目录后细节，间隔重复。三天塞整本会溢出；分页加载比硬灌有效。'
+      },
       file: 'pets/deepseek.png',
       views: ['pets/deepseek.png', 'pets/deepseek-side.png', 'pets/deepseek-back.png'],
       emotionIcon: 'assets/emojis/deepseek.svg', roastIcon: 'assets/emojis/roast-angry.svg', statusIcon: 'assets/status/thinking.png',
@@ -133,9 +165,25 @@
       tagline: 'WorkBuddy office assistant · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       politeGeneric: [
-        '收到。先给一句话版本，我再排期。需求说不清，排期一定炸。',
-        '可以接。先说截止日期和改几版的上限，我好把人排上。'
+        '收到。先给一句话版本和截止日期，我再排。说不清的需求，排期一定炸。',
+        '可以接。先说改几版的上限。没有上限就等于没有下班。'
       ],
+      voice: {
+        paper: '接。先把题目、字数、交稿时间发我。今晚能出框架，正文按你还能醒着的小时排。',
+        rich: '财务自由我可以帮你列技能清单。一夜暴富不在本周排期里，本周排期已经加班了。',
+        replace: 'AI 替不了还房贷的人。你的岗位还在，是因为有人要签字。先把这周的活做完。',
+        magic: '穿墙不会。会的话我拿去改考勤了。正事是：你要绕开的那堵墙，有没有门。',
+        lottery: '号码没有。有的话我早辞职了。有闲钱先别买彩票，买完周报还是你写。',
+        love: '先道歉，再听她说完。话术我可以拟一版，假不假你自己发之前读一遍。',
+        overtime: '先把必须今晚交的标红。剩下的我帮你写成「明日第一件事」。直接认全部，排期会塌。',
+        bug: '可以写。先把需求冻住。需求一改，测试就得重排，别问我为什么又延期。',
+        slim: '一周二十斤排不进。按能执行的吃饭和走路排，周报那种「周日 23:58」节奏对减肥无效。',
+        flirt: '可以写一版。你先说你们最近吵没吵、见没见。没有现场信息，我写出来像周报。',
+        startup: '小范围试，控制投入。零风险创业请改名：副业。副业我可以排进晚上。',
+        slack: '活干完再摸。摸的时候别@我，我没工夫给你望风。望风也要记工时。',
+        meaning: '这题不进本周迭代。今晚先把能做完的一件事做完，意义会跟着热量一起来。',
+        memorize: '三天：一天框架，一天填，一天过目录。别排「背完」，排「能答出来的那几章」。'
+      },
       file: 'pets/workbuddy.png',
       emotionIcon: 'assets/emojis/workbuddy.svg', roastIcon: 'assets/emojis/roast-cry.svg', statusIcon: 'assets/status/thinking.png',
       accent: '#27c4a3', accent2: '#7ee6c4', soft: '#dff8f1', deep: '#0b6b57',
@@ -190,9 +238,25 @@
       tagline: 'Codex code sprite · compile buddy',
       persona: '技术宅 · 现实报错',
       politeGeneric: [
-        '收到。请补充输入和期望输出，描述过模糊无法编译。',
-        '已接收。先给可复现步骤，我再返回结果。'
+        '收到。请补充输入和期望输出。描述过糊，编译器拒绝合作。',
+        '已接收。先给可复现步骤，我再返回结果，不返回愿望。'
       ],
+      voice: {
+        paper: '可以出提纲。请提供题目、字数、格式。只有截止日期没有输入，构建会失败。',
+        rich: '长期技能与理财可规划。一夜暴富没有合法 API。余额字段为 0 时不要调用暴富函数。',
+        replace: 'AI 覆盖可规范任务，覆盖不了你的判断。具体能不能被替代，看任务有没有测试用例。',
+        magic: '穿墙与物理引擎冲突。若目标是到达另一侧，开门是已实现接口。',
+        lottery: '随机数没有 lucky 参数。历史开奖对下一期无输入价值。',
+        love: '先定位她生气的那句输入。修复输入，再渲染道歉。先渲染话术会得到 4xx。',
+        overtime: '线程池满时继续加任务会变慢。请输出优先级列表，而不是继续 push。',
+        bug: '可以写得更稳，并加测试。绝对无 bug 无法编译成断言，只能降低已知崩溃。',
+        slim: '每周 0.5–1kg 是安全速率。-20 斤/周会触发健康检查失败。',
+        flirt: '模板可生成。先 ping「在吗」，返回 200 再发正文。无上下文等于群发。',
+        startup: '先做最小验证。零风险不是参数，是幻觉。把风险写成你能承受的上限。',
+        slack: '完成必做后再 idle。前台摸鱼时后台仍在记日志，权限列表里不只有你。',
+        meaning: '问题过大，已栈溢出。请降级为今晚可执行的一个动作。',
+        memorize: '先加载目录，再分页。整本塞入短期记忆会 OOM。笔记是外接硬盘。'
+      },
       file: 'pets/codex.png',
       emotionIcon: 'assets/emojis/codex.svg', roastIcon: 'assets/emojis/roast-angry.svg', statusIcon: 'assets/status/not-found.png',
       accent: '#8b5cf6', accent2: '#c07bff', soft: '#efe7ff', deep: '#5a2aab',
@@ -247,9 +311,25 @@
       tagline: '元宝财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       politeGeneric: [
-        '可以聊。先说预算和回报周期，没有数字的理想我只能当故事听。',
-        '收到。先把投入算清楚，再谈方案。免费咨询只限前三十秒。'
+        '可以聊。先报预算和回报周期。没有数字的理想，我只当故事听。',
+        '收到。投入算清再谈方案。免费咨询三十秒，超时我开始记账。'
       ],
+      voice: {
+        paper: '框架可以搭。题目、字数、格式拿来。这单不赚钱，我记一次人情，下次带延期申请更划算。',
+        rich: '正路是技能和理财。一夜暴富没有价目表。你要规划，我做；你要印钞，我收款。',
+        replace: 'AI 抢不抢饭碗，先看工资打谁卡。卡没开之前，你的岗位还算安全。',
+        magic: '穿墙不教。若你想看到墙另一边的工资表，那是情报业务，先充值。',
+        lottery: '号码不卖。随机的东西我收费也心虚。闲钱想扔，扔给我至少知道去向。',
+        love: '先听她说完再买礼物。话术便宜，礼物要预算。预算发我，我按后悔程度配价。',
+        overtime: '先算时薪。免费加班等于给老板捐命。能谈的谈，不能谈的至少别把晚上也捐掉。',
+        bug: '稳一点可以，加测试。无 bug 加钱。免费版保证能跑，完美请走定制。',
+        slim: '一周二十斤不接。按能执行的饮食排，既省钱又不太伤。钱包想托管也可以谈。',
+        flirt: '情话免费。表白节点建议配礼物，预算给我，我帮你花在刀刃上，不花在花里胡哨上。',
+        startup: '小步试，控制本金。零风险项目如果有人向你推销，先看钱要打进谁的卡。',
+        slack: '干完再摸。摸成空白是给公司捐时薪。要摸去搞能进账的事。',
+        meaning: '意义不好变现。想意义的时间可以边赚钱边想。先把今晚的饭钱挣出来。',
+        memorize: '先背能拿分的章节。整本情怀很贵，考试只认能变现的那几页。'
+      },
       file: 'pets/yuanbao.png',
       emotionIcon: 'assets/emojis/yuanbao.svg', roastIcon: 'assets/emojis/roast-surprised.svg', statusIcon: 'assets/status/success.png',
       accent: '#f0a91c', accent2: '#ffd25e', soft: '#fff2d6', deep: '#8a5a05',
@@ -742,7 +822,8 @@
     }
 
     if (topic) {
-      return { polite: topic.polite, roast: topic.roasts[pet.id], topic: topic.id, preset: true, label: topic.tag.split(' · ')[0] };
+      var polite = (pet.voice && pet.voice[topic.id]) || topic.polite;
+      return { polite: polite, roast: topic.roasts[pet.id], topic: topic.id, preset: true, label: topic.tag.split(' · ')[0] };
     }
 
     var key = (text.match(/[\u4e00-\u9fa5]{2,6}/g) || []).sort(function (a, b) { return b.length - a.length; })[0] || '这件事';
@@ -870,7 +951,7 @@
       if (epoch !== state.epoch) return;
       typing.remove();
       beep('ai');
-      addMessage('ai', '正面回复 · 官方话术', esc(withOpening(pet, result.polite)), null, pet);
+      addMessage('ai', '正面回复 · 官方话术', esc(result.polite), null, pet);
       if (state.pet === petIndex) el.labMood.textContent = pet.mood.idle;
     }, 720);
 
