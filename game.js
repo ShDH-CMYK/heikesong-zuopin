@@ -13,6 +13,7 @@
   var PETS = [
     {
       id: 'doubao', name: '豆包', en: 'DOUBAO',
+      opener: '先认真听你说。',
       tagline: '豆包陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       file: 'pets/doubao.png',
@@ -61,6 +62,7 @@
     },
     {
       id: 'deepseek', name: 'DeepSeek', en: 'DEEPSEEK',
+      opener: '先把问题拆开看。',
       tagline: 'DeepSeek 视觉助手 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
       file: 'pets/diagram-model.png',
@@ -109,6 +111,7 @@
     },
     {
       id: 'workbuddy', name: 'WorkBuddy', en: 'WORKBUDDY',
+      opener: '收到，先把需求摊开。',
       tagline: 'WorkBuddy office assistant · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       file: 'pets/workbuddy.png',
@@ -157,6 +160,7 @@
     },
     {
       id: 'codex', name: 'Codex', en: 'CODEX',
+      opener: '先跑一遍输入检查。',
       tagline: 'Codex code sprite · compile buddy',
       persona: '技术宅 · 现实报错',
       file: 'pets/codex.png',
@@ -205,6 +209,7 @@
     },
     {
       id: 'yuanbao', name: '元宝', en: 'YUANBAO',
+      opener: '先算清楚这笔账。',
       tagline: '元宝财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       file: 'pets/yuanbao.png',
@@ -663,6 +668,10 @@
   /* =====================================================================
      10. 吐槽引擎
      ===================================================================== */
+  function withOpening(pet, text) {
+    return pet.opener ? pet.opener + ' ' + text : text;
+  }
+
   function generate(text) {
     var pet = PETS[state.pet];
     var topic = null;
@@ -794,7 +803,7 @@
       if (epoch !== state.epoch) return;
       typing.remove();
       beep('ai');
-      addMessage('ai', '正面回复 · 官方话术', esc(result.polite));
+      addMessage('ai', '正面回复 · 官方话术', esc(withOpening(pet, result.polite)));
       if (state.pet === petIndex) el.labMood.textContent = pet.mood.idle;
     }, 720);
 
@@ -805,9 +814,10 @@
         react('is-react');
         el.labMood.textContent = pet.mood.roast;
       }
-      if (state.pet === petIndex) showBubble(result.roast);
-      addMessage('roast', '内心 OS · ' + pet.name, esc(result.roast), result.roast);
-      addLog(text, result.roast, petIndex);
+      var roastText = withOpening(pet, result.roast);
+      if (state.pet === petIndex) showBubble(roastText);
+      addMessage('roast', '内心 OS · ' + pet.name, esc(roastText), roastText);
+      addLog(text, roastText, petIndex);
       bumpMeter(absurd ? 17 : 7);
 
       if (state.absurd >= 3) {
@@ -871,22 +881,22 @@
       if (state.pet === receiverIndex) el.labMood.textContent = '收到一条内部消息…';
       addMessage('wire', '内部通讯 · 已截获',
         '<span class="wire-line"><b>' + sender.name + '</b> → <b>' + receiver.name + '</b>：' +
-          esc(pick(sender.wire).replace(/\{k\}/g, kTxt)) + '</span>' +
+          esc(withOpening(sender, pick(sender.wire).replace(/\{k\}/g, kTxt))) + '</span>' +
         '<span class="wire-line"><b>' + receiver.name + '</b> → <b>' + sender.name + '</b>：' +
-          esc(pick(receiver.wireBack).replace(/\{k\}/g, kTxt)) + '</span>');
+          esc(withOpening(receiver, pick(receiver.wireBack).replace(/\{k\}/g, kTxt))) + '</span>');
     }, 460);
 
     setTimeout(function () {
       if (epoch !== state.epoch) return;
       beep('ai');
-      addMessage('ai', '紧急澄清 · 官方话术', esc(pick(receiver.wireFace).replace(/\{k\}/g, kTxt)));
+      addMessage('ai', '紧急澄清 · 官方话术', esc(withOpening(receiver, pick(receiver.wireFace).replace(/\{k\}/g, kTxt))));
       if (state.pet === receiverIndex) el.labMood.textContent = receiver.mood.idle;
     }, 1040);
 
     setTimeout(function () {
       if (epoch !== state.epoch) return;
       beep('roast');
-      var os = pick(receiver.wireOs).replace(/\{k\}/g, kTxt);
+      var os = withOpening(receiver, pick(receiver.wireOs).replace(/\{k\}/g, kTxt));
       if (state.pet === receiverIndex) showBubble(os);
       addMessage('roast', '内心 OS · ' + receiver.name, esc(os), os);
       if (state.pet === receiverIndex) {
@@ -971,7 +981,7 @@
       if (epoch !== state.epoch) return;
       beep('ai');
       if (state.pet === entry.pet) react('is-react');
-      addMessage('ai', '正面回复 · 官方话术', esc(pick(pet.deny)));
+      addMessage('ai', '正面回复 · 官方话术', esc(withOpening(pet, pick(pet.deny))));
     }, 780);
 
     setTimeout(function () {
@@ -980,6 +990,7 @@
       var os = isRepeat
         ? pick(pet.confess2)
         : pick(pet.confess).replace(/\{r\}/g, clip(entry.r, 42).replace(/[「」]/g, '').replace(/[。！？～]+$/, ''));
+      os = withOpening(pet, os);
       if (state.pet === entry.pet) showBubble(os);
       addMessage('roast', '内心 OS · ' + pet.name, esc(os), os);
       if (state.pet === entry.pet) {
