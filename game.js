@@ -720,10 +720,10 @@
   function addMessage(kind, label, html, copyText, pet) {
     var wrap = document.createElement('div');
     wrap.className = 'msg msg--' + kind;
-    var icon = pet && pet.emotionIcon ? '<img class="msg__emotion" src="' + esc(pet.emotionIcon) + '" alt="" aria-hidden="true">' : '';
+    var labelIcon = kind === 'roast' && pet && pet.roastIcon ? '<img class="msg__roast-emotion" src="' + esc(pet.roastIcon) + '" alt="" aria-hidden="true">' : '';
     var status = kind === 'roast' && pet && pet.statusIcon ? '<img class="msg__status" src="' + esc(pet.statusIcon) + '" alt="" aria-hidden="true">' : '';
-    var roastIcon = kind === 'roast' && pet && pet.roastIcon ? '<img class="msg__roast-emotion" src="' + esc(pet.roastIcon) + '" alt="" aria-hidden="true">' : '';
-    var inner = '<span class="msg__label">' + icon + roastIcon + status + '<span>' + esc(label) + '</span></span><div class="msg__body">' + html + '</div>';
+    var bodyIcon = pet && pet.emotionIcon && (kind === 'ai' || kind === 'roast') ? '<img class="msg__body-emotion" src="' + esc(pet.emotionIcon) + '" alt="" aria-hidden="true">' : '';
+    var inner = '<span class="msg__label">' + labelIcon + status + '<span>' + esc(label) + '</span></span><div class="msg__body">' + bodyIcon + '<span class="msg__body-copy">' + html + '</span></div>';
     if (copyText) {
       inner += '<button class="msg__copy" type="button" data-copy="' + esc(copyText) + '">' +
         '<svg class="ic" viewBox="0 0 24 24"><use href="#i-copy"/></svg>复制这句</button>';
