@@ -60,3 +60,8 @@ SOFTWARE.
 
 - Space Grotesk: <https://fonts.google.com/specimen/Space+Grotesk>
 - IBM Plex Mono: <https://fonts.google.com/specimen/IBM+Plex+Mono>
+
+## 3. 用户提供的表情素材
+
+本次版本使用了用户提供的 `基础表情.zip` 中 8 个情绪 SVG，以及 `图标.zip` 中 3 个状态插画（复制到 `assets/emojis/` 与 `assets/status/`）。压缩包未附带作者、来源或许可证文件；公开发布前请向素材提供方确认授权，或替换为已确认许可的图标。
+

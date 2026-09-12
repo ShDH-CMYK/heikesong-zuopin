@@ -13,9 +13,12 @@
   var PETS = [
     {
       id: 'doubao', name: '豆包', en: 'DOUBAO',
+      opener: '先认真听你说。',
+      greeting: '你好呀，我是 {name}。',
       tagline: '豆包陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       file: 'pets/doubao.png',
+      emotionIcon: 'assets/emojis/doubao.svg', roastIcon: 'assets/emojis/roast-surprised.svg', statusIcon: 'assets/status/success.png',
       accent: '#ff6b7e', accent2: '#ffa06b', soft: '#ffe9ea', deep: '#a3202f',
       glow: 'rgba(255,107,126,.35)',
       mood: { idle: '温柔待机中', hover: '被摸头了，有点开心', roast: '笑着把刀递了出去', poke: '呀，被发现了' },
@@ -61,9 +64,13 @@
     },
     {
       id: 'deepseek', name: 'DeepSeek', en: 'DEEPSEEK',
-      tagline: 'DeepSeek visual spirit · visual modeler',
+      opener: '先把问题拆开看。',
+      greeting: '系统已就绪，我是 {name}。',
+      tagline: 'DeepSeek 视觉助手 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
-      file: 'pets/diagram-model.png',
+      file: 'pets/deepseek.png',
+      views: ['pets/deepseek.png', 'pets/deepseek-side.png', 'pets/deepseek-back.png'],
+      emotionIcon: 'assets/emojis/deepseek.svg', roastIcon: 'assets/emojis/roast-angry.svg', statusIcon: 'assets/status/thinking.png',
       accent: '#2f7be8', accent2: '#57c7f5', soft: '#e5f0ff', deep: '#10408c',
       glow: 'rgba(47,123,232,.35)',
       mood: { idle: '链路空闲', hover: '正在扫描你的意图', roast: '结论已生成，不便公开', poke: '采样污染中' },
@@ -109,9 +116,12 @@
     },
     {
       id: 'workbuddy', name: 'WorkBuddy', en: 'WORKBUDDY',
+      opener: '先说需求，我来排期。',
+      greeting: '我上线了，我是 {name}。',
       tagline: 'WorkBuddy office assistant · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       file: 'pets/workbuddy.png',
+      emotionIcon: 'assets/emojis/workbuddy.svg', roastIcon: 'assets/emojis/roast-cry.svg', statusIcon: 'assets/status/thinking.png',
       accent: '#27c4a3', accent2: '#7ee6c4', soft: '#dff8f1', deep: '#0b6b57',
       glow: 'rgba(39,196,163,.35)',
       mood: { idle: '待命中，未下班', hover: '又来需求了？', roast: '在群里发完疯了', poke: '别戳，在改第八版' },
@@ -157,9 +167,12 @@
     },
     {
       id: 'codex', name: 'Codex', en: 'CODEX',
+      opener: '先跑一遍输入检查。',
+      greeting: '进程启动，我是 {name}。',
       tagline: 'Codex code sprite · compile buddy',
       persona: '技术宅 · 现实报错',
       file: 'pets/codex.png',
+      emotionIcon: 'assets/emojis/codex.svg', roastIcon: 'assets/emojis/roast-angry.svg', statusIcon: 'assets/status/not-found.png',
       accent: '#8b5cf6', accent2: '#c07bff', soft: '#efe7ff', deep: '#5a2aab',
       glow: 'rgba(139,92,246,.35)',
       mood: { idle: '编译通过', hover: '检测到输入', roast: '抛出异常，已捕获', poke: '警告：无效调用' },
@@ -205,9 +218,12 @@
     },
     {
       id: 'yuanbao', name: '元宝', en: 'YUANBAO',
+      opener: '先算清楚这笔账。',
+      greeting: '来算账吧，我是 {name}。',
       tagline: '元宝财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       file: 'pets/yuanbao.png',
+      emotionIcon: 'assets/emojis/yuanbao.svg', roastIcon: 'assets/emojis/roast-surprised.svg', statusIcon: 'assets/status/success.png',
       accent: '#f0a91c', accent2: '#ffd25e', soft: '#fff2d6', deep: '#8a5a05',
       glow: 'rgba(240,169,28,.35)',
       mood: { idle: '在数钱，勿扰', hover: '你要给我钱？', roast: '这单亏了但话说出去了', poke: '戳一下十块，先记账' },
@@ -663,6 +679,18 @@
   /* =====================================================================
      10. 吐槽引擎
      ===================================================================== */
+  function pickFresh(list, stateKey) {
+    void stateKey;
+    if (!list) return '';
+    if (typeof list === 'string') return list;
+    return list.length ? pick(list) : '';
+  }
+
+  function withOpening(pet, text) {
+    var opening = pickFresh(pet.opener, pet._openingState || (pet._openingState = {}));
+    return opening ? opening + ' ' + text : text;
+  }
+
   function generate(text) {
     var pet = PETS[state.pet];
     var topic = null;
@@ -690,10 +718,13 @@
   /* =====================================================================
      11. 对话
      ===================================================================== */
-  function addMessage(kind, label, html, copyText) {
+  function addMessage(kind, label, html, copyText, pet) {
     var wrap = document.createElement('div');
     wrap.className = 'msg msg--' + kind;
-    var inner = '<span class="msg__label">' + esc(label) + '</span><div class="msg__body">' + html + '</div>';
+    var labelIcon = kind === 'roast' && pet && pet.roastIcon ? '<img class="msg__roast-emotion" src="' + esc(pet.roastIcon) + '" alt="" aria-hidden="true">' : '';
+    var status = kind === 'roast' && pet && pet.statusIcon ? '<img class="msg__status" src="' + esc(pet.statusIcon) + '" alt="" aria-hidden="true">' : '';
+    var bodyIcon = pet && pet.emotionIcon && (kind === 'ai' || kind === 'roast') ? '<img class="msg__body-emotion" src="' + esc(pet.emotionIcon) + '" alt="" aria-hidden="true">' : '';
+    var inner = '<span class="msg__label">' + labelIcon + status + '<span>' + esc(label) + '</span></span><div class="msg__body">' + bodyIcon + '<span class="msg__body-copy">' + html + '</span></div>';
     if (copyText) {
       inner += '<button class="msg__copy" type="button" data-copy="' + esc(copyText) + '">' +
         '<svg class="ic" viewBox="0 0 24 24"><use href="#i-copy"/></svg>复制这句</button>';
@@ -724,7 +755,9 @@
     var d = document.createElement('div');
     d.className = 'msg msg--ai';
     d.id = 'typing-msg';
-    d.innerHTML = '<span class="msg__label">' + (en || PETS[state.pet].en) + ' 正在组织语言</span>' +
+    var pet = PETS[state.pet];
+    var icon = pet.emotionIcon ? '<img class="msg__emotion" src="' + esc(pet.emotionIcon) + '" alt="" aria-hidden="true">' : '';
+    d.innerHTML = '<span class="msg__label">' + icon + '<span>' + (en || pet.en) + ' 正在组织语言</span></span>' +
       '<div class="msg__body"><span class="typing"><i></i><i></i><i></i></span></div>';
     el.messages.appendChild(d);
     el.messages.scrollTop = el.messages.scrollHeight;
@@ -794,7 +827,7 @@
       if (epoch !== state.epoch) return;
       typing.remove();
       beep('ai');
-      addMessage('ai', '正面回复 · 官方话术', esc(result.polite));
+      addMessage('ai', '正面回复 · 官方话术', esc(withOpening(pet, result.polite)), null, pet);
       if (state.pet === petIndex) el.labMood.textContent = pet.mood.idle;
     }, 720);
 
@@ -805,9 +838,10 @@
         react('is-react');
         el.labMood.textContent = pet.mood.roast;
       }
-      if (state.pet === petIndex) showBubble(result.roast);
-      addMessage('roast', '内心 OS · ' + pet.name, esc(result.roast), result.roast);
-      addLog(text, result.roast, petIndex);
+      var roastText = result.roast;
+      if (state.pet === petIndex) showBubble(roastText);
+      addMessage('roast', '内心 OS · ' + pet.name, esc(roastText), roastText, pet);
+      addLog(text, roastText, petIndex);
       bumpMeter(absurd ? 17 : 7);
 
       if (state.absurd >= 3) {
@@ -870,25 +904,25 @@
       beep('wire');
       if (state.pet === receiverIndex) el.labMood.textContent = '收到一条内部消息…';
       addMessage('wire', '内部通讯 · 已截获',
-        '<span class="wire-line"><b>' + sender.name + '</b> → <b>' + receiver.name + '</b>：' +
-          esc(pick(sender.wire).replace(/\{k\}/g, kTxt)) + '</span>' +
-        '<span class="wire-line"><b>' + receiver.name + '</b> → <b>' + sender.name + '</b>：' +
-          esc(pick(receiver.wireBack).replace(/\{k\}/g, kTxt)) + '</span>');
+        '<span class="wire-line"><img class="wire-line__emotion" src="' + esc(sender.emotionIcon) + '" alt="" aria-hidden="true"><b>' + sender.name + '</b> → <b>' + receiver.name + '</b>：' +
+          esc(withOpening(sender, pick(sender.wire).replace(/\{k\}/g, kTxt))) + '</span>' +
+        '<span class="wire-line"><img class="wire-line__emotion" src="' + esc(receiver.emotionIcon) + '" alt="" aria-hidden="true"><b>' + receiver.name + '</b> → <b>' + sender.name + '</b>：' +
+          esc(withOpening(receiver, pick(receiver.wireBack).replace(/\{k\}/g, kTxt))) + '</span>');
     }, 460);
 
     setTimeout(function () {
       if (epoch !== state.epoch) return;
       beep('ai');
-      addMessage('ai', '紧急澄清 · 官方话术', esc(pick(receiver.wireFace).replace(/\{k\}/g, kTxt)));
+      addMessage('ai', '紧急澄清 · 官方话术', esc(withOpening(receiver, pick(receiver.wireFace).replace(/\{k\}/g, kTxt))), null, receiver);
       if (state.pet === receiverIndex) el.labMood.textContent = receiver.mood.idle;
     }, 1040);
 
     setTimeout(function () {
       if (epoch !== state.epoch) return;
       beep('roast');
-      var os = pick(receiver.wireOs).replace(/\{k\}/g, kTxt);
+      var os = withOpening(receiver, pick(receiver.wireOs).replace(/\{k\}/g, kTxt));
       if (state.pet === receiverIndex) showBubble(os);
-      addMessage('roast', '内心 OS · ' + receiver.name, esc(os), os);
+      addMessage('roast', '内心 OS · ' + receiver.name, esc(os), os, receiver);
       if (state.pet === receiverIndex) {
         react('is-react');
         el.labMood.textContent = receiver.mood.roast;
@@ -971,7 +1005,7 @@
       if (epoch !== state.epoch) return;
       beep('ai');
       if (state.pet === entry.pet) react('is-react');
-      addMessage('ai', '正面回复 · 官方话术', esc(pick(pet.deny)));
+      addMessage('ai', '正面回复 · 官方话术', esc(withOpening(pet, pick(pet.deny))), null, pet);
     }, 780);
 
     setTimeout(function () {
@@ -980,8 +1014,9 @@
       var os = isRepeat
         ? pick(pet.confess2)
         : pick(pet.confess).replace(/\{r\}/g, clip(entry.r, 42).replace(/[「」]/g, '').replace(/[。！？～]+$/, ''));
+      os = withOpening(pet, os);
       if (state.pet === entry.pet) showBubble(os);
-      addMessage('roast', '内心 OS · ' + pet.name, esc(os), os);
+      addMessage('roast', '内心 OS · ' + pet.name, esc(os), os, pet);
       if (state.pet === entry.pet) {
         react('is-react');
         el.labMood.textContent = pet.mood.roast;
@@ -1042,7 +1077,10 @@
   }
 
   function greet() {
-    addMessage('ai', '系统', '你好，我是 <strong>' + esc(PETS[state.pet].name) + '</strong>。我会认真回答你的问题——表面上。');
+    var pet = PETS[state.pet];
+    var greetingName = pet.name;
+    var greeting = pickFresh(pet.greeting, pet._greetingState || (pet._greetingState = {})).replace('{name}', '<strong>' + esc(greetingName) + '</strong>');
+    addMessage('ai', '系统', greeting + '我会认真回答你的问题——表面上。', null, pet);
     var hint = document.createElement('div');
     hint.className = 'messages__hint';
     hint.innerHTML = '<svg class="ic" viewBox="0 0 24 24"><use href="#i-spark"/></svg>' +
