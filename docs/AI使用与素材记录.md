@@ -37,7 +37,7 @@
 ### 宠物立绘
 
 - 当前页面使用：`pets/doubao.png`（豆包）、`pets/deepseek.png` 及侧视/背视 `pets/deepseek-side.png`、`pets/deepseek-back.png`（DeepSeek）、`pets/workbuddy.png`（WorkBuddy）、`pets/codex.png`（Codex）、`pets/yuanbao.png`（元宝）。
-- DeepSeek 另有可选低面数模型 `pets/deepseek-lowpoly.glb`；加载失败时回退上述立绘。仓库中仍保留旧文件 `pets/diagram-model.png`，页面已不再引用。
+- DeepSeek 页面使用已验证的可交互模型 `pets/deepseek-lowpoly.glb`；加载失败时回退上述立绘。仓库中另有高细节工程 `pets/deepseek-high-detail.blend` / `pets/deepseek-high-detail.glb`（队友仍在 refining，当前页面不引用），以及旧文件 `pets/diagram-model.png`。
 - 处理：由 `tools/prep-pets.py` 裁边、补白并统一画布后入库。
 - 生成工具、模型、生成日期、原始出处、授权范围：**待团队补填**。
 - 页面角色名现为“豆包、DeepSeek、WorkBuddy、Codex、元宝”；其中豆包、DeepSeek、Codex、元宝为戏仿名称，提交前需确认主办方要求。DeepSeek 使用团队提供的鲸鱼主题三视图（`pets/deepseek.png` 等）。对外材料仍需检查旧截图、旧文件名和旧文案（图示建模 / 工友 / 方块 / 金豆）。

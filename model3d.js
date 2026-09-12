@@ -2,6 +2,28 @@ import * as THREE from 'https://unpkg.com/three@0.180.0/build/three.module.js';
 import { GLTFLoader } from 'https://unpkg.com/three@0.180.0/examples/jsm/loaders/GLTFLoader.js';
 
 const host = document.getElementById('stage-model-3d');
+const stagePet = document.getElementById('stage-pet');
+let syncing = false;
+function showPortrait() {
+  if (stagePet) stagePet.classList.remove('stage__pet--3d');
+}
+function showModel() {
+  if (syncing) return;
+  syncing = true;
+  try {
+    if (!host.classList.contains('is-ready') || host.classList.contains('is-fallback')) {
+      showPortrait();
+      return;
+    }
+    if (stagePet && stagePet.classList.contains('has-3d-model')) {
+      if (!stagePet.classList.contains('stage__pet--3d')) stagePet.classList.add('stage__pet--3d');
+    } else {
+      showPortrait();
+    }
+  } finally {
+    syncing = false;
+  }
+}
 if (host) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
@@ -123,17 +145,32 @@ if (host) {
       root.add(model);
       camera.position.set(0, 0, targetZoom);
       camera.lookAt(0, 0, 0);
+      host.classList.remove('is-fallback');
       host.classList.add('is-ready');
+      showModel();
+      if (stagePet) {
+        var lastHas = stagePet.classList.contains('has-3d-model');
+        new MutationObserver(function () {
+          var nowHas = stagePet.classList.contains('has-3d-model');
+          if (nowHas === lastHas) return;
+          lastHas = nowHas;
+          showModel();
+        }).observe(stagePet, { attributes: true, attributeFilter: ['class'] });
+      }
     },
     undefined,
     function () {
+      host.classList.remove('is-ready');
       host.classList.add('is-fallback');
+      showPortrait();
       hint.textContent = '3D 模型加载失败，已显示角色立绘';
     }
   );
 
   function render() {
     requestAnimationFrame(render);
+    if (!host.classList.contains('is-ready') || host.classList.contains('is-fallback')) return;
+    if (!stagePet || !stagePet.classList.contains('stage__pet--3d')) return;
     if (!pressed) targetRotation += 0.0018;
     currentRotation += (targetRotation - currentRotation) * 0.12;
     currentZoom += (targetZoom - currentZoom) * 0.12;
@@ -143,6 +180,3 @@ if (host) {
   }
   render();
 }
-
-
-

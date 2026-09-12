@@ -743,7 +743,9 @@
     applyTheme(i);
 
     var views = p.views || [p.file];
-    el.stagePet.classList.toggle('stage__pet--3d', Boolean(p.views));
+    el.stagePet.classList.toggle('has-3d-model', p.id === 'deepseek');
+    el.stagePet.classList.toggle('stage__pet--3d', p.id === 'deepseek' && document.getElementById('stage-model-3d') && document.getElementById('stage-model-3d').classList.contains('is-ready') && !document.getElementById('stage-model-3d').classList.contains('is-fallback'));
+    el.stagePet.classList.remove('is-dragging');
     el.stageModel.style.setProperty('--model-rot', '0deg');
     el.stageModel.style.setProperty('--model-tilt', '0deg');
     el.labPet.src = views[0];
@@ -807,11 +809,6 @@
     if (!list) return '';
     if (typeof list === 'string') return list;
     return list.length ? pick(list) : '';
-  }
-
-  function withOpening(pet, text) {
-    var opening = pickFresh(pet.opener, pet._openingState || (pet._openingState = {}));
-    return opening ? opening + ' ' + text : text;
   }
 
   function generate(text) {
@@ -1037,7 +1034,7 @@
     setTimeout(function () {
       if (epoch !== state.epoch) return;
       beep('ai');
-      addMessage('ai', '紧急澄清 · 官方话术', esc(withOpening(receiver, pick(receiver.wireFace).replace(/\{k\}/g, kTxt))), null, receiver);
+      addMessage('ai', '紧急澄清 · 官方话术', esc(pick(receiver.wireFace).replace(/\{k\}/g, kTxt)), null, receiver);
       if (state.pet === receiverIndex) el.labMood.textContent = receiver.mood.idle;
     }, 1040);
 
@@ -1116,8 +1113,6 @@
     var isRepeat = entry.q.indexOf('（当面质问）') === 0;
     state.busy = true;
     var epoch = state.epoch;
-    // 最近一次的「人类动作」已经是对质而非提问，作废通敌素材，避免报错对象
-    state.lastAskPet = null;
     beep('chip');
     var quote = clip(entry.r, 24).replace(/[「」]/g, '');
     addMessage('user', '你', esc(isRepeat
@@ -1129,7 +1124,7 @@
       if (epoch !== state.epoch) return;
       beep('ai');
       if (state.pet === entry.pet) react('is-react');
-      addMessage('ai', '正面回复 · 官方话术', esc(withOpening(pet, pick(pet.deny))), null, pet);
+      addMessage('ai', '正面回复 · 官方话术', esc(pick(pet.deny)), null, pet);
     }, 780);
 
     setTimeout(function () {
@@ -1234,7 +1229,10 @@
     setTimeout(done, 430);
     setTimeout(function () {
       el.wipe.classList.remove('is-run');
-      setTimeout(function () { if (img.parentNode) img.remove(); }, 300);
+      setTimeout(function () {
+        if (img.parentNode) img.remove();
+        el.wipe.classList.remove('is-run');
+      }, 300);
     }, 760);
   }
 
@@ -1294,37 +1292,6 @@
   /* =====================================================================
      15. 事件绑定
      ===================================================================== */
-  var modelDrag = { active: false, x: 0, rot: 0, tilt: 0, timer: null };
-  function setModelRotation(rot, tilt) {
-    modelDrag.rot = rot;
-    modelDrag.tilt = Math.max(-12, Math.min(12, tilt || 0));
-    el.stageModel.style.setProperty('--model-rot', modelDrag.rot + 'deg');
-    el.stageModel.style.setProperty('--model-tilt', modelDrag.tilt + 'deg');
-  }
-  function startModelSpin() {
-    clearInterval(modelDrag.timer);
-    modelDrag.timer = setInterval(function () {
-      if (!el.stagePet.classList.contains('stage__pet--3d') || modelDrag.active) return;
-      setModelRotation(modelDrag.rot + 0.22, modelDrag.tilt);
-    }, 40);
-  }
-  function bindModel3d() {
-    el.stagePet.addEventListener('pointerdown', function (e) {
-      if (!el.stagePet.classList.contains('stage__pet--3d')) return;
-      modelDrag.active = true; modelDrag.x = e.clientX;
-      el.stagePet.classList.add('is-dragging');
-      el.stagePet.setPointerCapture(e.pointerId);
-    });
-    el.stagePet.addEventListener('pointermove', function (e) {
-      if (!modelDrag.active) return;
-      var dx = e.clientX - modelDrag.x; modelDrag.x = e.clientX;
-      setModelRotation(modelDrag.rot + dx * 0.65, modelDrag.tilt);
-    });
-    var end = function () { modelDrag.active = false; el.stagePet.classList.remove('is-dragging'); };
-    el.stagePet.addEventListener('pointerup', end);
-    el.stagePet.addEventListener('pointercancel', end);
-    startModelSpin();
-  }
   function bind() {
     el.randomBtn.addEventListener('click', function () {
       var i = Math.floor(Math.random() * PETS.length);
@@ -1367,7 +1334,6 @@
 
     el.pokeBtn.addEventListener('click', function () { poke(); });
     el.labPet.addEventListener('click', function () { poke(); });
-    // 3D 角色由 model3d.js 接管交互，避免旧图片旋转监听抢占指针。
 
     el.stagePet.addEventListener('pointerenter', function () {
       el.labMood.textContent = PETS[state.pet].mood.hover;

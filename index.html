@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff6b7e'/%3E%3Cstop offset='1' stop-color='%23ff9a6b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='url(%23g)'/%3E%3Cg transform='translate(12 12) scale(1.6667)' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z'/%3E%3C/g%3E%3C/svg%3E" />
 <title>潜台词 Subtext · 五只 AI 宠物的内心 OS</title>
 <meta name="description" content="表面认真服务，内心疯狂整活。挑一只 AI 宠物，问它一句离谱问题，看它怎么在后台吐槽你。" />
-<link rel="stylesheet" href="styles.css?v=20260912" />
+<link rel="stylesheet" href="styles.css?v=20260912-fix5" />
 <script>
   /* JS 可用时才启用入场动画 —— 脚本挂掉的话内容仍然完整可见，不会白屏 */
   document.documentElement.classList.add('js');
@@ -123,11 +123,11 @@
             </div>
             <div class="hero-demo__row">
               <span class="hero-demo__tag">正面回复 · 官方话术</span>
-              <div class="hero-demo__reply">财富需要长期积累。建议从提升技能和合理理财开始，我可以帮你做一份规划。</div>
+              <div class="hero-demo__reply">正路是技能和理财。一夜暴富没有价目表。你要规划，我做；你要印钞，我收款。</div>
             </div>
             <div class="hero-demo__row">
               <span class="hero-demo__tag">内心 OS · 真实想法</span>
-              <div class="hero-demo__roast">暴富？那你算找对人了——我这儿正好有个项目，你先投三千，下个月……哎你别走啊，我还没说完！</div>
+              <div class="hero-demo__roast">暴富？问对人了。先投三千给我——干什么？下个月我再告诉你干什么。你别走啊，方案在路上！</div>
             </div>
           </div>
         </div>
@@ -141,8 +141,8 @@
       <span class="home-foot__label">共用动作语言</span>
       <div class="marquee">
         <div class="marquee__track">
-          <span>待机呼吸</span><i>·</i><span>眨眼</span><i>·</i><span>微摆</span><i>·</i><span>被问到了会抖一下</span><i>·</i><span>吐槽前先沉默 0.8 秒</span><i>·</i>
-          <span>待机呼吸</span><i>·</i><span>眨眼</span><i>·</i><span>微摆</span><i>·</i><span>被问到了会抖一下</span><i>·</i><span>吐槽前先沉默 0.8 秒</span><i>·</i>
+          <span>待机呼吸</span><i>·</i><span>眨眼</span><i>·</i><span>微摆</span><i>·</i><span>被问到了会抖一下</span><i>·</i><span>吐槽前先沉默约 1 秒</span><i>·</i>
+          <span>待机呼吸</span><i>·</i><span>眨眼</span><i>·</i><span>微摆</span><i>·</i><span>被问到了会抖一下</span><i>·</i><span>吐槽前先沉默约 1 秒</span><i>·</i>
         </div>
       </div>
       <span class="home-foot__note">全部吐槽为本地词库模拟 · 不会真的调用大模型</span>
@@ -238,7 +238,7 @@
             <svg class="ic" viewBox="0 0 24 24"><use href="#i-send"/></svg>
           </button>
         </form>
-        <p class="composer__hint">Enter 发送 · Shift + Enter 换行 · 第 3 条离谱需求开始宠物会彻底绷不住</p>
+        <p class="composer__hint">Enter 发送 · 第 3 条离谱需求开始宠物会彻底绷不住</p>
       </section>
     </div>
   </section>
@@ -277,9 +277,9 @@
 <div class="wipe" id="wipe" aria-hidden="true"><span></span></div>
 
 <!-- 静态资源带版本号：Cloudflare 给静态文件 4 小时浏览器缓存，改完 game.js/styles.css 记得同步改 v= -->
-<script src="game.js?v=20260912-model-3d-v3"></script>
+<script src="game.js?v=20260912-fix5"></script>
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.180.0/build/three.module.js"}}</script>
-<script type="module" src="model3d.js?v=20260912-interactive-v6"></script>
+<script type="module" src="model3d.js?v=20260912-fix5"></script>
 </body>
 </html>
 
