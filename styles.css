@@ -539,7 +539,11 @@ h1,h2,h3,p{ margin:0; }
 .msg__label > span{ display:inline-flex; align-items:center; min-width:0; }
 .msg__body{
   padding:12px 15px; border-radius:16px; font-size:13.5px; line-height:1.7;
+
+  display:flex; align-items:flex-start; gap:9px;
 }
+.msg__body-emotion{ width:28px; height:28px; object-fit:contain; flex:none; margin-top:1px; }
+.msg__body-copy{ min-width:0; flex:1; }
 
 .msg--user{ align-self:flex-end; text-align:right; }
 .msg--user .msg__label{ color:var(--faint); justify-content:flex-end; }
@@ -750,6 +754,7 @@ h1,h2,h3,p{ margin:0; }
   .switcher__item img{ width:30px; height:30px; }
   .composer__hint{ display:none; }
   .msg__emotion{ width:20px; height:20px; }
+  .msg__body-emotion{ width:24px; height:24px; }
   .msg__roast-emotion{ width:20px; height:20px; }
   .msg__status{ width:30px; height:22px; }
   .roast__head{ padding:16px 16px 12px; }
