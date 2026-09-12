@@ -12,7 +12,7 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
 ## 当前版本
 
-核心流程已实现：本地词库、无需 API Key。线上版本：[https://subtext.tryworld.com.cn/](https://subtext.tryworld.com.cn/)（备用镜像：GitHub Pages，随 `main` 自动构建）。DeepSeek 的可选 3D 模型需要加载 unpkg 上的 Three.js，失败时回退立绘；不含 3D 的提问、通敌、对质流程可在断网下完成。
+核心流程已实现，纯静态、零依赖、无需 API Key，断网也能演示。线上版本：[https://subtext.tryworld.com.cn/](https://subtext.tryworld.com.cn/)（备用镜像：GitHub Pages，随 `main` 自动构建）
 
 ## 演示流程
 
@@ -27,23 +27,23 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
 ## 五只研究员角色
 
-当前版本角色名为：豆包、DeepSeek、WorkBuddy、Codex、元宝。其中豆包、DeepSeek、Codex、元宝为对真实产品的戏仿设定，不代表与任何第三方品牌存在合作、授权或从属关系；提交前请确认主办方对品牌戏仿名称的要求。
+当前版本使用“豆包”“元宝”“WorkBuddy”“Codex”等真实产品名作为戏仿设定，不代表与任何第三方品牌存在合作、授权或从属关系；提交前请确认主办方对品牌戏仿名称的要求。
 
 | 角色 | 人设 | 吐槽风格 |
 | --- | --- | --- |
 | 豆包 | 温柔陪伴型 | 温柔安慰、克制吐槽 |
-| DeepSeek | 冷静拆解型 | 冷静拆解、有理毒舌 |
+| WorkBuddy | 图示推演型 | 冷静拆解、有理毒舌 |
 | WorkBuddy | 加班同事型 | 效率焦虑、加班共鸣 |
 | Codex | 代码型 | 技术宅、现实报错 |
 | 元宝 | 财运精灵型 | 财迷机灵、暴富吐槽 |
 
 ## 技术与运行
 
-- HTML、CSS、原生 JavaScript。核心逻辑在普通脚本 `game.js`；DeepSeek 可选 3D 在 `model3d.js`（ES module，从 unpkg 加载 Three.js）。
-- 运行时回复只使用本地词库和预设匹配，不调用在线大模型。
+- HTML、CSS、原生 JavaScript；普通脚本，非 ES module。
+- 运行时只使用本地词库和预设匹配，不调用在线大模型。
 - 音效由浏览器 WebAudio API 实时合成，没有音频文件。
-- 核心流程可双击 `index.html` 或运行 `python -m http.server 8000`；3D 模型在 `file://` 下可能因 CORS 失败，会回退立绘。
-- 核心流程无需安装依赖或构建。
+- 可直接双击 `index.html`，也可运行 `python -m http.server 8000`。
+- 无需安装依赖或构建。
 
 ## 合规说明
 
@@ -60,3 +60,8 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 - [最终提交信息草稿](docs/最终提交信息草稿.md)
 
 作品提交截止时间：**2026 年 9 月 13 日 13:00**（主办方《We Young 黑客松 2026 选手指南》）。如主办方后续调整，以最新指南和活动群通知为准。
+'
+## Blender 3D 建模资产
+
+`pets/deepseek-high-detail.blend` 是使用 Blender 4.5 LTS 根据用户提供的正面、侧面、背面参考图生成的可编辑角色工程，包含角色网格、材质、基础骨骼、灯光、相机和内嵌参考图；`pets/deepseek-high-detail.glb` 是网页交互使用的导出文件。该版本属于可继续雕刻、重拓扑和权重绘制的高细节基础网格，不宣称已经达到商业动画级精模标准。
+'
