@@ -298,21 +298,24 @@ h1,h2,h3,p{ margin:0; }
 .pet-card__go .ic{ font-size:14px; }
 .pet-card:hover .pet-card__go{ opacity:1; transform:none; }
 
-/* ---- 首屏页脚 ---- */
+/* ---- 首屏：三步指引 + 页脚 ---- */
+.home-how{ margin-top:clamp(22px,3.4vh,34px); }
+.home-how__label{ font:600 11px var(--mono); letter-spacing:.16em; color:var(--accent-deep); }
+.home-how__steps{ list-style:none; margin:12px 0 0; padding:0; display:grid; gap:10px; }
+.home-how__steps li{ display:grid; grid-template-columns:auto auto minmax(0,1fr); gap:2px 12px; align-items:baseline; }
+.home-how__steps i{ font:600 11px var(--mono); letter-spacing:.08em; color:var(--accent-deep); opacity:.7; }
+.home-how__steps b{ font-size:13.5px; font-weight:600; color:var(--ink-2); white-space:nowrap; }
+.home-how__steps span{ font:400 11.5px var(--mono); line-height:1.55; color:var(--faint); }
+@media (max-width:520px){
+  .home-how__steps li{ grid-template-columns:auto minmax(0,1fr); }
+  .home-how__steps span{ grid-column:2; }
+}
+
 .home-foot{
-  max-width:1400px; margin:clamp(26px,5vh,48px) auto 0;
-  display:flex; align-items:center; gap:18px; flex-wrap:wrap;
-  padding-top:22px; border-top:1px solid var(--line-2);
+  max-width:1400px; margin:clamp(22px,4vh,40px) auto 0;
+  padding-top:18px; border-top:1px solid var(--line-2);
   font:400 11px var(--mono); color:var(--faint);
 }
-.home-foot__label{ color:var(--accent-deep); font-weight:600; letter-spacing:.16em; }
-.home-foot__note{ margin-left:auto; }
-.marquee{ flex:1; min-width:160px; overflow:hidden;
-  mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent); }
-.marquee__track{ display:flex; gap:16px; width:max-content; animation:marquee 30s linear infinite; }
-.marquee__track i{ font-style:normal; opacity:.5; }
-@keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
 
 /* ---------------------------------------------------------------- 实验室 */
 .scene--lab{ height:100vh; padding:calc(var(--topbar-h) + 14px) clamp(12px,2vw,26px) 18px; display:flex; flex-direction:column; }
@@ -763,7 +766,6 @@ h1,h2,h3,p{ margin:0; }
   .roast__head{ padding:16px 16px 12px; }
   .presets, .messages{ padding-left:16px; padding-right:16px; }
   .composer{ margin:0 16px 14px; }
-  .home-foot__note{ margin-left:0; }
 }
 /* The ordinary front portrait is the default, including module/WebGL failures. */
 .stage__model-3d{display:none;position:absolute;inset:0;z-index:3;pointer-events:none}
