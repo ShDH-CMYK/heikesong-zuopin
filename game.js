@@ -18,7 +18,7 @@
       tagline: '豆包陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       file: 'pets/doubao.png',
-      emotionIcon: 'assets/emojis/doubao.svg', statusIcon: 'assets/status/success.png',
+      emotionIcon: 'assets/emojis/doubao.svg', roastIcon: 'assets/emojis/roast-surprised.svg', statusIcon: 'assets/status/success.png',
       accent: '#ff6b7e', accent2: '#ffa06b', soft: '#ffe9ea', deep: '#a3202f',
       glow: 'rgba(255,107,126,.35)',
       mood: { idle: '温柔待机中', hover: '被摸头了，有点开心', roast: '憋了很久，终于说出来了', poke: '呀，别戳了' },
@@ -69,7 +69,7 @@
       tagline: 'DeepSeek 视觉助手 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
       file: 'pets/diagram-model.png',
-      emotionIcon: 'assets/emojis/deepseek.svg', statusIcon: 'assets/status/thinking.png',
+      emotionIcon: 'assets/emojis/deepseek.svg', roastIcon: 'assets/emojis/roast-angry.svg', statusIcon: 'assets/status/thinking.png',
       accent: '#2f7be8', accent2: '#57c7f5', soft: '#e5f0ff', deep: '#10408c',
       glow: 'rgba(47,123,232,.35)',
       mood: { idle: '数据链路空闲', hover: '正在扫描你的意图', roast: '结论已生成', poke: '别戳，采样中' },
@@ -120,7 +120,7 @@
       tagline: 'WorkBuddy office assistant · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       file: 'pets/workbuddy.png',
-      emotionIcon: 'assets/emojis/workbuddy.svg', statusIcon: 'assets/status/thinking.png',
+      emotionIcon: 'assets/emojis/workbuddy.svg', roastIcon: 'assets/emojis/roast-cry.svg', statusIcon: 'assets/status/thinking.png',
       accent: '#27c4a3', accent2: '#7ee6c4', soft: '#dff8f1', deep: '#0b6b57',
       glow: 'rgba(39,196,163,.35)',
       mood: { idle: '待命中，未下班', hover: '又要有新需求了？', roast: '在群里发完疯了', poke: '别戳，我在改需求' },
@@ -171,7 +171,7 @@
       tagline: 'Codex code sprite · compile buddy',
       persona: '技术宅 · 现实报错',
       file: 'pets/codex.png',
-      emotionIcon: 'assets/emojis/codex.svg', statusIcon: 'assets/status/not-found.png',
+      emotionIcon: 'assets/emojis/codex.svg', roastIcon: 'assets/emojis/roast-angry.svg', statusIcon: 'assets/status/not-found.png',
       accent: '#8b5cf6', accent2: '#c07bff', soft: '#efe7ff', deep: '#5a2aab',
       glow: 'rgba(139,92,246,.35)',
       mood: { idle: '编译通过', hover: '检测到输入', roast: '抛了个异常', poke: '警告：无效调用' },
@@ -222,7 +222,7 @@
       tagline: '元宝财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       file: 'pets/yuanbao.png',
-      emotionIcon: 'assets/emojis/yuanbao.svg', statusIcon: 'assets/status/success.png',
+      emotionIcon: 'assets/emojis/yuanbao.svg', roastIcon: 'assets/emojis/roast-surprised.svg', statusIcon: 'assets/status/success.png',
       accent: '#f0a91c', accent2: '#ffd25e', soft: '#fff2d6', deep: '#8a5a05',
       glow: 'rgba(240,169,28,.35)',
       mood: { idle: '在数钱，勿扰', hover: '你要给我钱？', roast: '这单不划算但我说了', poke: '戳一下十块' },
@@ -722,7 +722,8 @@
     wrap.className = 'msg msg--' + kind;
     var icon = pet && pet.emotionIcon ? '<img class="msg__emotion" src="' + esc(pet.emotionIcon) + '" alt="" aria-hidden="true">' : '';
     var status = kind === 'roast' && pet && pet.statusIcon ? '<img class="msg__status" src="' + esc(pet.statusIcon) + '" alt="" aria-hidden="true">' : '';
-    var inner = '<span class="msg__label">' + icon + status + '<span>' + esc(label) + '</span></span><div class="msg__body">' + html + '</div>';
+    var roastIcon = kind === 'roast' && pet && pet.roastIcon ? '<img class="msg__roast-emotion" src="' + esc(pet.roastIcon) + '" alt="" aria-hidden="true">' : '';
+    var inner = '<span class="msg__label">' + icon + roastIcon + status + '<span>' + esc(label) + '</span></span><div class="msg__body">' + html + '</div>';
     if (copyText) {
       inner += '<button class="msg__copy" type="button" data-copy="' + esc(copyText) + '">' +
         '<svg class="ic" viewBox="0 0 24 24"><use href="#i-copy"/></svg>复制这句</button>';
