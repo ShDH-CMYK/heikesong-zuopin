@@ -53,15 +53,27 @@ git switch -c feat/your-task
 - 按主办方要求维护 [AI 使用与素材记录](docs/AI使用与素材记录.md)（实际使用的工具、人工改动、第三方素材及授权来源）；初稿已建，其中「待补填 / 待确认」事项须在提交前补齐。完整聊天、真实用户资料和未经授权的截图不默认公开。
 - 新技术栈确定后补 README、依赖与忽略规则；尚未选择时不预设框架、不创建无用源码目录。
 
+## 本地预览与模型修改
+
+从仓库根目录执行 `python -m http.server 8000 --bind 127.0.0.1`，通过 <http://127.0.0.1:8000/> 预览。三维模块依赖 HTTP 资源加载，直接双击 `index.html` 不作为完整验证方式。普通页面预览不需要 npm 安装或前端构建。
+
+修改 DeepSeek 模型时保留 `tools/build-deepseek.py`、`tools/build-deepseek-textures.py` 与 `.blend` 源工程；复建顺序和工具版本见 [模型说明](docs/DeepSeek三维模型.md)。记录真实构建统计、四方向渲染、骨骼与动画验证、浏览器交互结果。离线渲染能确认外观，不能证明触摸、点击或资源失败回退已通过。
+
 ## 部署（在线演示）
 
-线上演示的对外入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目名 `subtext`，生产域名为 `subtext-8up.pages.dev`，自定义域 CNAME 指向该地址）；GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>（随 `main` 自动构建）作为备用镜像。`main` 有代码更新后，Cloudflare 站点先把运行必需文件复制到仓库外的暂存目录，再整目录上传：
+本轮用户指定的主入口是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>。将完成检查的提交同步到 `main` 后，检查 GitHub Pages 的实际部署状态及在线资源版本；推送成功不等于页面已经更新。核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证选择 DeepSeek、旋转、缩放、点击动作和返回其他角色的流程。
+
+历史 Cloudflare Pages 项目仍为 `subtext`，自定义域名 <https://subtext.tryworld.com.cn/>，生产域名 `subtext-8up.pages.dev`。本轮未同步该站点，因此不能默认与 GitHub Pages 相同。如果后续安排同步，使用仓库外的**新暂存目录**复制必要静态文件，并包含 `vendor/three/` 与回复表情所在的 `assets/`：
 
 ```powershell
-New-Item -ItemType Directory -Force ..\.deploy\subtext\pets | Out-Null
-Copy-Item index.html,styles.css,game.js,model3d.js,THIRD_PARTY_NOTICES.md ..\.deploy\subtext\
-Copy-Item pets\*.png,pets\*.glb ..\.deploy\subtext\pets\
-wrangler pages deploy ..\.deploy\subtext --project-name=subtext --branch=main
+$stageDir = Join-Path (Split-Path -Parent (Get-Location).Path) ('.deploy/subtext-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+New-Item -ItemType Directory -Force (Join-Path $stageDir 'pets') | Out-Null
+Copy-Item index.html,styles.css,game.js,model3d.js,THIRD_PARTY_NOTICES.md -Destination $stageDir
+Copy-Item pets\*.png,pets\deepseek.glb -Destination (Join-Path $stageDir 'pets')
+Copy-Item -LiteralPath assets,vendor -Destination $stageDir -Recurse
+wrangler pages deploy $stageDir --project-name=subtext --branch=main
 ```
 
-需要本机已登录 Cloudflare（`wrangler whoami` 查看账号）。部署完成后在线上地址实测一遍核心流程，并核对线上与 `main` 内容一致。
+Three.js 模块依赖关系与 MIT 许可证都在 `vendor/three/` 内，不能只复制 `three.module.js`。`deepseek.glb` 已内嵌网页所需贴图；`.blend`、生成脚本、参考 JPG、构建日志和离线渲染无需上传到 Cloudflare 静态站点。
+
+Cloudflare 部署需要本机已登录（`wrangler whoami` 查看账号）。部署后分别验证两个入口；只有实际更新并检查过的地址才能记为已同步。修改脚本、样式或模型时同步调整引用版本号，避免浏览器旧缓存掩盖更新。

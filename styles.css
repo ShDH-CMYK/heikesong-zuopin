@@ -386,16 +386,7 @@ h1,h2,h3,p{ margin:0; }
 }
 .stage__model{ display:contents; }
 .stage__model img:not(#lab-pet){ display:none; }
-.stage__pet--3d{ perspective:900px; touch-action:none; cursor:grab; }
-.stage__pet--3d.is-dragging{ cursor:grabbing; }
-.stage__pet--3d .stage__model{ display:block; position:relative; width:min(84%,420px); height:min(100%,50vh); transform-style:preserve-3d; transform:rotateX(var(--model-tilt,0deg)) rotateY(var(--model-rot,0deg)); transition:transform .15s linear; }
-.stage__pet--3d .stage__model img{ display:block; position:absolute; inset:0; width:100%; height:100%; max-width:none; object-fit:contain; backface-visibility:hidden; }
-.stage__pet--3d .stage__model #lab-pet{ transform:translateZ(34px); }
-.stage__pet--3d .stage__model #lab-pet-side{ transform:rotateY(90deg) translateZ(34px); }
-.stage__pet--3d .stage__model #lab-pet-back{ transform:rotateY(180deg) translateZ(34px); }
-.stage__pet--3d .stage__model img:hover{ transform:translateZ(34px); }
-.stage__pet--3d .stage__model #lab-pet-side:hover{ transform:rotateY(90deg) translateZ(34px); }
-.stage__pet--3d .stage__model #lab-pet-back:hover{ transform:rotateY(180deg) translateZ(34px); }
+.stage__pet--3d .stage__model{ display:contents; }
 .stage__pet img:hover{ transform:scale(1.03); }
 
 /* 反应动作：petFloat 用的是 translate，这里用 transform，两者可以同时跑
@@ -750,7 +741,6 @@ h1,h2,h3,p{ margin:0; }
   .lab-grid{ grid-template-columns:minmax(0,1fr); }
   .stage{ min-height:min(74vh,560px); }
   .stage__pet img{ height:min(100%,38vh); }
-  .stage__pet--3d .stage__model{ width:min(88%,420px); height:min(100%,38vh); }
   .roast{ min-height:min(84vh,640px); }
   .messages{ max-height:46vh; }
   .live-pill{ display:none; }
@@ -775,7 +765,19 @@ h1,h2,h3,p{ margin:0; }
   .composer{ margin:0 16px 14px; }
   .home-foot__note{ margin-left:0; }
 }
-.stage__model-3d{display:none;position:absolute;inset:0;z-index:3;touch-action:none;cursor:grab}.stage__model-3d canvas{width:100%;height:100%;display:block}.stage__model-3d:active{cursor:grabbing}.stage__pet--3d .stage__model,.stage__pet--3d>img{display:none}.stage__pet--3d .stage__model-3d{display:block}
-
-.stage__model-3d.is-fallback{display:none}.stage__pet--3d.is-fallback .stage__model{display:block}
-.stage__3d-hint{position:absolute;left:50%;bottom:14px;z-index:4;transform:translateX(-50%);padding:6px 10px;border:1px solid rgba(255,255,255,.7);border-radius:999px;background:rgba(255,255,255,.72);backdrop-filter:blur(8px);font:500 10px var(--mono);color:var(--accent-deep);white-space:nowrap;pointer-events:none;opacity:.82}.stage__model-3d.is-dragging .stage__3d-hint{opacity:.35}.stage__model-3d.is-pulsing canvas{animation:modelPulse .45s var(--ease)}@keyframes modelPulse{50%{filter:brightness(1.18) drop-shadow(0 0 20px var(--accent-glow))}}
+/* The ordinary front portrait is the default, including module/WebGL failures. */
+.stage__model-3d{display:none;position:absolute;inset:0;z-index:3;pointer-events:none}
+.stage__pet--3d .stage__model-3d{display:block}
+.stage__pet--3d:not(.is-model-ready) .stage__model{display:grid;position:absolute;inset:16px 16px 38px;place-items:center}
+.stage__pet--3d:not(.is-model-ready) #lab-pet{position:absolute;inset:0;height:100%;width:100%;max-height:100%;max-width:100%;min-height:0;min-width:0;object-fit:contain}
+.stage__model-3d canvas{width:100%;height:100%;display:block;visibility:hidden;touch-action:none}
+.stage__pet--3d.is-model-ready .stage__model{display:none}
+.stage__pet--3d.is-model-ready .stage__model-3d{pointer-events:auto;cursor:grab}
+.stage__pet--3d.is-model-ready .stage__model-3d canvas{visibility:visible}
+.stage__model-3d.is-dragging{cursor:grabbing}
+.stage__model-3d canvas:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;border-radius:20px}
+.stage__3d-hint{position:absolute;left:50%;bottom:12px;z-index:4;transform:translateX(-50%);padding:6px 10px;border:1px solid rgba(255,255,255,.7);border-radius:999px;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);font:500 10px var(--mono);color:var(--accent-deep);max-width:calc(100% - 24px);text-align:center;pointer-events:none;opacity:.9}
+.stage__model-3d.is-dragging .stage__3d-hint{opacity:.4}
+.stage__3d-reset{display:none;position:absolute;z-index:5;left:12px;bottom:44px;padding:6px 10px;border:1px solid rgba(255,255,255,.8);border-radius:999px;background:rgba(255,255,255,.88);font:500 10px var(--mono);color:var(--accent-deep);cursor:pointer}
+.stage__pet--3d.is-model-ready .stage__3d-reset{display:block}
+.stage__3d-reset:focus-visible{outline:2px solid var(--accent);outline-offset:2px}

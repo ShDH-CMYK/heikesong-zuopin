@@ -65,3 +65,25 @@ SOFTWARE.
 
 本次版本使用了用户提供的 `基础表情.zip` 中 8 个情绪 SVG，以及 `图标.zip` 中 3 个状态插画（复制到 `assets/emojis/` 与 `assets/status/`）。压缩包未附带作者、来源或许可证文件；公开发布前请向素材提供方确认授权，或替换为已确认许可的图标。
 
+### Draco 几何解码器
+
+`vendor/three/draco/` 包含随 Three.js 0.180.0 分发的 Google Draco glTF 解码器（JavaScript、WebAssembly 及包装脚本），用于解压 `deepseek.glb` 的几何数据。Draco 使用 Apache License 2.0，完整许可证见 [`vendor/three/draco/LICENSE`](vendor/three/draco/LICENSE)，上游为 <https://github.com/google/draco>。`DRACOLoader.js` 本身属于 Three.js，使用其 MIT 许可证。
+
+## 4. Three.js 三维渲染组件
+
+网页使用 [Three.js 0.180.0](https://github.com/mrdoob/three.js/tree/r180)（MIT License）。运行必需的发布文件以原始模块形式保存在 `vendor/three/`：
+
+- `build/three.module.js`、`build/three.core.js`；
+- `addons/loaders/GLTFLoader.js`；
+- `addons/controls/OrbitControls.js`；
+- `addons/utils/BufferGeometryUtils.js`。
+
+完整版权和许可文本随代码保存在 [`vendor/three/LICENSE`](vendor/three/LICENSE)。重新分发或部署时须保留该文件。运行时从本地同站点加载这些模块，不依赖 unpkg。
+
+## 5. DeepSeek 三维资产制作工具与素材记录
+
+`tools/build-deepseek.py` 由 AI 辅助编写，使用 Blender 4.5 LTS 的 Python API 建立网格、材质、UV、骨骼、权重及动画，再通过 Blender 自带 glTF 导出器生成 `pets/deepseek.glb`。`tools/build-deepseek-textures.py` 使用 Pillow 绘制四张基色贴图。
+
+- [Blender](https://www.blender.org/about/license/)：GNU GPL，作为制作工具使用，不随网页分发程序。
+- [Pillow](https://pillow.readthedocs.io/en/stable/about.html#license)：HPND，作为贴图生成工具使用，不随网页分发库。
+- 团队提供的三视图、角色设计与原立绘的出处和授权情况见 [AI 使用与素材记录](docs/AI使用与素材记录.md)。模型由程序重建，贴图由曲线和栅格绘制；工具许可证不等同于参考设计的授权。

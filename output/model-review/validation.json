@@ -1,0 +1,287 @@
+{
+  "passed": true,
+  "errors": [],
+  "method": "Final compressed GLB metadata plus numeric arrays in supplied decoded companion. Python does not decode Draco. Companion provenance must be established by the external decoder invocation; matching descriptors alone do not prove provenance.",
+  "final": {
+    "path": "pets/deepseek.glb",
+    "bytes": 1414384,
+    "sha256": "97fb5fbe02d52eefcaa14aaffe1bd9f5b272cbe59b7e56aa287280adf44eed1e"
+  },
+  "decodedCompanion": {
+    "path": "output/model-review/deepseek-dedup.glb",
+    "bytes": 9520192,
+    "sha256": "ca0b2f15539dcfd2b7c104d19ab6d3ac84df35dd001451ad99259fc022f12836"
+  },
+  "generatedAtUtc": "2026-09-12T07:50:49.895348+00:00",
+  "skinCount": 1,
+  "jointNames": [
+    [
+      "root",
+      "spine",
+      "head",
+      "hair",
+      "tail",
+      "flukes",
+      "arm.L",
+      "forearm.L",
+      "hand.L",
+      "arm.R",
+      "forearm.R",
+      "hand.R",
+      "leg.L",
+      "leg.R"
+    ]
+  ],
+  "weightTolerance": 0.0001,
+  "maximumWeightSumError": 8.940696716308594e-08,
+  "totals": {
+    "vertices": 138434,
+    "triangles": 250750,
+    "mixedWeightVertices": 11781,
+    "invalidJointVertices": 0,
+    "invalidWeightVertices": 0,
+    "unweightedVertices": 0,
+    "weightSumFailures": 0
+  },
+  "mixedWeightGroups": {
+    "hair + head": 11108,
+    "flukes + tail": 347,
+    "arm.R + forearm.R": 159,
+    "arm.L + forearm.L": 167
+  },
+  "meshLocalBounds": {
+    "min": [
+      -1.4142725467681885,
+      0.030000001192092896,
+      -0.9490267038345337
+    ],
+    "max": [
+      1.7606377601623535,
+      4.7847700119018555,
+      0.8321565389633179
+    ],
+    "size": [
+      3.174910306930542,
+      4.754770010709763,
+      1.7811832427978516
+    ]
+  },
+  "animations": [
+    {
+      "name": "Idle",
+      "durationSeconds": 4.0,
+      "channels": 42,
+      "changingChannels": 8,
+      "targetBones": [
+        "arm.L",
+        "arm.R",
+        "flukes",
+        "forearm.L",
+        "forearm.R",
+        "hair",
+        "hand.L",
+        "hand.R",
+        "head",
+        "leg.L",
+        "leg.R",
+        "root",
+        "spine",
+        "tail"
+      ]
+    },
+    {
+      "name": "React",
+      "durationSeconds": 2.0,
+      "channels": 42,
+      "changingChannels": 9,
+      "targetBones": [
+        "arm.L",
+        "arm.R",
+        "flukes",
+        "forearm.L",
+        "forearm.R",
+        "hair",
+        "hand.L",
+        "hand.R",
+        "head",
+        "leg.L",
+        "leg.R",
+        "root",
+        "spine",
+        "tail"
+      ]
+    }
+  ],
+  "primitives": [
+    {
+      "mesh": "Sphere.193",
+      "vertices": 7362,
+      "triangles": 13670,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Sphere.286",
+      "vertices": 18089,
+      "triangles": 29954,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Sphere.191",
+      "vertices": 2046,
+      "triangles": 3680,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Pleated skirt, closed volume.001",
+      "vertices": 582,
+      "triangles": 1148,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Eyebrow.002",
+      "vertices": 1364,
+      "triangles": 2400,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Face framing curl.002",
+      "vertices": 29617,
+      "triangles": 58531,
+      "uvSets": [
+        "TEXCOORD_0",
+        "TEXCOORD_1"
+      ],
+      "mixedWeightVertices": 11455,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Sphere.203",
+      "vertices": 10734,
+      "triangles": 19867,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 326,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Painted convex iris.002",
+      "vertices": 1302,
+      "triangles": 2432,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Whale emblem apron.001",
+      "vertices": 1650,
+      "triangles": 3296,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Sphere.364",
+      "vertices": 9211,
+      "triangles": 17352,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Sphere.211",
+      "vertices": 1118,
+      "triangles": 1920,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Upper sculpted eyelash.002",
+      "vertices": 1639,
+      "triangles": 2880,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    },
+    {
+      "mesh": "Sphere.213",
+      "vertices": 53720,
+      "triangles": 93620,
+      "uvSets": [
+        "TEXCOORD_0"
+      ],
+      "mixedWeightVertices": 0,
+      "invalidJointVertices": 0,
+      "invalidWeightVertices": 0,
+      "unweightedVertices": 0,
+      "weightSumFailures": 0
+    }
+  ]
+}

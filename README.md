@@ -12,7 +12,9 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
 ## 当前版本
 
-核心流程已实现，纯静态、零依赖、无需 API Key，断网也能演示。线上版本：[https://subtext.tryworld.com.cn/](https://subtext.tryworld.com.cn/)（备用镜像：GitHub Pages，随 `main` 自动构建）
+核心流程使用本地词库，无需 API Key。当前演示主入口是 [GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/)。DeepSeek 使用可旋转、缩放并播放骨骼动作的三维角色；其余四只宠物继续使用立绘。
+
+网页采用静态部署，Three.js 0.180.0 及模型、贴图均随站点提供。用本地 HTTP 服务打开完整副本时，交互和三维角色可在断开互联网后使用；Google Fonts 不可用时回退系统字体。历史 Cloudflare 地址 [subtext.tryworld.com.cn](https://subtext.tryworld.com.cn/) 本轮尚未同步，不能据该地址判断本次模型是否更新。
 
 ## 演示流程
 
@@ -23,27 +25,36 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 5. 换一只宠物，可以截获它们之间的「内部通讯 · 已截获」：被问过的宠物向新宠物打小报告，新宠物先紧急澄清、再露出内心 OS。
 6. 每次提问会增加「人类离谱指数」；连续 3 条离谱需求会触发保密后台告警。
 7. 打开「保密后台」查看按顺序记录的日志、总数和告警状态；点某条记录的「当面质问」，它会先否认、再招供，最后偷偷补一条新记录（按钮变为「已对质」）。
-8. 右上角音效开关控制由 WebAudio 实时合成的提示音。
+8. 选择 DeepSeek 后，拖动角色可从正面、侧面、背面查看；滚轮或双指捏合缩放，点击角色或「戳它一下」播放互动动作，结束后回到待机。双击模型或点击「复位视角」回到正面。
+9. 右上角音效开关控制由 WebAudio 实时合成的提示音。
 
 ## 五只研究员角色
 
-当前版本使用“豆包”“元宝”“WorkBuddy”“Codex”等真实产品名作为戏仿设定，不代表与任何第三方品牌存在合作、授权或从属关系；提交前请确认主办方对品牌戏仿名称的要求。
+当前版本使用“豆包”“DeepSeek”“元宝”“WorkBuddy”“Codex”等真实产品名作为戏仿设定，不代表与任何第三方品牌存在合作、授权或从属关系；提交前请确认主办方对品牌戏仿名称的要求。
 
 | 角色 | 人设 | 吐槽风格 |
 | --- | --- | --- |
 | 豆包 | 温柔陪伴型 | 温柔安慰、克制吐槽 |
-| WorkBuddy | 图示推演型 | 冷静拆解、有理毒舌 |
+| DeepSeek | 视觉助手型 · 鲸鱼女仆 | 冷静拆解、有理毒舌 |
 | WorkBuddy | 加班同事型 | 效率焦虑、加班共鸣 |
 | Codex | 代码型 | 技术宅、现实报错 |
 | 元宝 | 财运精灵型 | 财迷机灵、暴富吐槽 |
 
 ## 技术与运行
 
-- HTML、CSS、原生 JavaScript；普通脚本，非 ES module。
-- 运行时只使用本地词库和预设匹配，不调用在线大模型。
-- 音效由浏览器 WebAudio API 实时合成，没有音频文件。
-- 可直接双击 `index.html`，也可运行 `python -m http.server 8000`。
-- 无需安装依赖或构建。
+- HTML、CSS、原生 JavaScript；`game.js` 管理对话，`model3d.js` 是负责三维场景的 ES module。
+- Three.js 0.180.0、GLTFLoader、OrbitControls 及必要依赖位于 `vendor/three/`，附 MIT 许可证；运行时不从 unpkg 获取脚本。
+- 回复使用本地词库和预设匹配，不调用在线大模型；音效由浏览器 WebAudio API 实时合成。
+- 浏览器需支持 ES modules、import maps 和 WebGL。三维资源或 WebGL 不可用时保留角色立绘。
+- 浏览网页无需 npm 安装或前端构建。请通过 HTTP 服务访问，直接双击 `index.html` 的 `file://` 方式不能可靠加载模型和模块。
+
+在仓库根目录执行：
+
+```powershell
+python -m http.server 8000 --bind 127.0.0.1
+```
+
+然后打开 [http://127.0.0.1:8000/](http://127.0.0.1:8000/)。部署必须包含 `vendor/three/`、`assets/` 和运行所需的 `pets/` 文件，详见 [团队协作约定](CONTRIBUTING.md)。
 
 ## 合规说明
 
@@ -60,8 +71,11 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 - [最终提交信息草稿](docs/最终提交信息草稿.md)
 
 作品提交截止时间：**2026 年 9 月 13 日 13:00**（主办方《We Young 黑客松 2026 选手指南》）。如主办方后续调整，以最新指南和活动群通知为准。
-'
-## Blender 3D 建模资产
 
-`pets/deepseek-high-detail.blend` 是使用 Blender 4.5 LTS 根据用户提供的正面、侧面、背面参考图生成的可编辑角色工程，包含角色网格、材质、基础骨骼、灯光、相机和内嵌参考图；`pets/deepseek-high-detail.glb` 是网页交互使用的导出文件。该版本属于可继续雕刻、重拓扑和权重绘制的高细节基础网格，不宣称已经达到商业动画级精模标准。
-'
+## Blender 三维角色
+
+当前网页加载 [`pets/deepseek.glb`](pets/deepseek.glb)。对应可编辑工程为 [`pets/deepseek.blend`](pets/deepseek.blend)，使用 Blender 4.5 LTS 通过可重复执行的 Python 脚本建立头脸、分层发束、女仆服装、围裙、蕾丝、蝴蝶结、袖口和鲸鱼尾鳍。它具有正侧背方向的实体体积，使用 14 根骨骼和蒙皮权重，包含 `Idle`（4 秒）与 `React`（2 秒）两段动作，以及四张绘制贴图。
+
+这是按三视图制作的风格化脚本建模版本，不是手工雕刻或商业高精度复刻。当前没有嘴型表情驱动、布料物理或完整动作库。源工程保留独立部件；网页导出按材质合并网格以减少绘制调用。旧 `deepseek-lowpoly.glb`、`deepseek-high-detail.blend` 和 `deepseek-high-detail.glb` 仅保留为历史迭代，网页不加载。
+
+建模方法、UV 方向、骨骼结构、复建步骤和限制见 [DeepSeek 三维模型说明](docs/DeepSeek三维模型.md)。渲染检查图与构建统计位于 `output/model-review/`；这些离线渲染不代替浏览器交互验证。

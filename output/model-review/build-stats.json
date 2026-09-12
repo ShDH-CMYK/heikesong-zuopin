@@ -1,0 +1,13 @@
+{
+  "meshes": 313,
+  "vertices": 222661,
+  "triangles": 441398,
+  "bones": 14,
+  "actions": [
+    "Idle",
+    "React"
+  ],
+  "height_units": 4.8,
+  "coordinate_system": "Blender Z up / front -Y; glTF Y up / front +Z",
+  "method": "Scripted sculptural meshes with UV-painted textures and armature weights; no image-plane body"
+}
