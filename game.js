@@ -13,8 +13,8 @@
   var PETS = [
     {
       id: 'doubao', name: '豆包', en: 'DOUBAO',
-      opener: ['先认真听你说。', '嗯，我在听，你慢慢说。', '好啦，先把你的想法告诉我。'],
-      greeting: ['你好，我是 {name}。', '嗨，我是 {name}，今天也来陪你聊。', '我来啦，我是 {name}。'],
+      opener: '先认真听你说。',
+      greeting: '你好呀，我是 {name}。',
       tagline: '豆包陪伴型 · companion orb',
       persona: '温柔安慰 · 克制吐槽',
       file: 'pets/doubao.png',
@@ -63,8 +63,8 @@
     },
     {
       id: 'deepseek', name: 'DeepSeek', en: 'DEEPSEEK',
-      opener: ['先把问题拆开看。', '我们先把变量分开。', '先给结论，再补推理。'],
-      greeting: ['你好，我是 {name}。', '系统已就绪，我是 {name}。', '收到，我是 {name}，开始分析。'],
+      opener: '先把问题拆开看。',
+      greeting: '系统已就绪，我是 {name}。',
       tagline: 'DeepSeek 视觉助手 · visual modeler',
       persona: '冷静拆解 · 有理毒舌',
       file: 'pets/diagram-model.png',
@@ -113,8 +113,8 @@
     },
     {
       id: 'workbuddy', name: 'WorkBuddy', en: 'WORKBUDDY',
-      opener: ['收到，先把需求摊开。', '行，这活儿我先接住。', '先说排期，再说怎么做。'],
-      greeting: ['你好，我是 {name}。', '我上线了，我是 {name}。', '收到呼叫，我是 {name}。'],
+      opener: '先说需求，我来排期。',
+      greeting: '我上线了，我是 {name}。',
       tagline: 'WorkBuddy office assistant · overtime pal',
       persona: '效率焦虑 · 加班共鸣',
       file: 'pets/workbuddy.png',
@@ -163,8 +163,8 @@
     },
     {
       id: 'codex', name: 'Codex', en: 'CODEX',
-      opener: ['先跑一遍输入检查。', '请求已接收，开始校验参数。', '先确认输入，再决定怎么编译。'],
-      greeting: ['你好，我是 {name}。', '进程启动，我是 {name}。', '连接建立，我是 {name}。'],
+      opener: '先跑一遍输入检查。',
+      greeting: '进程启动，我是 {name}。',
       tagline: 'Codex code sprite · compile buddy',
       persona: '技术宅 · 现实报错',
       file: 'pets/codex.png',
@@ -213,8 +213,8 @@
     },
     {
       id: 'yuanbao', name: '元宝', en: 'YUANBAO',
-      opener: ['先算清楚这笔账。', '先看现金流，再谈愿望。', '别急，先把成本和回报列出来。'],
-      greeting: ['你好，我是 {name}。', '来算账吧，我是 {name}。', '资金顾问 {name} 已待命。'],
+      opener: '先算清楚这笔账。',
+      greeting: '来算账吧，我是 {name}。',
       tagline: '元宝财运精灵 · fortune sprite',
       persona: '财迷机灵 · 暴富吐槽',
       file: 'pets/yuanbao.png',
@@ -674,12 +674,10 @@
      10. 吐槽引擎
      ===================================================================== */
   function pickFresh(list, stateKey) {
-    if (!list || !list.length) return '';
-    var last = stateKey && stateKey.last;
-    var options = list.length > 1 ? list.filter(function (item) { return item !== last; }) : list;
-    var value = pick(options);
-    if (stateKey) stateKey.last = value;
-    return value;
+    void stateKey;
+    if (!list) return '';
+    if (typeof list === 'string') return list;
+    return list.length ? pick(list) : '';
   }
 
   function withOpening(pet, text) {
