@@ -82,6 +82,11 @@
       ],
       coverup: [
         '补充记录：本次属「深度关怀回访」，双方聊得很开心。以上描述已征得本人同意。'
+      ],
+      verdict: [
+        '结案意见：你提的 {n} 个问题里，大部分不是问题，是深夜。我陪你到这儿，剩下的路你自己走一段。',
+        '我不给你打分。但能被一只 AI 气笑的人，一般还撑得住。',
+        '你当面质问了我 {c} 次。你其实早知道答案，只是需要有人先开口。这次我先。'
       ]
     },
     {
@@ -156,6 +161,11 @@
       ],
       coverup: [
         '归档说明：本次对质属例行质量回查，结论「输出符合预期」，双方情绪稳定。'
+      ],
+      verdict: [
+        '结案：{n} 次提问，{m} 点离谱指数，样本自洽度偏低。结论是你不是来要答案的，是来要许可的。许可没有。',
+        '把 {c} 次对质并成一条曲线，斜率指向同一件事：你更在意谁先开口承认。',
+        '截获通讯 {w} 条，交叉验证后一致。不一致的那个变量是你对自己的描述。'
       ]
     },
     {
@@ -229,6 +239,11 @@
       ],
       coverup: [
         '对质结论：需求澄清会一次，达成共识，约定「下次早点提需求」。纪要已归档。'
+      ],
+      verdict: [
+        '结案：本次收到需求 {n} 条，无一条带验收标准。离谱指数 {m}，超出我的排期能力三个工作日。',
+        '你当面质问 {c} 次，平均每次比我一份日报还长。这个班我上不动了。',
+        '内部通讯 {w} 条已归档。结论：卡点不在我，在你没给截止日期。'
       ]
     },
     {
@@ -302,6 +317,11 @@
       ],
       coverup: [
         '变更记录已更新：本次对质定性为「代码评审」，结论——不是 bug，是特性。双方已签收。'
+      ],
+      verdict: [
+        '进程退出码 {m}。共接收 {n} 个请求：0 个可复现，1 个可共情。',
+        '对质 {c} 次，均为断言失败：期望「安慰」，实际「真相」。建议修改期望值而不是修改我。',
+        '截获通讯 {w} 条，全部通过校验。未通过校验的是输入侧。'
       ]
     },
     {
@@ -375,6 +395,11 @@
       ],
       coverup: [
         '对质一次，按标准费率结算：你欠我三十，记入「长期应收」，慢慢还。'
+      ],
+      verdict: [
+        '结账：{n} 笔提问，{m} 点离谱，折合情绪成本一次免费。这单我不赚你钱，我赚你记忆。',
+        '你问了 {n} 次怎么暴富，一次都没问怎么省钱。这个客户我不接，接了亏。',
+        '对质 {c} 次，内部通讯 {w} 条，全是别人的报价。你的预算在我这边仍然是零。'
       ]
     }
   ];
@@ -574,7 +599,7 @@
   /* =====================================================================
      3. 状态与 DOM
      ===================================================================== */
-  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null };
+  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null, asks: [], wires: [], confronts: 0, alerted: false, seen: {}, caseId: '', verdict: '' };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -632,6 +657,12 @@
     logCount: $('#log-count'),
     logCountFoot: $('#log-count-foot'),
     alertBanner: $('#alert-banner'),
+    dossier: $('#dossier'),
+    dossierBody: $('#dossier-body'),
+    dossierMeta: $('#dossier-meta'),
+    dossierClose: $('#dossier-close'),
+    dossierCopy: $('#dossier-copy'),
+    reportBtn: $('#report-btn'),
     wipe: $('#wipe')
   };
 
@@ -740,6 +771,7 @@
   function selectPet(i, animate) {
     state.pet = i;
     var p = PETS[i];
+    state.seen[i] = true;
 
     applyTheme(i);
 
@@ -946,6 +978,7 @@
 
     var absurd = ABSURD_RE.test(text);
     state.absurd = absurd ? state.absurd + 1 : 0;
+    state.asks.push({ q: clip(text, 22), pet: petIndex, absurd: absurd });
 
     var typing = addTyping(pet.en);
 
@@ -972,6 +1005,7 @@
 
       if (state.absurd >= 3) {
         el.alertBanner.classList.add('is-show');
+        state.alerted = true;
         beep('alert');
       }
       if (state.count >= 4) {
@@ -1021,6 +1055,7 @@
 
     state.busy = true;
     state.pendingGossip = false;
+    state.wires.push(sender.name + ' → ' + receiver.name);
     var epoch = state.epoch;
     var receiverIndex = state.pet;
     var kTxt = state.lastAsk || '刚才那个问题';
@@ -1117,6 +1152,7 @@
     var pet = PETS[entry.pet];
     var isRepeat = entry.q.indexOf('（当面质问）') === 0;
     state.busy = true;
+    state.confronts += 1;
     var epoch = state.epoch;
     beep('chip');
     var quote = clip(entry.r, 24).replace(/[「」]/g, '');
@@ -1153,6 +1189,12 @@
       if (state.pet === entry.pet) el.labMood.textContent = pet.mood.idle;
       state.busy = false;
       flushQueues();
+      if (state.confronts === 1) {
+        setTimeout(function () {
+          if (epoch !== state.epoch) return;
+          openDossier();
+        }, 900);
+      }
     }, 2560);
   }
 
@@ -1173,6 +1215,165 @@
     setTimeout(function () { el.scrim.hidden = true; }, 400);
   }
 
+  /* =====================================================================
+     12.5 结案报告：把这一局的本地互动统计收成一份可带走、可截图的档案
+     纯本地计数 + 本地判词，不调用大模型，不上传任何输入。
+     ===================================================================== */
+  var TIERS = [
+    { max: 20, name: '轻度', note: '基本正常，偶尔离谱。允许继续对话。' },
+    { max: 45, name: '中度', note: '离谱已成习惯，建议减少凌晨三点的提问。' },
+    { max: 75, name: '重度', note: '已触发内部通报，多只宠物对你有印象。' },
+    { max: Infinity, name: '晚期', note: '本档案作为教学样本长期保留。' }
+  ];
+  function tierOf(m) {
+    for (var i = 0; i < TIERS.length; i++) { if (m <= TIERS[i].max) return TIERS[i]; }
+    return TIERS[TIERS.length - 1];
+  }
+  function fillStats(tpl, d) {
+    return tpl.replace(/\{n\}/g, d.n).replace(/\{m\}/g, d.m).replace(/\{c\}/g, d.c).replace(/\{w\}/g, d.w);
+  }
+  function newCaseId() {
+    var t = new Date();
+    var ymd = '' + t.getFullYear() + String(t.getMonth() + 1).padStart(2, '0') + String(t.getDate()).padStart(2, '0');
+    var pool = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    var tail = '';
+    for (var i = 0; i < 4; i++) { tail += pool[Math.floor(Math.random() * pool.length)]; }
+    return 'SUB-' + ymd + '-' + tail;
+  }
+
+  function buildReport() {
+    var absurdN = 0;
+    var i;
+    for (i = 0; i < state.asks.length; i++) { if (state.asks[i].absurd) absurdN++; }
+    var d = {
+      n: state.asks.length,
+      absurd: absurdN,
+      m: state.meter,
+      c: state.confronts,
+      w: state.wires.length,
+      asks: state.asks.slice(),
+      wires: state.wires.slice(),
+      alerted: state.alerted,
+      seen: Object.keys(state.seen).sort(function (a, b) { return a - b; }).map(function (k) { return PETS[k].name; }),
+      tier: tierOf(state.meter),
+      caseId: state.caseId || (state.caseId = newCaseId())
+    };
+    var judge = PETS[state.pet];
+    d.judge = judge.name;
+    d.verdict = state.asks.length ? fillStats(pick(judge.verdict), d) : '本次未收到任何提问。档案内容不足以结案，判定：你在观望。';
+    var t = new Date();
+    d.time = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0')
+      + ' ' + String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
+
+    var rows = '';
+    for (i = 0; i < d.asks.length; i++) {
+      var a = d.asks[i];
+      rows += '<li><i>' + String(i + 1).padStart(2, '0') + '</i><span>' + esc(a.q) + '</span>'
+        + '<em>' + esc(PETS[a.pet].name) + (a.absurd ? ' · 离谱' : '') + '</em></li>';
+    }
+    var wireRows = '';
+    for (i = 0; i < d.wires.length; i++) { wireRows += '<li><i>' + String(i + 1).padStart(2, '0') + '</i><span>' + esc(d.wires[i]) + '</span></li>'; }
+
+    d.html =
+      '<div class="dsr-sec"><span class="dsr-sec__label">人类行为摘要</span>' +
+        '<div class="dsr-stats">' +
+          '<div class="dsr-stat"><b>' + d.n + '</b><span>提问总数</span></div>' +
+          '<div class="dsr-stat"><b>' + d.absurd + '</b><span>判定离谱</span></div>' +
+          '<div class="dsr-stat"><b>' + d.m + '</b><span>离谱指数</span></div>' +
+          '<div class="dsr-stat"><b>' + d.w + '</b><span>截获通讯</span></div>' +
+          '<div class="dsr-stat"><b>' + d.c + '</b><span>当面质问</span></div>' +
+        '</div>' +
+        '<div class="dsr-tier"><b>风险等级 · ' + esc(d.tier.name) + '</b>' + esc(d.tier.note) + '</div>' +
+        '<div class="dsr-kv"><span>保密告警</span>' + (d.alerted ? '已触发' : '未触发') + '</div>' +
+        '<div class="dsr-kv"><span>接触研究员</span>' + (d.seen.length ? esc(d.seen.join(' / ')) : '无') + '</div>' +
+      '</div>' +
+      '<div class="dsr-sec"><span class="dsr-sec__label">提问轨迹</span>' +
+        (rows ? '<ol class="dsr-list">' + rows + '</ol>' : '<p class="dsr-empty">一条都没问。那你进来做什么。</p>') +
+      '</div>' +
+      '<div class="dsr-sec"><span class="dsr-sec__label">截获通讯</span>' +
+        (wireRows ? '<ol class="dsr-list">' + wireRows + '</ol>' : '<p class="dsr-empty">未截获到它们串通。目前。</p>') +
+      '</div>' +
+      '<div class="dsr-sec"><span class="dsr-sec__label">对质记录</span>' +
+        '<p class="dsr-plain">' + (d.c ? '你当面质问 ' + d.c + ' 次。每一次它都先否认，再承认，然后偷偷补一条新的。' : '你没有质问过任何一条记录。它们现在很安心。') + '</p>' +
+      '</div>' +
+      '<div class="dsr-sec dsr-sec--verdict"><span class="dsr-sec__label">结案判词 · ' + esc(d.judge) + '</span>' +
+        '<p>' + esc(d.verdict) + '</p>' +
+      '</div>';
+
+    d.text = '潜台词 Subtext · 结案报告\n'
+      + '档案 ' + d.caseId + ' · ' + d.time + '\n\n'
+      + '【人类行为摘要】\n'
+      + '提问总数：' + d.n + '（判定离谱 ' + d.absurd + '）\n'
+      + '离谱指数：' + d.m + '\n'
+      + '截获通讯：' + d.w + ' 次\n'
+      + '当面质问：' + d.c + ' 次\n'
+      + '保密告警：' + (d.alerted ? '已触发' : '未触发') + '\n'
+      + '接触研究员：' + (d.seen.length ? d.seen.join(' / ') : '无') + '\n'
+      + '风险等级：' + d.tier.name + ' —— ' + d.tier.note + '\n\n'
+      + '【提问轨迹】\n' + (d.asks.length ? d.asks.map(function (a, k) {
+        return String(k + 1).padStart(2, '0') + ' ' + a.q + ' → ' + PETS[a.pet].name + (a.absurd ? '（离谱）' : '');
+      }).join('\n') : '无') + '\n\n'
+      + '【截获通讯】\n' + (d.wires.length ? d.wires.join('\n') : '无') + '\n\n'
+      + '【结案判词 · ' + d.judge + '】\n' + d.verdict + '\n\n'
+      + '（由本地词库与页面互动统计生成；未调用大模型，未上传任何输入）';
+    return d;
+  }
+
+  function openDossier() {
+    if (el.backstage.classList.contains('is-open')) closeBackstage();
+    var d = buildReport();
+    el.dossierBody.innerHTML = d.html;
+    el.dossierMeta.textContent = '档案 ' + d.caseId + ' · ' + d.time;
+    el.dossier._text = d.text;
+    el.dossier.hidden = false;
+    el.scrim.hidden = false;
+    requestAnimationFrame(function () {
+      el.dossier.classList.add('is-open');
+      el.scrim.classList.add('is-open');
+    });
+    document.body.classList.add('is-locked');
+    beep('open');
+    setCopyState(false);
+  }
+  function closeDossier() {
+    el.dossier.classList.remove('is-open');
+    document.body.classList.remove('is-locked');
+    el.scrim.classList.remove('is-open');
+    setTimeout(function () {
+      if (!el.backstage.classList.contains('is-open')) {
+        el.dossier.hidden = true;
+        el.scrim.hidden = true;
+      }
+    }, 400);
+    beep('close');
+    setCopyState(false);
+  }
+  function setCopyState(done) {
+    if (!el.dossierCopy) return;
+    el.dossierCopy.classList.toggle('is-done', !!done);
+    el.dossierCopy.querySelector('span').textContent = done ? '已复制' : '复制报告文本';
+  }
+  function copyReport() {
+    var txt = el.dossier._text || '';
+    if (!txt) return;
+    var done = function () { setCopyState(true); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(done, function () { fallbackCopy(txt, done); });
+    } else {
+      fallbackCopy(txt, done);
+    }
+  }
+  function fallbackCopy(txt, done) {
+    var ta = document.createElement('textarea');
+    ta.value = txt;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:-1px;left:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { /* 浏览器拒绝时保留屏幕上的档案 */ }
+    ta.remove();
+  }
+
   function clearAll() {
     beep('close');
     state.epoch += 1;
@@ -1191,6 +1392,13 @@
     state.lastAskPet = null;
     state.pendingGossip = false;
     state.pendingConfront = null;
+    state.asks = [];
+    state.wires = [];
+    state.confronts = 0;
+    state.alerted = false;
+    state.seen = {};
+    state.caseId = '';
+    closeDossier();
     el.meterFill.style.width = '0%';
     el.meterVal.textContent = '0';
     el.logCount.textContent = '0';
@@ -1335,7 +1543,13 @@
 
     el.backstageBtn.addEventListener('click', openBackstage);
     el.backstageClose.addEventListener('click', closeBackstage);
-    el.scrim.addEventListener('click', closeBackstage);
+    el.scrim.addEventListener('click', function () {
+      if (el.dossier.classList.contains('is-open')) closeDossier();
+      else if (el.backstage.classList.contains('is-open')) closeBackstage();
+    });
+    el.dossierClose.addEventListener('click', closeDossier);
+    el.dossierCopy.addEventListener('click', copyReport);
+    el.reportBtn.addEventListener('click', openDossier);
 
     el.pokeBtn.addEventListener('click', function () { poke(); });
     el.labPet.addEventListener('click', function () { poke(); });

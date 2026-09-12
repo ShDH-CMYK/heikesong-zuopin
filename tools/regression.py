@@ -156,6 +156,35 @@ with sync_playwright() as p:
     check("21 对质含官方否认与内心招供", conf["ai"] >= 2, conf["ai"])
     check("22 对质偷偷补记日志", conf["logs"] >= logs + 1, (logs, conf["logs"]))
     check("23 对质按钮变已对质", conf["done"], conf["done"])
+
+    # 8b. auto-generated case report
+    page.wait_for_timeout(1100)
+    dsr = page.evaluate("""() => {
+      const d = document.getElementById('dossier');
+      const stats = Array.from(document.querySelectorAll('.dsr-stat')).map(x => +x.querySelector('b').textContent);
+      return {
+        open: d.classList.contains('is-open') && !d.hidden,
+        n: stats[0], absurd: stats[1], m: stats[2], w: stats[3], c: stats[4],
+        verdict: (document.querySelector('.dsr-sec--verdict p') || {}).textContent || '',
+        placeholder: /\{[nmcw]\}/.test(d.innerText),
+        locked: document.body.classList.contains('is-locked'),
+        users: document.querySelectorAll('.msg--user').length,
+        meter: +document.getElementById('meter-val').textContent
+      };
+    }""")
+    check("24 对质后自动弹出结案报告", dsr["open"], dsr["open"])
+    check("25 报告统计与真实互动一致",
+          dsr["n"] == dsr["users"] - 1 and dsr["c"] == 1 and dsr["w"] == 1 and dsr["m"] == dsr["meter"], dsr)
+    check("26 判词已填充无残留占位符", (not dsr["placeholder"]) and len(dsr["verdict"]) > 8, dsr["verdict"][:40])
+    page.evaluate("() => document.getElementById('dossier-close').click()")
+    page.wait_for_timeout(700)
+    dsr2 = page.evaluate("""() => ({
+      hidden: document.getElementById('dossier').hidden,
+      locked: document.body.classList.contains('is-locked'),
+      scrim: document.getElementById('scrim').hidden
+    })""")
+    check("27 关闭报告后解锁页面", dsr2["hidden"] and not dsr2["locked"] and dsr2["scrim"], dsr2)
+
     page.evaluate("""() => document.getElementById('backstage-close').click()""")
     page.wait_for_timeout(400)
 
@@ -164,21 +193,21 @@ with sync_playwright() as p:
     page.wait_for_timeout(500)
     for _ in range(3):
         ask_topic(page, "rich", 1600)
-    check("24 连续三条离谱触发告警", page.evaluate("""() => document.getElementById('alert-banner').classList.contains('is-show')"""))
+    check("28 连续三条离谱触发告警", page.evaluate("""() => document.getElementById('alert-banner').classList.contains('is-show')"""))
 
     # 10. poke / surprise / sound
     page.evaluate("""() => document.getElementById('poke-btn').click()""")
     page.wait_for_timeout(400)
-    check("25 戳它一下出气泡", "is-show" in (page.locator("#bubble").get_attribute("class") or ""))
+    check("29 戳它一下出气泡", "is-show" in (page.locator("#bubble").get_attribute("class") or ""))
     before = page.evaluate("""() => document.querySelectorAll('.msg--user').length""")
     page.evaluate("""() => document.getElementById('surprise-btn').click()""")
     page.wait_for_timeout(1800)
     after = page.evaluate("""() => document.querySelectorAll('.msg--user').length""")
-    check("26 随机离谱自动提问", after == before + 1, (before, after))
+    check("30 随机离谱自动提问", after == before + 1, (before, after))
     s1 = page.evaluate("""() => document.getElementById('sound-btn').getAttribute('aria-pressed')""")
     page.evaluate("""() => document.getElementById('sound-btn').click()""")
     s2 = page.evaluate("""() => document.getElementById('sound-btn').getAttribute('aria-pressed')""")
-    check("27 音效开关切换", s1 != s2, (s1, s2))
+    check("31 音效开关切换", s1 != s2, (s1, s2))
 
     # 11. clear
     page.evaluate("""() => document.getElementById('clear-btn').click()""")
@@ -190,28 +219,65 @@ with sync_playwright() as p:
       alert: document.getElementById('alert-banner').classList.contains('is-show'),
       hint: !!document.querySelector('.messages__hint')
     })""")
-    check("28 清空后指数日志告警归零", cl["meter"] == "0" and cl["badge"] == "0" and not cl["alert"], cl)
-    check("29 清空后重新打招呼", cl["msgs"] == 1 and cl["hint"], cl)
+    check("32 清空后指数日志告警归零", cl["meter"] == "0" and cl["badge"] == "0" and not cl["alert"], cl)
+    check("33 清空后重新打招呼", cl["msgs"] == 1 and cl["hint"], cl)
+
+    # 11b. report resets and reopens from backstage
+    page.evaluate("""() => document.getElementById('backstage-btn').click()""")
+    page.wait_for_timeout(400)
+    page.evaluate("""() => document.getElementById('report-btn').click()""")
+    page.wait_for_timeout(600)
+    rep = page.evaluate("""() => {
+      const d = document.getElementById('dossier');
+      const stats = Array.from(document.querySelectorAll('.dsr-stat')).map(x => +x.querySelector('b').textContent);
+      return {
+        open: d.classList.contains('is-open'),
+        backstageClosed: !document.getElementById('backstage').classList.contains('is-open'),
+        n: stats[0], c: stats[1 + 3],
+        empty: !!document.querySelector('.dsr-empty')
+      };
+    }""")
+    check("34 后台可重开报告且互斥于后台", rep["open"] and rep["backstageClosed"], rep)
+    check("35 清空后报告统计归零并显示空态", rep["n"] == 0 and rep["empty"], rep)
+    page.evaluate("""() => document.getElementById('dossier-close').click()""")
+    page.wait_for_timeout(600)
 
     # 12. back home
     page.evaluate("""() => document.getElementById('home-btn').click()""")
     page.wait_for_timeout(1300)
-    check("30 换一只返回首页", page.evaluate("""() => document.getElementById('scene-home').classList.contains('is-active') && !document.getElementById('scene-lab').classList.contains('is-active')"""))
+    check("36 换一只返回首页", page.evaluate("""() => document.getElementById('scene-home').classList.contains('is-active') && !document.getElementById('scene-lab').classList.contains('is-active')"""))
 
     # 13. mobile
     page.set_viewport_size({"width": 390, "height": 844})
     page.wait_for_timeout(500)
     of1 = page.evaluate("""() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 8""")
-    check("31 窄屏首页无横向溢出", not of1, of1)
+    check("37 窄屏首页无横向溢出", not of1, of1)
     page.evaluate("""() => document.querySelectorAll('.pet-card')[4].click()""")
     page.wait_for_selector("#scene-lab.is-active", timeout=8000)
     page.wait_for_timeout(1200)
     of2 = page.evaluate("""() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 8""")
-    check("32 窄屏实验室无溢出", not of2, of2)
+    check("38 窄屏实验室无溢出", not of2, of2)
+    ask_topic(page, "rich", 1700)
+    page.evaluate("""() => document.getElementById('backstage-btn').click()""")
+    page.wait_for_timeout(400)
+    page.evaluate("""() => document.getElementById('report-btn').click()""")
+    page.wait_for_timeout(700)
+    of3 = page.evaluate("""() => {
+      const d = document.getElementById('dossier');
+      const r = d.getBoundingClientRect();
+      return {
+        open: d.classList.contains('is-open'),
+        fits: r.width <= innerWidth + 1 && r.height <= innerHeight + 1,
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 8
+      };
+    }""")
+    check("39 窄屏结案报告不溢出视口", of3["open"] and of3["fits"] and not of3["overflow"], of3)
+    page.evaluate("""() => document.getElementById('dossier-close').click()""")
+    page.wait_for_timeout(500)
 
-    check("33 全程无 JS 报错", not errs, errs[:2])
+    check("40 全程无 JS 报错", not errs, errs[:2])
     bad = [u for u in failed if "fonts.g" not in u]
-    check("34 全程无资源加载失败", not bad, bad[:2])
+    check("41 全程无资源加载失败", not bad, bad[:2])
     browser.close()
 
 fails = [r for r in R if not r["pass"]]

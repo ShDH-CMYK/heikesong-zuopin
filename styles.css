@@ -707,9 +707,66 @@ h1,h2,h3,p{ margin:0; }
 .log-entry__confront.is-done{ opacity:.45; pointer-events:none; }
 
 .backstage__foot{
-  flex:none; display:flex; align-items:center; justify-content:space-between;
+  flex:none; display:flex; align-items:center; justify-content:space-between; gap:10px;
   padding-top:14px; border-top:1px solid rgba(255,255,255,.12);
   font:400 10px var(--mono); color:#8b78ab;
+}
+.backstage .chip-btn, .dossier .chip-btn{
+  border-color:rgba(255,255,255,.22); background:rgba(255,255,255,.06); color:#e6dcf8;
+}
+.backstage .chip-btn:hover, .dossier .chip-btn:hover{
+  color:#fff; border-color:color-mix(in srgb,var(--accent) 60%,transparent);
+  background:color-mix(in srgb,var(--accent) 22%,transparent);
+  box-shadow:0 10px 22px -14px rgba(0,0,0,.6);
+}
+.chip-btn--sm{ padding:6px 11px; font-size:11px; }
+.chip-btn.is-done{ color:#8ee6b0; border-color:rgba(142,230,176,.4); }
+
+/* ---------------------------------------------------------------- 结案报告 */
+.dossier{
+  position:fixed; z-index:52; left:50%; top:50%;
+  width:min(660px,94vw); max-height:min(86vh,780px);
+  display:flex; flex-direction:column;
+  transform:translate(-50%,-48%) scale(.97);
+  opacity:0; pointer-events:none;
+  background:linear-gradient(165deg,#221439,#120d1c 62%);
+  color:#f2ecff;
+  border:1px solid rgba(255,255,255,.16); border-radius:22px;
+  box-shadow:0 40px 110px -30px rgba(8,4,18,.78);
+  transition:opacity .42s var(--ease), transform .42s var(--ease);
+}
+.dossier.is-open{ opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; }
+.dossier__head{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:20px 22px 16px; border-bottom:1px solid rgba(255,255,255,.13); flex:none; }
+.dossier__head h3{ margin:9px 0 3px; font-size:21px; font-weight:700; letter-spacing:-.02em; }
+.dossier__head small{ font:400 10.5px var(--mono); color:#a08cc4; }
+.dossier__body{ flex:1; min-height:0; overflow:auto; padding:20px 22px 6px; }
+.dossier__foot{
+  flex:none; display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 22px 18px; border-top:1px solid rgba(255,255,255,.12);
+  font:400 10px var(--mono); color:#8b78ab;
+}
+.dsr-sec{ margin-bottom:22px; }
+.dsr-sec__label{ display:block; margin-bottom:10px; font:600 10.5px var(--mono); letter-spacing:.16em; color:var(--accent); }
+.dsr-stats{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:8px; }
+.dsr-stat{ padding:10px 6px; text-align:center; border:1px solid rgba(255,255,255,.13); border-radius:13px; background:rgba(255,255,255,.04); }
+.dsr-stat b{ display:block; font:700 21px var(--mono); letter-spacing:-.02em; }
+.dsr-stat span{ font:400 10px var(--mono); color:#a08cc4; }
+.dsr-tier{ margin-top:12px; padding:10px 13px; border-radius:12px; font-size:12px; line-height:1.6; color:#e6dcf8;
+  background:color-mix(in srgb,var(--accent) 14%,transparent); border:1px solid color-mix(in srgb,var(--accent) 34%,transparent); }
+.dsr-tier b{ margin-right:8px; }
+.dsr-kv{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-top:9px; font-size:12px; color:#ded1f5; }
+.dsr-kv span{ font:400 10.5px var(--mono); letter-spacing:.1em; color:#8f7ab3; }
+.dsr-list{ list-style:none; margin:0; padding:0; display:grid; gap:7px; }
+.dsr-list li{ display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:baseline; font-size:12.5px; color:#ded1f5; }
+.dsr-list i{ font:600 10.5px var(--mono); font-style:normal; color:#8f7ab3; }
+.dsr-list em{ font-style:normal; font-size:10.5px; color:#a08cc4; white-space:nowrap; }
+.dsr-empty, .dsr-plain{ margin:0; font-size:12px; line-height:1.75; color:#a08cc4; }
+.dsr-sec--verdict{ margin-bottom:8px; padding:15px 17px; border-radius:15px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.15); }
+.dsr-sec--verdict p{ margin:0; font-size:14.5px; line-height:1.8; color:#fff; }
+@media (max-width:620px){
+  .dossier{ width:94vw; max-height:90vh; }
+  .dsr-stats{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .dossier__foot{ flex-direction:column; align-items:stretch; text-align:center; }
 }
 
 /* ---------------------------------------------------------------- 转场 */
