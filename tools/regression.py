@@ -45,6 +45,15 @@ def first_msg(page):
     }""")
 
 
+def wait_model_ready(page, seconds=20):
+    """Poll instead of sleeping: over WAN the GLB + three.js take far longer than locally."""
+    for _ in range(seconds * 2):
+        if page.evaluate("() => document.getElementById('stage-pet').classList.contains('is-model-ready')"):
+            return True
+        page.wait_for_timeout(500)
+    return False
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page(viewport={"width": 1440, "height": 900})
@@ -104,8 +113,9 @@ with sync_playwright() as p:
     check("11 切换触发内部通讯(一问一答两条)", hist["wire"] == 1 and hist["lines"] == 2, hist)
     check("12 提问后切换不重置招呼", target in hist["greet"], (target, hist["greet"][:36]))
 
-    # 6. deepseek 3d (explicitly switch to 拆镜 = index 1)
-    sw(page, 1, 2600)
+    # 6. deepseek 3d (explicitly switch to 拆镜 = index 1, then wait for first render)
+    sw(page, 1, 800)
+    ready = wait_model_ready(page)
     ds = page.evaluate("""() => {
       const pet = document.getElementById('stage-pet');
       const host = document.getElementById('stage-model-3d');
@@ -169,12 +179,13 @@ with sync_playwright() as p:
         placeholder: /\{[nmcw]\}/.test(d.innerText),
         locked: document.body.classList.contains('is-locked'),
         users: document.querySelectorAll('.msg--user').length,
+        wires: document.querySelectorAll('.msg--wire').length,
         meter: +document.getElementById('meter-val').textContent
       };
     }""")
     check("24 对质后自动弹出结案报告", dsr["open"], dsr["open"])
     check("25 报告统计与真实互动一致",
-          dsr["n"] == dsr["users"] - 1 and dsr["c"] == 1 and dsr["w"] == 1 and dsr["m"] == dsr["meter"], dsr)
+          dsr["n"] == dsr["users"] - 1 and dsr["c"] == 1 and dsr["w"] == dsr["wires"] and dsr["m"] == dsr["meter"], dsr)
     check("26 判词已填充无残留占位符", (not dsr["placeholder"]) and len(dsr["verdict"]) > 8, dsr["verdict"][:40])
     page.evaluate("() => document.getElementById('dossier-close').click()")
     page.wait_for_timeout(700)
@@ -275,11 +286,58 @@ with sync_playwright() as p:
     page.evaluate("""() => document.getElementById('dossier-close').click()""")
     page.wait_for_timeout(500)
 
-    check("40 全程无 JS 报错", not errs, errs[:2])
-    bad = [u for u in failed if "fonts.g" not in u]
-    check("41 全程无资源加载失败", not bad, bad[:2])
-    browser.close()
+    # 14. report hardening (second pass findings)
+    page.set_viewport_size({"width": 1440, "height": 900})
+    page.evaluate("""() => document.getElementById('clear-btn').click()""")
+    page.wait_for_timeout(600)
+    ask_topic(page, "rich", 1700)
+    page.evaluate("""() => document.getElementById('backstage-btn').click()""")
+    page.wait_for_timeout(300)
+    page.evaluate("""() => document.querySelector('.log-entry__confront').click()""")
+    page.wait_for_timeout(4000)
+    first_auto = page.evaluate("() => document.getElementById('dossier').classList.contains('is-open')")
+    check("40 首次对质自动弹出报告", first_auto, first_auto)
+    page.keyboard.press("Escape")
+    page.wait_for_timeout(700)
+    esc = page.evaluate("""() => ({
+      open: document.getElementById('dossier').classList.contains('is-open'),
+      hidden: document.getElementById('dossier').hidden,
+      locked: document.body.classList.contains('is-locked'),
+      scrim: document.getElementById('scrim').hidden
+    })""")
+    check("41 Esc 关闭报告并复位遮罩", (not esc["open"]) and esc["hidden"] and (not esc["locked"]) and esc["scrim"], esc)
+    ask_topic(page, "magic", 1700)
+    page.evaluate("""() => document.getElementById('backstage-btn').click()""")
+    page.wait_for_timeout(300)
+    page.evaluate("""() => { const t = Array.from(document.querySelectorAll('.log-entry__confront')).find(b => !b.classList.contains('is-done')); if (t) t.click(); }""")
+    page.wait_for_timeout(4200)
+    second_auto = page.evaluate("() => document.getElementById('dossier').classList.contains('is-open')")
+    check("42 第二次对质不重复自动弹", not second_auto, second_auto)
+    for _ in range(8):
+        ask_topic(page, "rich", 1500)
+    cap = page.evaluate("() => +document.getElementById('meter-val').textContent")
+    check("43 离谱指数封顶不超过 100", 0 < cap <= 100, cap)
+    page.evaluate("""() => document.getElementById('backstage-btn').click()""")
+    page.wait_for_timeout(300)
+    page.evaluate("""() => document.getElementById('report-btn').click()""")
+    page.wait_for_timeout(700)
+    tier = page.evaluate("() => (document.querySelector('.dsr-tier')||{}).textContent || ''")
+    check("44 高档位落到晚期且文案完整", (not tier) or cap < 75 or "晚期" in tier, tier)
+    page.evaluate("""() => document.querySelector('.switcher__item[data-index=\\"2\\"]').click()""")
+    page.wait_for_timeout(2500)
+    both = page.evaluate("""() => ({
+      open: document.getElementById('dossier').classList.contains('is-open'),
+      scrimHidden: document.getElementById('scrim').hidden,
+      locked: document.body.classList.contains('is-locked')
+    })""")
+    check("45 报告开启时切换宠物不破坏遮罩", both["open"] and (not both["scrimHidden"]) and both["locked"], both)
+    page.evaluate("""() => document.getElementById('dossier-close').click()""")
+    page.wait_for_timeout(700)
 
+    check("46 全程无 JS 报错", not errs, errs[:2])
+    bad = [u for u in failed if "fonts.g" not in u]
+    check("47 全程无资源加载失败", not bad, bad[:2])
+    browser.close()
 fails = [r for r in R if not r["pass"]]
 print("\n==== SUMMARY ====", flush=True)
 print(f"{len(R) - len(fails)}/{len(R)} passed", flush=True)
