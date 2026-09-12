@@ -528,15 +528,20 @@ h1,h2,h3,p{ margin:0; }
 .msg{ max-width:88%; animation:msgIn .42s var(--ease) backwards; }
 @keyframes msgIn{ from{ opacity:0; transform:translateY(10px); } }
 .msg__label{
-  display:block; margin-bottom:6px;
+  display:flex; align-items:center; gap:6px; margin-bottom:6px;
   font:600 9.5px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase;
 }
+.msg__emotion,.msg__status{
+  width:22px; height:22px; object-fit:contain; flex:none;
+}
+.msg__status{ width:34px; height:25px; border-radius:6px; opacity:.9; }
+.msg__label > span{ display:inline-flex; align-items:center; min-width:0; }
 .msg__body{
   padding:12px 15px; border-radius:16px; font-size:13.5px; line-height:1.7;
 }
 
 .msg--user{ align-self:flex-end; text-align:right; }
-.msg--user .msg__label{ color:var(--faint); }
+.msg--user .msg__label{ color:var(--faint); justify-content:flex-end; }
 .msg--user .msg__body{
   background:linear-gradient(130deg,var(--accent),var(--accent-2)); color:#fff;
   border-bottom-right-radius:5px;
@@ -568,6 +573,7 @@ h1,h2,h3,p{ margin:0; }
 }
 .msg--wire b{ color:#fff; font-weight:700; }
 .wire-line{ display:block; }
+.wire-line__emotion{ width:18px; height:18px; object-fit:contain; vertical-align:-5px; margin-right:5px; filter:brightness(0) invert(1); opacity:.9; }
 .wire-line + .wire-line{ margin-top:9px; padding-top:9px; border-top:1px dashed rgba(255,255,255,.16); }
 .msg__copy{
   display:inline-flex; align-items:center; gap:5px; margin-top:7px; margin-left:2px;
@@ -742,6 +748,8 @@ h1,h2,h3,p{ margin:0; }
   .switcher__item span{ display:none; }
   .switcher__item img{ width:30px; height:30px; }
   .composer__hint{ display:none; }
+  .msg__emotion{ width:20px; height:20px; }
+  .msg__status{ width:30px; height:22px; }
   .roast__head{ padding:16px 16px 12px; }
   .presets, .messages{ padding-left:16px; padding-right:16px; }
   .composer{ margin:0 16px 14px; }
