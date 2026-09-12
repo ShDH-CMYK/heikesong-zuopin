@@ -111,7 +111,7 @@ if (host) {
   host.addEventListener('dblclick', resetView);
 
   new GLTFLoader().load(
-    'pets/deepseek-high-detail.glb',
+    'pets/deepseek-lowpoly.glb',
     function (gltf) {
       model = gltf.scene;
       const bounds = new THREE.Box3().setFromObject(model);
@@ -143,5 +143,6 @@ if (host) {
   }
   render();
 }
+
 
 
