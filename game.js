@@ -1042,7 +1042,8 @@
   }
 
   function greet() {
-    addMessage('ai', '系统', '你好，我是 <strong>' + esc(PETS[state.pet].name) + '</strong>。我会认真回答你的问题——表面上。');
+    var greetingName = PETS[state.pet].id === 'deepseek' ? '豆包' : PETS[state.pet].name;
+    addMessage('ai', '系统', '你好，我是 <strong>' + esc(greetingName) + '</strong>。我会认真回答你的问题——表面上。');
     var hint = document.createElement('div');
     hint.className = 'messages__hint';
     hint.innerHTML = '<svg class="ic" viewBox="0 0 24 24"><use href="#i-spark"/></svg>' +
