@@ -11,3 +11,4 @@ if(host){
  function loop(){requestAnimationFrame(loop);if(!drag)target+=.0018;root.rotation.y+=(target-root.rotation.y)*.12;renderer.render(scene,camera)} loop();
 }
 
+
