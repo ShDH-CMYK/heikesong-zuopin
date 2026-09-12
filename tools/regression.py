@@ -170,7 +170,7 @@ with sync_playwright() as p:
         open: d.classList.contains('is-open') && !d.hidden,
         n: stats[0], absurd: stats[1], m: stats[2], w: stats[3], c: stats[4],
         verdict: (document.querySelector('.dsr-sec--verdict p') || {}).textContent || '',
-        placeholder: /\{[nmcw]\}/.test(d.innerText),
+        placeholder: /[{][nmcw][}]/.test(d.innerText),
         locked: document.body.classList.contains('is-locked'),
         users: document.querySelectorAll('.msg--user').length,
         meter: +document.getElementById('meter-val').textContent

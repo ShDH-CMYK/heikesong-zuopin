@@ -35,6 +35,10 @@ coverage/
 
 # Agent tooling local state.
 .mimosa/
+.playwright-cli/
+
+# Blender autosave backups are local working files, not source assets.
+*.blend1
 
 # OS-generated files.
 .DS_Store

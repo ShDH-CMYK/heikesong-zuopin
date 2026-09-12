@@ -71,6 +71,7 @@ python -m http.server 8000 --bind 127.0.0.1
 - [Demo 口播逐字稿](docs/Demo口播逐字稿.md)
 - [AI 使用与素材记录](docs/AI使用与素材记录.md)
 - [提交前清单](docs/提交前清单.md)
+- [提交材料缺项清单](docs/提交材料缺项清单.md)
 - [项目介绍文档草稿](docs/项目介绍文档草稿.md)
 - [最终提交信息草稿](docs/最终提交信息草稿.md)
 
