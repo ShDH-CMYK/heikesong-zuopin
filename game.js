@@ -488,6 +488,9 @@
     brand: $('#brand-home'),
     liveText: $('#live-text'),
     labPet: $('#lab-pet'),
+    labPetSide: $('#lab-pet-side'),
+    labPetBack: $('#lab-pet-back'),
+    stageModel: $('#stage-model'),
     labName: $('#lab-name'),
     labEn: $('#lab-en'),
     labTagline: $('#lab-tagline'),
@@ -627,8 +630,16 @@
 
     applyTheme(i);
 
-    el.labPet.src = p.file;
+    var views = p.views || [p.file];
+    el.stagePet.classList.toggle('stage__pet--3d', Boolean(p.views));
+    el.stageModel.style.setProperty('--model-rot', '0deg');
+    el.stageModel.style.setProperty('--model-tilt', '0deg');
+    el.labPet.src = views[0];
     el.labPet.alt = p.name;
+    el.labPetSide.src = views[1] || views[0];
+    el.labPetBack.src = views[2] || views[0];
+    el.labPetSide.alt = p.name + ' 侧面';
+    el.labPetBack.alt = p.name + ' 背面';
     el.labName.textContent = p.name;
     el.labEn.textContent = p.en;
     el.labTagline.textContent = p.tagline;
@@ -1170,6 +1181,37 @@
   /* =====================================================================
      15. 事件绑定
      ===================================================================== */
+  var modelDrag = { active: false, x: 0, rot: 0, tilt: 0, timer: null };
+  function setModelRotation(rot, tilt) {
+    modelDrag.rot = rot;
+    modelDrag.tilt = Math.max(-12, Math.min(12, tilt || 0));
+    el.stageModel.style.setProperty('--model-rot', modelDrag.rot + 'deg');
+    el.stageModel.style.setProperty('--model-tilt', modelDrag.tilt + 'deg');
+  }
+  function startModelSpin() {
+    clearInterval(modelDrag.timer);
+    modelDrag.timer = setInterval(function () {
+      if (!el.stagePet.classList.contains('stage__pet--3d') || modelDrag.active) return;
+      setModelRotation(modelDrag.rot + 0.22, modelDrag.tilt);
+    }, 40);
+  }
+  function bindModel3d() {
+    el.stagePet.addEventListener('pointerdown', function (e) {
+      if (!el.stagePet.classList.contains('stage__pet--3d')) return;
+      modelDrag.active = true; modelDrag.x = e.clientX;
+      el.stagePet.classList.add('is-dragging');
+      el.stagePet.setPointerCapture(e.pointerId);
+    });
+    el.stagePet.addEventListener('pointermove', function (e) {
+      if (!modelDrag.active) return;
+      var dx = e.clientX - modelDrag.x; modelDrag.x = e.clientX;
+      setModelRotation(modelDrag.rot + dx * 0.65, modelDrag.tilt);
+    });
+    var end = function () { modelDrag.active = false; el.stagePet.classList.remove('is-dragging'); };
+    el.stagePet.addEventListener('pointerup', end);
+    el.stagePet.addEventListener('pointercancel', end);
+    startModelSpin();
+  }
   function bind() {
     el.randomBtn.addEventListener('click', function () {
       var i = Math.floor(Math.random() * PETS.length);
@@ -1212,6 +1254,7 @@
 
     el.pokeBtn.addEventListener('click', function () { poke(); });
     el.labPet.addEventListener('click', function () { poke(); });
+    bindModel3d();
 
     el.stagePet.addEventListener('pointerenter', function () {
       el.labMood.textContent = PETS[state.pet].mood.hover;
