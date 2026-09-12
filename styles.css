@@ -384,6 +384,18 @@ h1,h2,h3,p{ margin:0; }
   transition:transform .5s var(--ease);
   cursor:pointer;
 }
+.stage__model{ display:contents; }
+.stage__model img:not(#lab-pet){ display:none; }
+.stage__pet--3d{ perspective:900px; touch-action:none; cursor:grab; }
+.stage__pet--3d.is-dragging{ cursor:grabbing; }
+.stage__pet--3d .stage__model{ display:block; position:relative; width:min(84%,420px); height:min(100%,50vh); transform-style:preserve-3d; transform:rotateX(var(--model-tilt,0deg)) rotateY(var(--model-rot,0deg)); transition:transform .15s linear; }
+.stage__pet--3d .stage__model img{ display:block; position:absolute; inset:0; width:100%; height:100%; max-width:none; object-fit:contain; backface-visibility:hidden; }
+.stage__pet--3d .stage__model #lab-pet{ transform:translateZ(34px); }
+.stage__pet--3d .stage__model #lab-pet-side{ transform:rotateY(90deg) translateZ(34px); }
+.stage__pet--3d .stage__model #lab-pet-back{ transform:rotateY(180deg) translateZ(34px); }
+.stage__pet--3d .stage__model img:hover{ transform:translateZ(34px); }
+.stage__pet--3d .stage__model #lab-pet-side:hover{ transform:rotateY(90deg) translateZ(34px); }
+.stage__pet--3d .stage__model #lab-pet-back:hover{ transform:rotateY(180deg) translateZ(34px); }
 .stage__pet img:hover{ transform:scale(1.03); }
 
 /* 反应动作：petFloat 用的是 translate，这里用 transform，两者可以同时跑
@@ -738,6 +750,7 @@ h1,h2,h3,p{ margin:0; }
   .lab-grid{ grid-template-columns:minmax(0,1fr); }
   .stage{ min-height:min(74vh,560px); }
   .stage__pet img{ height:min(100%,38vh); }
+  .stage__pet--3d .stage__model{ width:min(88%,420px); height:min(100%,38vh); }
   .roast{ min-height:min(84vh,640px); }
   .messages{ max-height:46vh; }
   .live-pill{ display:none; }
