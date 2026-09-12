@@ -42,3 +42,4 @@ Thumbs.db
 Desktop.ini
 
 # Keep source assets, project configuration and dependency lockfiles tracked.
+.wrangler/
