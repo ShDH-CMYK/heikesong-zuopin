@@ -728,6 +728,7 @@
         if (i === state.pet) return;
         beep('chip');
         selectPet(i, true);
+        if (!state.count) { el.messages.innerHTML = ''; greet(); }
         maybeGossip();
       });
     });
