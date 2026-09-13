@@ -74,8 +74,8 @@ if (host && stage && lab) {
       doubao: 'pets/doubao.glb?v=20260913-all-pets-v2',
       deepseek: 'pets/deepseek.glb?v=20260913-all-pets-v2',
       workbuddy: 'pets/workbuddy.glb?v=20260913-all-pets-v2',
-      // codex-fbx.glb 是 29 MB 的 FBX 转换资产，超过 Cloudflare Pages 25 MiB
-      // 单文件上限，主入口取不到该文件，因此仍使用精简的 codex.glb。
+      // FBX 转换资产约 29 MB，超过 Cloudflare Pages 单文件 25 MiB 上限，
+      // 无法随主入口部署；这里使用精简且自带 Idle/React 动画的 codex.glb。
       codex: 'pets/codex.glb?v=20260913-final1',
       yuanbao: 'pets/yuanbao.glb?v=20260913-all-pets-v2'
     };

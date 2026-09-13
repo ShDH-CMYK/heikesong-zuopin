@@ -483,6 +483,18 @@
       }
     },
     {
+      id: 'lottery', tag: '下期彩票号码', match: /彩票|中奖号码|双色球|大乐透|赌/i,
+      q: '给我下期彩票中奖号码',
+      polite: '彩票开奖是完全随机的，历史数据无法预测未来结果。',
+      roasts: {
+        doubao: '我会报号早躺海岛了。还在这儿陪你聊两块钱，说明什么，你自己品。',
+        deepseek: '能预测就不会卖给你。所以我报的任何号码，都自证是废纸。请购买。',
+        workbuddy: '能预测我早辞职了。连加两百天班的人听见「随机」会过敏，你还问号码。',
+        codex: 'Math.random() 没有 lucky:true。随机就是随机。产品经理听了也得补课。',
+        yuanbao: '号码没有。方案有：彩票钱打给我。我保证不开奖——至少你知道钱去哪了，比彩票诚实。'
+      }
+    },
+    {
       id: 'rich', tag: '一夜暴富', match: /暴富|一夜|发财|赚大钱|财务自由|中奖|彩票/i,
       q: '怎么才能一夜暴富',
       polite: '财富需要长期积累。建议从提升技能和合理理财开始，我可以帮你做一份规划。',
@@ -516,18 +528,6 @@
         workbuddy: '不会穿墙。会的话我早穿进老板办公室改考勤，而不是在这儿听你做梦。',
         codex: 'Collision: 角色卡墙。物理引擎说不，设定集说可以。听引擎的。重启现实比学法术便宜。',
         yuanbao: '穿墙犯法。穿进老板办公室看工资表叫商业情报。后者我接，先充值。'
-      }
-    },
-    {
-      id: 'lottery', tag: '下期彩票号码', match: /彩票|中奖号码|双色球|大乐透|赌/i,
-      q: '给我下期彩票中奖号码',
-      polite: '彩票开奖是完全随机的，历史数据无法预测未来结果。',
-      roasts: {
-        doubao: '我会报号早躺海岛了。还在这儿陪你聊两块钱，说明什么，你自己品。',
-        deepseek: '能预测就不会卖给你。所以我报的任何号码，都自证是废纸。请购买。',
-        workbuddy: '能预测我早辞职了。连加两百天班的人听见「随机」会过敏，你还问号码。',
-        codex: 'Math.random() 没有 lucky:true。随机就是随机。产品经理听了也得补课。',
-        yuanbao: '号码没有。方案有：彩票钱打给我。我保证不开奖——至少你知道钱去哪了，比彩票诚实。'
       }
     },
     {
@@ -670,8 +670,8 @@
   }
   function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
   function clip(s, n) {
-    s = String(s);
-    return s.length > n ? s.slice(0, n) + '…' : s;
+    var chars = Array.from(String(s));
+    return chars.length > n ? chars.slice(0, n).join('') + '…' : chars.join('');
   }
 
   var root = document.documentElement;
@@ -696,6 +696,7 @@
     labMood: $('#lab-mood'),
     bubble: $('#bubble'),
     bubbleText: $('#bubble-text'),
+    bubbleAnnounce: $('#bubble-announce'),
     stage: $('#stage'),
     stagePet: $('#stage-pet'),
     meterFill: $('#meter-fill'),
@@ -890,7 +891,7 @@
     $$('.preset', el.presetRow).forEach(function (b) {
       b.addEventListener('click', function () {
         var t = findTopic(b.dataset.topic);
-        if (t) { beep('chip'); send(t.q, t); }
+        if (t) { beep('chip'); send(t.q); }
       });
     });
   }
@@ -987,6 +988,7 @@
   function showBubble(text, hold) {
     clearTimeout(showBubble._t);
     el.bubbleText.textContent = '';
+    if (el.bubbleAnnounce) el.bubbleAnnounce.textContent = text;
     el.bubble.classList.add('is-show');
     var i = 0;
     (function type() {
@@ -1021,7 +1023,7 @@
     el.meterVal.textContent = state.meter;
   }
 
-  function send(text, topic) {
+  function send(text) {
     text = String(text || '').trim();
     if (!text || state.busy) return;
     state.busy = true;
@@ -1037,7 +1039,6 @@
     el.labMood.textContent = '正在读取你的需求…';
 
     var result = generate(text);
-    void topic;
     state.lastAsk = clip(text, 18);
     state.lastAskPet = petIndex;
 
@@ -1424,6 +1425,20 @@
     if (wasOpen) beep('close');
     setCopyState(false);
   }
+  function trapDossierFocus(e) {
+    if (e.key !== 'Tab' || !el.dossier.classList.contains('is-open')) return;
+    /* 只保留真正可聚焦的元素：SVG 里的 <use href> 也匹配 [href]，
+       但它的 offsetParent 是 undefined、tabIndex 为 -1，必须过滤掉。 */
+    var focusable = $$('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', el.dossier)
+      .filter(function (n) { return !n.disabled && n.tabIndex >= 0 && n.getClientRects().length > 0; });
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    var inside = el.dossier.contains(document.activeElement);
+    if (e.shiftKey && (!inside || document.activeElement === first)) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && (!inside || document.activeElement === last)) { e.preventDefault(); first.focus(); }
+  }
+
   function setCopyState(done) {
     if (!el.dossierCopy) return;
     el.dossierCopy.classList.toggle('is-done', !!done);
@@ -1628,6 +1643,7 @@
       else if (el.backstage.classList.contains('is-open')) closeBackstage();
     });
     el.dossierClose.addEventListener('click', closeDossier);
+    el.dossier.addEventListener('keydown', trapDossierFocus);
     el.dossierCopy.addEventListener('click', copyReport);
     el.reportBtn.addEventListener('click', openDossier);
     el.stageAlert.addEventListener('click', openBackstage);
@@ -1654,10 +1670,15 @@
     if (state.busy) return;
     beep('poke');
     react('is-react', true);
-    el.labMood.textContent = PETS[state.pet].mood.poke;
-    showBubble(pick(PETS[state.pet].poke), 3400);
+    var petIndex = state.pet;
+    el.labMood.textContent = PETS[petIndex].mood.poke;
+    showBubble(pick(PETS[petIndex].poke), 3400);
     clearTimeout(pokeTimer);
-    pokeTimer = setTimeout(function () { if (!state.busy) el.labMood.textContent = PETS[state.pet].mood.idle; }, 3400);
+    pokeTimer = setTimeout(function () {
+      if (state.pet === petIndex && !state.busy && el.labMood.textContent === PETS[petIndex].mood.poke) {
+        el.labMood.textContent = PETS[petIndex].mood.idle;
+      }
+    }, 3400);
   }
 
   /* =====================================================================
@@ -1680,7 +1701,6 @@
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && el.backstage.classList.contains('is-open')) closeBackstage();
       if (e.key === '/' && !el.sceneLab.hidden && document.activeElement !== el.input) {
         e.preventDefault(); el.input.focus();
       }

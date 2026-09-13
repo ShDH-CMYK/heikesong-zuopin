@@ -33,6 +33,10 @@ coverage/
 *.swp
 *~
 
+# Local probe/regression transcripts (tools/dryrun-*.txt, tools/probe-out.txt).
+tools/dryrun-*.txt
+tools/probe-out.txt
+
 # Agent tooling local state.
 .mimosa/
 .playwright-cli/
