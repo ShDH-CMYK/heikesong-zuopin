@@ -72,6 +72,9 @@
     <button class="tool-btn" id="sound-btn" type="button" aria-pressed="true" title="音效开关">
       <svg class="ic" viewBox="0 0 24 24"><use href="#i-sound" id="sound-icon"/></svg>
     </button>
+    <button class="tool-btn tool-btn--ai" id="ai-mode-btn" type="button" aria-pressed="false" title="切换本地词库与在线 AI">
+      <span aria-hidden="true">AI</span><span id="ai-mode-label">本地</span>
+    </button>
     <button class="tool-btn" id="backstage-btn" type="button" title="查看保密后台">
       <svg class="ic" viewBox="0 0 24 24"><use href="#i-lock"/></svg>
       <span>保密后台</span>
@@ -305,6 +308,11 @@
 <!-- 静态资源带版本号：Cloudflare 给静态文件 4 小时浏览器缓存，改完 game.js/styles.css 记得同步改 v= -->
 <script src="game.js?v=20260913-all-pets-v2"></script>
 <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+<script>
+  // Online AI stays opt-in; production demos remain on the local fallback.
+  window.SUBTEXT_AI_ENABLED = false;
+  window.SUBTEXT_AI_ENDPOINT = '/api/chat';
+</script>
 <script type="module" src="model3d.js?v=20260913-all-pets-v3"></script>
 </body>
 </html>

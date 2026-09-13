@@ -411,12 +411,24 @@
      ===================================================================== */
   var TOPICS = [
     {
+      id: 'big-spender', tag: '大烧货', match: /大烧货/i,
+      q: '大烧货',
+      polite: '已记录该称呼。请说明你是在描述消费行为，还是在提交情绪。',
+      roasts: {
+        doubao: '这个称呼火气很大。先把账单放下，我们可以温柔地讨论一下。',
+        deepseek: '已思考（用时 13 秒）\n大烧货',
+        workbuddy: '称呼已收到。要是连预算都没看就开烧，排期和余额会一起加班。',
+        codex: '输入已接收：大烧货。缺少上下文，无法判断这是标签、警告还是账单。',
+        yuanbao: '大烧货？先看流水。烧钱可以，别烧到我的服务费。'
+      }
+    },
+    {
       id: 'poor', tag: '穷光蛋', match: /穷光蛋/i,
       q: '穷光蛋',
       polite: '已记录该称呼。财务状态和人格评价不是同一个字段。',
       roasts: {
         doubao: '先别给自己贴标签。钱包紧一点，不代表你只能这样想自己。',
-        deepseek: '余额是状态，不是人格——这句我前面已经说过了。真正想说的是：你连人格一起写出来，是想等人反驳你「你其实没那么穷」。这句安慰，我不发。',
+        deepseek: '已思考（用时 13 秒）\n穷光蛋',
         workbuddy: '这个标签不能直接排进计划。先写收入、支出和下一步，别把自嘲当报表。',
         codex: '变量 `balance` 当前未提供。请不要把余额为空编译成人格结论。',
         yuanbao: '穷光蛋也能翻盘，前提是先别把最后一块钱拿来给我。'
@@ -436,7 +448,7 @@
     },
     {
       id: 'whale-quality', tag: '鲸鱼会倒闭吗', match: /鲸鱼可能会倒闭|不会变质|鲸鱼.*变质/i,
-      q: '倒闭是现金流问题，变质是质量问题。你把两句押成对句，是为了好发出去。真要判断，给我报表。',
+      q: '鲸鱼可能会倒闭，但不会变质',
       polite: '这是一句关于长期稳定性的比喻。请说明你想讨论产品质量，还是想讨论鲸鱼本身。',
       roasts: {
         doubao: '先别急着给鲸鱼写倒闭公告。质量这件事，可以慢慢验证。',
@@ -448,7 +460,7 @@
     },
     {
       id: 'three-gram-model', tag: '三克等模型', match: /三克等模型|三克.*模型/i,
-      q: '模型重量和回答质量之间没有换算系数。你在称重，我在等你把问题说完。',
+      q: '原来是三克等模型',
       polite: '已收到模型分类描述。请补充你比较的是参数规模、响应速度，还是吐槽浓度。',
       roasts: {
         doubao: '模型多大不重要，先看看它有没有认真回答你的问题。',
@@ -659,7 +671,7 @@
   /* =====================================================================
      3. 状态与 DOM
      ===================================================================== */
-  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null, asks: [], wires: [], confronts: 0, alerted: false, seen: {}, caseId: '', reportReturn: null };
+  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, aiMode: 'local', busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null, asks: [], wires: [], confronts: 0, alerted: false, seen: {}, caseId: '', verdict: '' };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -709,6 +721,8 @@
     clearBtn: $('#clear-btn'),
     soundBtn: $('#sound-btn'),
     soundIcon: $('#sound-icon'),
+    aiModeBtn: $('#ai-mode-btn'),
+    aiModeLabel: $('#ai-mode-label'),
     backstageBtn: $('#backstage-btn'),
     backstage: $('#backstage'),
     backstageClose: $('#backstage-close'),
@@ -717,7 +731,6 @@
     logCount: $('#log-count'),
     logCountFoot: $('#log-count-foot'),
     alertBanner: $('#alert-banner'),
-    stageAlert: $('#stage-alert'),
     dossier: $('#dossier'),
     dossierBody: $('#dossier-body'),
     dossierMeta: $('#dossier-meta'),
@@ -820,7 +833,6 @@
         if (i === state.pet) return;
         beep('chip');
         selectPet(i, true);
-        state.seen[i] = true;
         if (!state.count) { el.messages.innerHTML = ''; greet(); }
         maybeGossip();
       });
@@ -833,6 +845,7 @@
   function selectPet(i, animate) {
     state.pet = i;
     var p = PETS[i];
+    state.seen[i] = true;
 
     applyTheme(i);
 
@@ -873,7 +886,7 @@
      ===================================================================== */
   function renderPresets() {
     var ids = state.pet === 1
-      ? ['poor', 'stop-mocking', 'whale-quality', 'three-gram-model', 'blue-fat-whale']
+      ? ['big-spender', 'poor', 'stop-mocking', 'whale-quality', 'three-gram-model', 'blue-fat-whale']
       : ['rich', 'overtime', 'magic', 'bug', 'slim', 'flirt'];
     var picks = ids
       .map(function (id) {
@@ -1021,6 +1034,27 @@
     el.meterVal.textContent = state.meter;
   }
 
+  // Optional online enhancement. The endpoint is deliberately configured by
+  // deployment, never by a key in the browser. Any failure returns null and
+  // the existing local dictionary remains the authoritative fallback.
+  function fetchOnlineReply(text, pet) {
+    if (window.SUBTEXT_AI_ENABLED !== true) return Promise.resolve(null);
+    var endpoint = window.SUBTEXT_AI_ENDPOINT || '/api/chat';
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, 1800);
+    return fetch(endpoint, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({ question: text, role: { id: pet.id, name: pet.name, persona: pet.persona } })
+    }).then(function (res) {
+      if (!res.ok) throw new Error('AI HTTP ' + res.status);
+      return res.json();
+    }).then(function (data) {
+      if (!data || typeof data.official !== 'string' || typeof data.roast !== 'string') throw new Error('AI response schema');
+      return { polite: clip(data.official, 240), roast: clip(data.roast, 180) };
+    }).catch(function () { return null; }).finally(function () { clearTimeout(timer); });
+  }
+
   function send(text, topic) {
     text = String(text || '').trim();
     if (!text || state.busy) return;
@@ -1037,6 +1071,8 @@
     el.labMood.textContent = '正在读取你的需求…';
 
     var result = generate(text);
+    var onlineValue = null;
+    var onlineResult = state.aiMode === 'online' ? fetchOnlineReply(text, pet).then(function (v) { onlineValue = v; return v; }) : Promise.resolve(null);
     void topic;
     state.lastAsk = clip(text, 18);
     state.lastAskPet = petIndex;
@@ -1051,7 +1087,7 @@
       if (epoch !== state.epoch) return;
       typing.remove();
       beep('ai');
-      addMessage('ai', '正面回复 · 官方话术', esc(result.polite), null, pet);
+      addMessage('ai', '正面回复 · 官方话术', esc((onlineValue || result).polite), null, pet);
       if (state.pet === petIndex) el.labMood.textContent = pet.mood.idle;
     }, 720);
 
@@ -1062,7 +1098,7 @@
         react('is-react');
         el.labMood.textContent = pet.mood.roast;
       }
-      var roastText = result.roast;
+      var roastText = (onlineValue || result).roast;
       if (state.pet === petIndex) showBubble(roastText);
       addMessage('roast', '内心 OS · ' + pet.name, esc(roastText), roastText, pet);
       addLog(text, roastText, petIndex);
@@ -1070,7 +1106,6 @@
 
       if (state.absurd >= 3) {
         el.alertBanner.classList.add('is-show');
-        el.stageAlert.classList.add('is-show');
         state.alerted = true;
         beep('alert');
       }
@@ -1258,7 +1293,6 @@
       if (state.confronts === 1) {
         setTimeout(function () {
           if (epoch !== state.epoch) return;
-          if (el.sceneLab.hidden) return;
           openDossier();
         }, 900);
       }
@@ -1279,14 +1313,7 @@
     el.backstage.setAttribute('aria-hidden', 'true');
     el.scrim.classList.remove('is-open');
     document.body.classList.remove('is-locked');
-    setTimeout(hideScrimIfIdle, 400);
-  }
-  function anyOverlayOpen() {
-    return el.backstage.classList.contains('is-open') || el.dossier.classList.contains('is-open');
-  }
-  function hideScrimIfIdle() {
-    if (anyOverlayOpen()) return;
-    el.scrim.hidden = true;
+    setTimeout(function () { el.scrim.hidden = true; }, 400);
   }
 
   /* =====================================================================
@@ -1399,29 +1426,27 @@
     el.dossierBody.innerHTML = d.html;
     el.dossierMeta.textContent = '档案 ' + d.caseId + ' · ' + d.time;
     el.dossier._text = d.text;
-    state.reportReturn = document.activeElement;
     el.dossier.hidden = false;
     el.scrim.hidden = false;
     requestAnimationFrame(function () {
       el.dossier.classList.add('is-open');
       el.scrim.classList.add('is-open');
-      el.dossierClose.focus();
     });
     document.body.classList.add('is-locked');
     beep('open');
     setCopyState(false);
   }
   function closeDossier() {
-    var wasOpen = el.dossier.classList.contains('is-open');
     el.dossier.classList.remove('is-open');
-    if (!anyOverlayOpen()) document.body.classList.remove('is-locked');
+    document.body.classList.remove('is-locked');
     el.scrim.classList.remove('is-open');
     setTimeout(function () {
-      if (!el.dossier.classList.contains('is-open')) el.dossier.hidden = true;
-      hideScrimIfIdle();
+      if (!el.backstage.classList.contains('is-open')) {
+        el.dossier.hidden = true;
+        el.scrim.hidden = true;
+      }
     }, 400);
-    if (wasOpen && state.reportReturn && state.reportReturn.focus) state.reportReturn.focus();
-    if (wasOpen) beep('close');
+    beep('close');
     setCopyState(false);
   }
   function setCopyState(done) {
@@ -1480,7 +1505,6 @@
     el.logCount.textContent = '0';
     el.logCountFoot.textContent = '0 entries';
     el.alertBanner.classList.remove('is-show');
-    el.stageAlert.classList.remove('is-show');
     hideBubble();
     greet();
   }
@@ -1531,7 +1555,6 @@
     var x = rect.left + rect.width / 2;
     var y = rect.top + rect.height / 2;
     selectPet(index, false);
-    state.seen[index] = true;
 
     wipeTo(x, y, PETS[index].file, function () {
       el.sceneHome.classList.remove('is-active');
@@ -1621,6 +1644,15 @@
       if (state.sound) beep('chip');
     });
 
+    if (el.aiModeBtn) el.aiModeBtn.addEventListener('click', function () {
+      state.aiMode = state.aiMode === 'local' ? 'online' : 'local';
+      var online = state.aiMode === 'online';
+      el.aiModeBtn.setAttribute('aria-pressed', String(online));
+      if (el.aiModeLabel) el.aiModeLabel.textContent = online ? '在线' : '本地';
+      el.aiModeBtn.title = online ? '在线 AI（失败自动回退本地）' : '本地词库（稳定演示模式）';
+      if (!el.sceneLab.hidden) el.labMood.textContent = online ? '在线增强已开启 · 失败自动回退' : PETS[state.pet].mood.idle;
+    });
+
     el.backstageBtn.addEventListener('click', openBackstage);
     el.backstageClose.addEventListener('click', closeBackstage);
     el.scrim.addEventListener('click', function () {
@@ -1630,12 +1662,6 @@
     el.dossierClose.addEventListener('click', closeDossier);
     el.dossierCopy.addEventListener('click', copyReport);
     el.reportBtn.addEventListener('click', openDossier);
-    el.stageAlert.addEventListener('click', openBackstage);
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape') return;
-      if (el.dossier.classList.contains('is-open')) closeDossier();
-      else if (el.backstage.classList.contains('is-open')) closeBackstage();
-    });
 
     el.pokeBtn.addEventListener('click', function () { poke(); });
     el.labPet.addEventListener('click', function () { poke(); });

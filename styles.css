@@ -135,6 +135,9 @@ h1,h2,h3,p{ margin:0; }
 .tool-btn--icon{ padding:9px; border-radius:12px; }
 .tool-btn--ghost{ background:transparent; border-color:transparent; color:var(--sub); }
 .tool-btn--ghost:hover{ background:rgba(255,255,255,.9); border-color:var(--line); }
+.tool-btn--ai{ gap:5px; min-width:58px; font-family:var(--mono); font-size:11px; }
+.tool-btn--ai > span:first-child{ font-weight:700; letter-spacing:.04em; color:var(--accent-deep); }
+.tool-btn--ai[aria-pressed="true"]{ background:var(--accent-soft); border-color:color-mix(in srgb,var(--accent) 55%,transparent); color:var(--accent-deep); }
 
 .count-badge{
   min-width:20px; height:20px; padding:0 6px; border-radius:999px;
@@ -672,17 +675,6 @@ h1,h2,h3,p{ margin:0; }
 .alert-banner .ic{ font-size:15px; }
 @keyframes alertPulse{ to{ box-shadow:0 0 26px rgba(255,63,95,.35); } }
 
-/* 同一事件的舞台版本：不打开抽屉也能看见，点击直接进保密后台 */
-.stage-alert{
-  display:none; align-items:center; gap:9px; flex:none;
-  margin:0 0 12px; padding:10px 13px; border-radius:12px; cursor:pointer;
-  background:rgba(255,63,95,.14); border:1px solid rgba(255,63,95,.5); color:#c81e3f;
-  font:600 11px var(--mono); text-align:left;
-}
-.stage-alert.is-show{ display:flex; animation:alertPulse 1.1s ease-in-out infinite alternate; }
-.stage-alert .ic{ font-size:15px; flex:none; }
-.stage-alert:hover{ background:rgba(255,63,95,.22); }
-
 .log-list{ flex:1; min-height:0; overflow-y:auto; padding:16px 2px; display:flex; flex-direction:column; gap:2px; }
 .log-list::-webkit-scrollbar{ width:8px; }
 .log-list::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.16); border-radius:99px; border:2px solid transparent; background-clip:content-box; }
@@ -820,6 +812,7 @@ h1,h2,h3,p{ margin:0; }
   :root{ --topbar-h:66px; --r-lg:24px; }
   .brand__text small{ display:none; }
   .tool-btn span{ display:none; }
+  .tool-btn--ai span{ display:inline; }
   .tool-btn{ padding:9px 11px; }
   .lab-head__meta{ display:none; }
   .switcher{ overflow-x:auto; padding-bottom:4px; }
