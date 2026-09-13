@@ -657,6 +657,7 @@
     logCount: $('#log-count'),
     logCountFoot: $('#log-count-foot'),
     alertBanner: $('#alert-banner'),
+    stageAlert: $('#stage-alert'),
     dossier: $('#dossier'),
     dossierBody: $('#dossier-body'),
     dossierMeta: $('#dossier-meta'),
@@ -1005,6 +1006,7 @@
 
       if (state.absurd >= 3) {
         el.alertBanner.classList.add('is-show');
+        el.stageAlert.classList.add('is-show');
         state.alerted = true;
         beep('alert');
       }
@@ -1415,6 +1417,7 @@
     el.logCount.textContent = '0';
     el.logCountFoot.textContent = '0 entries';
     el.alertBanner.classList.remove('is-show');
+    el.stageAlert.classList.remove('is-show');
     hideBubble();
     greet();
   }
@@ -1564,6 +1567,7 @@
     el.dossierClose.addEventListener('click', closeDossier);
     el.dossierCopy.addEventListener('click', copyReport);
     el.reportBtn.addEventListener('click', openDossier);
+    el.stageAlert.addEventListener('click', openBackstage);
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       if (el.dossier.classList.contains('is-open')) closeDossier();

@@ -334,9 +334,39 @@ with sync_playwright() as p:
     page.evaluate("""() => document.getElementById('dossier-close').click()""")
     page.wait_for_timeout(700)
 
-    check("46 全程无 JS 报错", not errs, errs[:2])
+    # 15. stage-level alert banner (visible without opening the drawer)
+    page.evaluate("""() => document.getElementById('clear-btn').click()""")
+    page.wait_for_timeout(600)
+    for _ in range(3):
+        ask_topic(page, "rich", 2000)
+    stage = page.evaluate("""() => {
+      const el = document.getElementById('stage-alert');
+      const r = el.getBoundingClientRect();
+      return {shown: el.classList.contains('is-show'),
+              onScreen: r.height > 0 && r.top >= 0 && r.left >= 0 && r.right <= innerWidth + 1,
+              backstageOpen: document.getElementById('backstage').classList.contains('is-open')};
+    }""")
+    check("46 舞台告警条不开抽屉即可见", stage["shown"] and stage["onScreen"] and not stage["backstageOpen"], stage)
+    page.evaluate("""() => document.getElementById('stage-alert').click()""")
+    page.wait_for_timeout(600)
+    jump = page.evaluate("""() => ({
+      open: document.getElementById('backstage').classList.contains('is-open'),
+      banner: document.getElementById('alert-banner').classList.contains('is-show')
+    })""")
+    check("47 点舞台告警条直达保密后台", jump["open"] and jump["banner"], jump)
+    page.evaluate("""() => document.getElementById('backstage-close').click()""")
+    page.wait_for_timeout(500)
+    page.evaluate("""() => document.getElementById('clear-btn').click()""")
+    page.wait_for_timeout(600)
+    reset = page.evaluate("""() => ({
+      stage: document.getElementById('stage-alert').classList.contains('is-show'),
+      drawer: document.getElementById('alert-banner').classList.contains('is-show')
+    })""")
+    check("48 清空后两处告警条都收起", not reset["stage"] and not reset["drawer"], reset)
+
+    check("49 全程无 JS 报错", not errs, errs[:2])
     bad = [u for u in failed if "fonts.g" not in u]
-    check("47 全程无资源加载失败", not bad, bad[:2])
+    check("50 全程无资源加载失败", not bad, bad[:2])
     browser.close()
 fails = [r for r in R if not r["pass"]]
 print("\n==== SUMMARY ====", flush=True)
