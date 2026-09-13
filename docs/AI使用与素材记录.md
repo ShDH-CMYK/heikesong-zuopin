@@ -18,18 +18,18 @@
 
 ## 开发过程中的 AI 与人工协作
 
-以下表格按仓库和本次协作中已经留下的事实填写。Codex 的具体模型版本、立绘生图工具及其版本没有在仓库记录，因此明确写为“未记录”，不以推测代替。
+以下表格按仓库、本次协作和你的确认填写。Codex 使用 GPT（具体 GPT 子版本未记录）；立绘生图工具及其版本没有在仓库记录，因此明确写为“未记录”，不以推测代替。
 
 | 环节 | 使用日期 | 工具 / 模型 / 版本 | AI 参与内容 | 人工工作与验证 | 证据位置 |
 | --- | --- | --- | --- | --- | --- |
-| 需求与交互构思 | 2026-09-12 至 2026-09-13 | Codex（具体模型版本未记录） | 生成候选创意、流程和文案方向 | 你选择“后台吐槽日志”方向，确定赛道二和演示流程 | 本次协作记录；`docs/需求说明.md` |
-| HTML/CSS/JS 原型 | 2026-09-12 至 2026-09-13 | Codex（具体模型版本未记录） | 协助生成页面结构、样式、角色逻辑和本地词库 | 你调整视觉层级、角色文案和交互状态；最终代码保存在 Git 提交中 | `index.html`、`styles.css`、`game.js`；Git 历史 |
-| QA 与修复 | 2026-09-12 至 2026-09-13 | Codex（具体模型版本未记录）+ Chromium/Playwright 验证 | 协助定位布局、输入、计数、日志和 3D 交互问题，执行回归检查 | 你验收页面行为、五角色外观和交互结果；已有 14 项线上专项检查和 41/41 旧流程回归记录 | `tools/check-pet-interactions.py`、`tools/regression.py`、`output/playwright/` |
+| 需求与交互构思 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录） | 生成候选创意、流程和文案方向 | 你选择“后台吐槽日志”方向，确定赛道二和演示流程 | 本次协作记录；`docs/需求说明.md` |
+| HTML/CSS/JS 原型 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录） | 协助生成页面结构、样式、角色逻辑和本地词库 | 你调整视觉层级、角色文案和交互状态；最终代码保存在 Git 提交中 | `index.html`、`styles.css`、`game.js`；Git 历史 |
+| QA 与修复 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Chromium/Playwright 验证 | 协助定位布局、输入、计数、日志和 3D 交互问题，执行回归检查 | 你验收页面行为、五角色外观和交互结果；已有 14 项线上专项检查和 41/41 旧流程回归记录 | `tools/check-pet-interactions.py`、`tools/regression.py`、`output/playwright/` |
 | 角色立绘 | 使用日期未记录 | 生图工具与模型版本待团队补填 | 生成五张角色立绘（当前仓库无法证明具体工具、模型或版本） | 你筛选、裁边、统一画布，并负责确认是否可公开使用 | `tools/prep-pets.py`；原始生成记录待补 |
-| 拆镜三维资产整理与动画 | 2026-09-12 至 2026-09-13 | Codex（具体模型版本未记录）+ Blender 4.5.10 LTS | 导入用户 `Blue.rar` 的实体网格与既有 UV，统一坐标、重接 PBR 材质、简化网页副本，添加 14 根骨骼、权重与 `Idle` / `React` 小幅动作 | 你提供模型包与使用要求，验收造型和网页效果；原包没有骨骼；不将原网格创作记作本轮 AI 工作 | `tools/build-deepseek-blue.py`、`pets/deepseek.blend`、`output/blue-review/` |
-| 拆镜网页贴图处理 | 2026-09-12 至 2026-09-13 | Codex（具体模型版本未记录）+ Python/Pillow（Pillow 版本未记录） | 将用户四张 4K PBR 原贴图制成 2K base color、normal 与 ORM；缩放后归一化法线，按 glTF 通道打包 roughness / metallic | 你提供原图并验收网页效果；原图未改动；不记作本轮从零绘制 | `tools/prepare-blue-textures.py`、`pets/blue-textures/` |
-| 文案与词库 | 2026-09-12 至 2026-09-13 | Codex（具体模型版本未记录） | 辅助提出吐槽初稿和角色差异化表达 | 你筛选、改写为善意且不针对身份的表达，并确认页面统一使用原创角色名 | `game.js`；Git 历史 |
-| 四个角色的三维重建与互动 | 2026-09-13 | Codex（具体模型版本未记录）+ Blender 4.5.10 LTS | 按现有立绘的配色、轮廓和特征生成实体几何、材质、部件层级与 `Idle` / `React` 动作，并接入共用 Three.js 渲染器 | 你要求所有角色采用拆镜同款互动，验收旋转、缩放、点击、待机、失败回退和移动端表现 | `tools/build-organic-pets.py`、`tools/build-robot-pets.py`、`pets/organic-pets.blend`、`pets/robot-pets.blend`、`output/all-pets-review/` |
+| 拆镜三维资产整理与动画 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Blender 4.5.10 LTS | 导入用户 `Blue.rar` 的实体网格与既有 UV，统一坐标、重接 PBR 材质、简化网页副本，添加 14 根骨骼、权重与 `Idle` / `React` 小幅动作 | 你提供模型包与使用要求，验收造型和网页效果；原包没有骨骼；不将原网格创作记作本轮 AI 工作 | `tools/build-deepseek-blue.py`、`pets/deepseek.blend`、`output/blue-review/` |
+| 拆镜网页贴图处理 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Python/Pillow（Pillow 版本未记录） | 将用户四张 4K PBR 原贴图制成 2K base color、normal 与 ORM；缩放后归一化法线，按 glTF 通道打包 roughness / metallic | 你提供原图并验收网页效果；原图未改动；不记作本轮从零绘制 | `tools/prepare-blue-textures.py`、`pets/blue-textures/` |
+| 文案与词库 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录） | 辅助提出吐槽初稿和角色差异化表达 | 你筛选、改写为善意且不针对身份的表达，并确认页面统一使用原创角色名 | `game.js`；Git 历史 |
+| 四个角色的三维重建与互动 | 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Blender 4.5.10 LTS | 按现有立绘的配色、轮廓和特征生成实体几何、材质、部件层级与 `Idle` / `React` 动作，并接入共用 Three.js 渲染器 | 你要求所有角色采用拆镜同款互动，验收旋转、缩放、点击、待机、失败回退和移动端表现 | `tools/build-organic-pets.py`、`tools/build-robot-pets.py`、`pets/organic-pets.blend`、`pets/robot-pets.blend`、`output/all-pets-review/` |
 
 ## 创作过程留存
 
@@ -76,7 +76,7 @@
 
 ## 提交前核对
 
-- [x] 已按仓库事实填写 Codex、Blender 4.5.10 LTS、Python/Pillow、Three.js 0.180.0 的用途和分工；Codex 模型版本、Pillow 版本和立绘生图工具仍明确标为“未记录”，不作猜测。
+- [x] 已按仓库事实和你的确认填写 Codex（GPT）、Blender 4.5.10 LTS、Python/Pillow、Three.js 0.180.0 的用途和分工；Codex 的具体 GPT 子版本、Pillow 版本和立绘生图工具仍明确标为“未记录”，不作猜测。
 - [x] 已写清 AI 参与环节，以及你负责的创意定案、素材提供、筛选改写、测试和整合。
 - [ ] 五张立绘的来源、生成记录和授权范围已确认。
 - [ ] `Blue.rar` 三维网格与四张 PBR 贴图的原作者、来源和使用授权已确认。
