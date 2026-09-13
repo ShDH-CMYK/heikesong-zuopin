@@ -24,7 +24,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 需求与交互构思 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录） | 生成候选创意、流程和文案方向 | 你选择“后台吐槽日志”方向，确定赛道二和演示流程 | 本次协作记录；`docs/需求说明.md` |
 | HTML/CSS/JS 原型 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录） | 协助生成页面结构、样式、角色逻辑和本地词库 | 你调整视觉层级、角色文案和交互状态；最终代码保存在 Git 提交中 | `index.html`、`styles.css`、`game.js`；Git 历史 |
-| QA 与修复 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Chromium/Playwright 验证 | 协助定位布局、输入、计数、日志和 3D 交互问题，执行回归检查 | 你验收页面行为、五角色外观和交互结果；已有 14 项线上专项检查和 41/41 旧流程回归记录 | `tools/check-pet-interactions.py`、`tools/regression.py`、`output/playwright/` |
+| QA 与修复 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Chromium/Playwright 验证 | 协助定位布局、输入、计数、日志和 3D 交互问题，执行回归检查 | 你验收页面行为、五角色外观和交互结果；已有 14 项线上专项检查和 50/50 核心链路回归（本地副本与线上入口均实测通过） | `tools/check-pet-interactions.py`、`tools/regression.py`、`output/playwright/` |
 | 角色立绘 | 使用日期未记录 | 生图工具与模型版本待团队补填 | 生成五张角色立绘（当前仓库无法证明具体工具、模型或版本） | 你筛选、裁边、统一画布，并负责确认是否可公开使用 | `tools/prep-pets.py`；原始生成记录待补 |
 | 拆镜三维资产整理与动画 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Blender 4.5.10 LTS | 导入用户 `Blue.rar` 的实体网格与既有 UV，统一坐标、重接 PBR 材质、简化网页副本，添加 14 根骨骼、权重与 `Idle` / `React` 小幅动作 | 你提供模型包与使用要求，验收造型和网页效果；原包没有骨骼；不将原网格创作记作本轮 AI 工作 | `tools/build-deepseek-blue.py`、`pets/deepseek.blend`、`output/blue-review/` |
 | 拆镜网页贴图处理 | 2026-09-12 至 2026-09-13 | Codex（GPT，具体 GPT 子版本未记录）+ Python/Pillow（Pillow 版本未记录） | 将用户四张 4K PBR 原贴图制成 2K base color、normal 与 ORM；缩放后归一化法线，按 glTF 通道打包 roughness / metallic | 你提供原图并验收网页效果；原图未改动；不记作本轮从零绘制 | `tools/prepare-blue-textures.py`、`pets/blue-textures/` |
