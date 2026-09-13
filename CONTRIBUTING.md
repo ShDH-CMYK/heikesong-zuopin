@@ -76,6 +76,8 @@ python tools/regression.py http://127.0.0.1:8890/index.html
 
 2026-09-13 两个入口已同步到同一版本并各自验证过：GitHub Pages 随 `main` 构建，Cloudflare 部署后逐个核对五个 GLB 与 `vendor/three/` 返回 200，并在线上跑完 `tools/regression.py` 的 50 项检查。该结论只对本次版本有效，下次改动后需重新核对。
 
+2026-09-13（修复批次 `b555441`）再次同步并复核：GitHub Pages 随 `main` 重建，Cloudflare 用 `wrangler pages deploy` 上传修复版暂存目录；线上四个静态文件与仓库逐字节一致，Cloudflare 在线回归 50/50、3D 交互专项 14/14，两个入口各 17 项对抗探针全过。`tools/regression.py` 的拆镜 3D 检查已改为等待就绪态（原固定 2.6 秒等待在线上会因 5.7 MB 模型下载而误报）。
+
 部署使用仓库外的**新暂存目录**复制必要静态文件，必须包含 `vendor/three/` 与回复表情所在的 `assets/`：
 
 ```powershell

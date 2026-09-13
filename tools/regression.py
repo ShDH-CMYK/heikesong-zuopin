@@ -105,7 +105,15 @@ with sync_playwright() as p:
     check("12 提问后切换不重置招呼", target in hist["greet"], (target, hist["greet"][:36]))
 
     # 6. deepseek 3d (explicitly switch to 拆镜 = index 1)
-    sw(page, 1, 2600)
+    # 线上 5.7 MB 模型需要下载时间，固定 sleep 会误报；等待就绪态再由下面的检查判定。
+    sw(page, 1, 900)
+    try:
+        page.wait_for_function("""() => {
+          const h = document.getElementById('stage-model-3d');
+          return h.dataset.pet === 'deepseek' && h.dataset.state === 'ready';
+        }""", timeout=45000)
+    except Exception:
+        pass
     ds = page.evaluate("""() => {
       const pet = document.getElementById('stage-pet');
       const host = document.getElementById('stage-model-3d');
