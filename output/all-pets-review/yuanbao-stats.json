@@ -1,0 +1,13 @@
+{
+  "id": "yuanbao",
+  "triangles": 13220,
+  "vertices": 6682,
+  "meshes": 7,
+  "bones": 7,
+  "glbBytes": 649316,
+  "animations": {
+    "Idle": 4,
+    "React": 2
+  },
+  "method": "Stylized solid-mesh reconstruction from supplied front portrait; unseen sides inferred; simple rigid part weights; no texture projection"
+}

@@ -1,0 +1,30 @@
+{
+  "workbuddy": {
+    "triangles": 16352,
+    "vertices": 8412,
+    "bones": 9,
+    "glbBytes": 105252,
+    "animations": {
+      "Idle": 4,
+      "React": 2
+    },
+    "source": "Procedural solid geometry guided by supplied workbuddy.png",
+    "materials": 8,
+    "orientation": "glTF +Z front, Y up, sole at y=0",
+    "limitations": "Stylized design reconstruction, not an exact image-to-mesh reconstruction; rigid mechanical joints, no facial blendshapes."
+  },
+  "codex": {
+    "triangles": 22476,
+    "vertices": 11690,
+    "bones": 9,
+    "glbBytes": 128452,
+    "animations": {
+      "Idle": 4,
+      "React": 2
+    },
+    "source": "Procedural solid geometry guided by supplied codex.png",
+    "materials": 10,
+    "orientation": "glTF +Z front, Y up, sole at y=0",
+    "limitations": "Stylized design reconstruction, not an exact image-to-mesh reconstruction; rigid mechanical joints, no facial blendshapes."
+  }
+}

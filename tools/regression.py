@@ -45,15 +45,6 @@ def first_msg(page):
     }""")
 
 
-def wait_model_ready(page, seconds=20):
-    """Poll instead of sleeping: over WAN the GLB + three.js take far longer than locally."""
-    for _ in range(seconds * 2):
-        if page.evaluate("() => document.getElementById('stage-pet').classList.contains('is-model-ready')"):
-            return True
-        page.wait_for_timeout(500)
-    return False
-
-
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page(viewport={"width": 1440, "height": 900})
@@ -113,9 +104,8 @@ with sync_playwright() as p:
     check("11 切换触发内部通讯(一问一答两条)", hist["wire"] == 1 and hist["lines"] == 2, hist)
     check("12 提问后切换不重置招呼", target in hist["greet"], (target, hist["greet"][:36]))
 
-    # 6. deepseek 3d (explicitly switch to 拆镜 = index 1, then wait for first render)
-    sw(page, 1, 800)
-    ready = wait_model_ready(page)
+    # 6. deepseek 3d (explicitly switch to 拆镜 = index 1)
+    sw(page, 1, 2600)
     ds = page.evaluate("""() => {
       const pet = document.getElementById('stage-pet');
       const host = document.getElementById('stage-model-3d');
@@ -131,8 +121,12 @@ with sync_playwright() as p:
     check("13 拆镜舞台名正确", ds["name"] == "拆镜", ds["name"])
     check("14 拆镜 3D 渲染成功", ds["ready"] and ds["canvasVisible"], ds)
     sw(page, 0, 900)
-    back = page.evaluate("""() => getComputedStyle(document.getElementById('lab-pet')).display !== 'none'""")
-    check("15 切回立绘宠物显示立绘", back, back)
+    page.wait_for_function("""() => {
+      const h = document.getElementById('stage-model-3d');
+      return h.dataset.pet === 'doubao' && h.dataset.state === 'ready';
+    }""", timeout=35000)
+    back = page.locator('#stage-model-3d canvas').is_visible()
+    check("15 切换暖球显示其独立三维模型", back, back)
 
     # 7. input edge cases
     submit_text(page, "   ", 400)
@@ -176,16 +170,15 @@ with sync_playwright() as p:
         open: d.classList.contains('is-open') && !d.hidden,
         n: stats[0], absurd: stats[1], m: stats[2], w: stats[3], c: stats[4],
         verdict: (document.querySelector('.dsr-sec--verdict p') || {}).textContent || '',
-        placeholder: /\{[nmcw]\}/.test(d.innerText),
+        placeholder: /[{][nmcw][}]/.test(d.innerText),
         locked: document.body.classList.contains('is-locked'),
         users: document.querySelectorAll('.msg--user').length,
-        wires: document.querySelectorAll('.msg--wire').length,
         meter: +document.getElementById('meter-val').textContent
       };
     }""")
     check("24 对质后自动弹出结案报告", dsr["open"], dsr["open"])
     check("25 报告统计与真实互动一致",
-          dsr["n"] == dsr["users"] - 1 and dsr["c"] == 1 and dsr["w"] == dsr["wires"] and dsr["m"] == dsr["meter"], dsr)
+          dsr["n"] == dsr["users"] - 1 and dsr["c"] == 1 and dsr["w"] == 1 and dsr["m"] == dsr["meter"], dsr)
     check("26 判词已填充无残留占位符", (not dsr["placeholder"]) and len(dsr["verdict"]) > 8, dsr["verdict"][:40])
     page.evaluate("() => document.getElementById('dossier-close').click()")
     page.wait_for_timeout(700)

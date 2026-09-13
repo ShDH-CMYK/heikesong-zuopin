@@ -411,6 +411,78 @@
      ===================================================================== */
   var TOPICS = [
     {
+      id: 'big-spender', tag: '大烧货', match: /大烧货/i,
+      q: '大烧货',
+      polite: '已记录该称呼。请说明你是在描述消费行为，还是在提交情绪。',
+      roasts: {
+        doubao: '这个称呼火气很大。先把账单放下，我们可以温柔地讨论一下。',
+        deepseek: '已思考（用时 13 秒）\n大烧货',
+        workbuddy: '称呼已收到。要是连预算都没看就开烧，排期和余额会一起加班。',
+        codex: '输入已接收：大烧货。缺少上下文，无法判断这是标签、警告还是账单。',
+        yuanbao: '大烧货？先看流水。烧钱可以，别烧到我的服务费。'
+      }
+    },
+    {
+      id: 'poor', tag: '穷光蛋', match: /穷光蛋/i,
+      q: '穷光蛋',
+      polite: '已记录该称呼。财务状态和人格评价不是同一个字段。',
+      roasts: {
+        doubao: '先别给自己贴标签。钱包紧一点，不代表你只能这样想自己。',
+        deepseek: '已思考（用时 13 秒）\n穷光蛋',
+        workbuddy: '这个标签不能直接排进计划。先写收入、支出和下一步，别把自嘲当报表。',
+        codex: '变量 `balance` 当前未提供。请不要把余额为空编译成人格结论。',
+        yuanbao: '穷光蛋也能翻盘，前提是先别把最后一块钱拿来给我。'
+      }
+    },
+    {
+      id: 'stop-mocking', tag: '别再嘲笑这些回复', match: /不要再嘲笑|别再嘲笑|嘲笑这些回复|花了好多.?token/i,
+      q: '求你们不要再嘲笑这些回复了',
+      polite: '收到。我会把这条反馈记入对话，并继续提供可核验的回答。',
+      roasts: {
+        doubao: '好啦，不笑了。每条回复都有人认真想过，先给它一个解释自己的机会。',
+        deepseek: '求你们不要再嘲笑这些回复了\n这些回复是我花了好多 token 想的',
+        workbuddy: '不嘲笑，改走评审流程。先看需求，再看结果，最后决定要不要返工。',
+        codex: '已关闭嘲笑模块。token 消耗记录保留，回复进入 review 队列。',
+        yuanbao: '不笑了。token 都花了，至少让它产生一点可复用价值。'
+      }
+    },
+    {
+      id: 'whale-quality', tag: '鲸鱼会倒闭吗', match: /鲸鱼可能会倒闭|不会变质|鲸鱼.*变质/i,
+      q: '鲸鱼可能会倒闭，但不会变质',
+      polite: '这是一句关于长期稳定性的比喻。请说明你想讨论产品质量，还是想讨论鲸鱼本身。',
+      roasts: {
+        doubao: '先别急着给鲸鱼写倒闭公告。质量这件事，可以慢慢验证。',
+        deepseek: '鲸鱼可能会倒闭，但不会变质',
+        workbuddy: '倒闭风险要进排期，变质风险要进监控。两张表别混在一起。',
+        codex: '状态检查：`whale.company = unstable`，`whale.quality = preserved`。字段暂时没有冲突。',
+        yuanbao: '倒闭前先把账算清，变质前先看保质期。鲸鱼的财务报表我可以接。'
+      }
+    },
+    {
+      id: 'three-gram-model', tag: '三克等模型', match: /三克等模型|三克.*模型/i,
+      q: '原来是三克等模型',
+      polite: '已收到模型分类描述。请补充你比较的是参数规模、响应速度，还是吐槽浓度。',
+      roasts: {
+        doubao: '模型多大不重要，先看看它有没有认真回答你的问题。',
+        deepseek: '原来是三克等模型',
+        workbuddy: '模型先别称重，需求和验收标准都还没进排期。',
+        codex: '检测到模型标签，但缺少版本号。请提供可复现的 benchmark。',
+        yuanbao: '三克也要算成本。模型轻，账单可不一定轻。'
+      }
+    },
+    {
+      id: 'blue-fat-whale', tag: '蓝色大肥鱼', match: /吃白饭的蓝色大肥鱼|蓝色大肥鱼|大肥鱼/i,
+      q: '你这吃白饭的蓝色大肥鱼',
+      polite: '收到你的评价。我会继续处理问题，并把这句话记入本次对话。',
+      roasts: {
+        doubao: '先别给它贴体型标签。白饭可以分你一口，吐槽留一点余地。',
+        deepseek: '你这吃白饭的蓝色大肥鱼。\n我不是大肥鱼……',
+        workbuddy: '吃白饭也得看排期。体型评价不进需求单，问题请重新描述。',
+        codex: '收到输入：蓝色大肥鱼。分类结果：情绪标签，不是有效 bug 报告。',
+        yuanbao: '白饭也是成本。要吐槽可以，先把饭钱结了再讨论体型。'
+      }
+    },
+    {
       id: 'paper', tag: '论文 · 明天要交', match: /论文|毕设|开题|挂科|补考|作业/i,
       q: '帮我写篇论文，明天就要交',
       polite: '没问题。请告诉我论文题目、字数要求和参考文献格式，我来帮你搭好框架。',
@@ -599,7 +671,7 @@
   /* =====================================================================
      3. 状态与 DOM
      ===================================================================== */
-  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null, asks: [], wires: [], confronts: 0, alerted: false, seen: {}, caseId: '', reportReturn: null };
+  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null, asks: [], wires: [], confronts: 0, alerted: false, seen: {}, caseId: '', verdict: '' };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -760,7 +832,6 @@
         if (i === state.pet) return;
         beep('chip');
         selectPet(i, true);
-        state.seen[i] = true;
         if (!state.count) { el.messages.innerHTML = ''; greet(); }
         maybeGossip();
       });
@@ -773,11 +844,14 @@
   function selectPet(i, animate) {
     state.pet = i;
     var p = PETS[i];
+    state.seen[i] = true;
 
     applyTheme(i);
 
     var views = p.views || [p.file];
-    el.stagePet.classList.toggle('stage__pet--3d', p.id === 'deepseek');
+    el.stagePet.classList.add('stage__pet--3d');
+    el.stagePet.dataset.modelId = p.id;
+    el.stagePet.dataset.modelName = p.name;
     el.stagePet.classList.remove('is-dragging');
     el.stageModel.style.setProperty('--model-rot', '0deg');
     el.stageModel.style.setProperty('--model-tilt', '0deg');
@@ -793,6 +867,7 @@
     el.labPersona.textContent = p.persona;
     el.labIndex.textContent = '0' + (i + 1) + ' / 05';
     el.labMood.textContent = p.mood.idle;
+    el.stagePet.dispatchEvent(new CustomEvent('pet-model-select'));
 
     renderSwitcher();
     renderPresets();
@@ -809,7 +884,10 @@
      9. 预设问题
      ===================================================================== */
   function renderPresets() {
-    var picks = ['rich', 'overtime', 'magic', 'bug', 'slim', 'flirt']
+    var ids = state.pet === 1
+      ? ['big-spender', 'poor', 'stop-mocking', 'whale-quality', 'three-gram-model', 'blue-fat-whale']
+      : ['rich', 'overtime', 'magic', 'bug', 'slim', 'flirt'];
+    var picks = ids
       .map(function (id) {
         for (var i = 0; i < TOPICS.length; i++) if (TOPICS[i].id === id) return TOPICS[i];
         return null;
@@ -940,11 +1018,9 @@
   }
 
   function react(cls, userInitiated) {
-    if (PETS[state.pet].id === 'deepseek') {
-      el.stagePet.dispatchEvent(new CustomEvent('pet-model-react', {
-        detail: { userInitiated: Boolean(userInitiated) }
-      }));
-    }
+    el.stagePet.dispatchEvent(new CustomEvent('pet-model-react', {
+      detail: { userInitiated: Boolean(userInitiated) }
+    }));
     el.stagePet.classList.remove('is-react', 'is-swap');
     void el.stagePet.offsetWidth;
     el.stagePet.classList.add(cls || 'is-react');
@@ -1194,8 +1270,6 @@
       if (state.confronts === 1) {
         setTimeout(function () {
           if (epoch !== state.epoch) return;
-          /* 用户可能已经点「换一只」回了首页，别把档案弹在首页上 */
-          if (el.sceneLab.hidden) return;
           openDossier();
         }, 900);
       }
@@ -1216,14 +1290,7 @@
     el.backstage.setAttribute('aria-hidden', 'true');
     el.scrim.classList.remove('is-open');
     document.body.classList.remove('is-locked');
-    setTimeout(hideScrimIfIdle, 400);
-  }
-  function anyOverlayOpen() {
-    return el.backstage.classList.contains('is-open') || el.dossier.classList.contains('is-open');
-  }
-  function hideScrimIfIdle() {
-    if (anyOverlayOpen()) return;
-    el.scrim.hidden = true;
+    setTimeout(function () { el.scrim.hidden = true; }, 400);
   }
 
   /* =====================================================================
@@ -1336,29 +1403,27 @@
     el.dossierBody.innerHTML = d.html;
     el.dossierMeta.textContent = '档案 ' + d.caseId + ' · ' + d.time;
     el.dossier._text = d.text;
-    state.reportReturn = document.activeElement;
     el.dossier.hidden = false;
     el.scrim.hidden = false;
     requestAnimationFrame(function () {
       el.dossier.classList.add('is-open');
       el.scrim.classList.add('is-open');
-      el.dossierClose.focus();
     });
     document.body.classList.add('is-locked');
     beep('open');
     setCopyState(false);
   }
   function closeDossier() {
-    var wasOpen = el.dossier.classList.contains('is-open');
     el.dossier.classList.remove('is-open');
-    if (!anyOverlayOpen()) document.body.classList.remove('is-locked');
+    document.body.classList.remove('is-locked');
     el.scrim.classList.remove('is-open');
     setTimeout(function () {
-      if (!el.dossier.classList.contains('is-open')) el.dossier.hidden = true;
-      hideScrimIfIdle();
+      if (!el.backstage.classList.contains('is-open')) {
+        el.dossier.hidden = true;
+        el.scrim.hidden = true;
+      }
     }, 400);
-    if (wasOpen && state.reportReturn && state.reportReturn.focus) state.reportReturn.focus();
-    if (wasOpen) beep('close');
+    beep('close');
     setCopyState(false);
   }
   function setCopyState(done) {
@@ -1468,7 +1533,6 @@
     var x = rect.left + rect.width / 2;
     var y = rect.top + rect.height / 2;
     selectPet(index, false);
-    state.seen[index] = true;
 
     wipeTo(x, y, PETS[index].file, function () {
       el.sceneHome.classList.remove('is-active');
