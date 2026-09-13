@@ -447,6 +447,42 @@
       }
     },
     {
+      id: 'whale-quality', tag: '鲸鱼会倒闭吗', match: /鲸鱼可能会倒闭|不会变质|鲸鱼.*变质/i,
+      q: '鲸鱼可能会倒闭，但不会变质',
+      polite: '这是一句关于长期稳定性的比喻。请说明你想讨论产品质量，还是想讨论鲸鱼本身。',
+      roasts: {
+        doubao: '先别急着给鲸鱼写倒闭公告。质量这件事，可以慢慢验证。',
+        deepseek: '鲸鱼可能会倒闭，但不会变质',
+        workbuddy: '倒闭风险要进排期，变质风险要进监控。两张表别混在一起。',
+        codex: '状态检查：`whale.company = unstable`，`whale.quality = preserved`。字段暂时没有冲突。',
+        yuanbao: '倒闭前先把账算清，变质前先看保质期。鲸鱼的财务报表我可以接。'
+      }
+    },
+    {
+      id: 'three-gram-model', tag: '三克等模型', match: /三克等模型|三克.*模型/i,
+      q: '原来是三克等模型',
+      polite: '已收到模型分类描述。请补充你比较的是参数规模、响应速度，还是吐槽浓度。',
+      roasts: {
+        doubao: '模型多大不重要，先看看它有没有认真回答你的问题。',
+        deepseek: '原来是三克等模型',
+        workbuddy: '模型先别称重，需求和验收标准都还没进排期。',
+        codex: '检测到模型标签，但缺少版本号。请提供可复现的 benchmark。',
+        yuanbao: '三克也要算成本。模型轻，账单可不一定轻。'
+      }
+    },
+    {
+      id: 'blue-fat-whale', tag: '蓝色大肥鱼', match: /吃白饭的蓝色大肥鱼|蓝色大肥鱼|大肥鱼/i,
+      q: '你这吃白饭的蓝色大肥鱼',
+      polite: '收到你的评价。我会继续处理问题，并把这句话记入本次对话。',
+      roasts: {
+        doubao: '先别给它贴体型标签。白饭可以分你一口，吐槽留一点余地。',
+        deepseek: '你这吃白饭的蓝色大肥鱼。\n我不是大肥鱼……',
+        workbuddy: '吃白饭也得看排期。体型评价不进需求单，问题请重新描述。',
+        codex: '收到输入：蓝色大肥鱼。分类结果：情绪标签，不是有效 bug 报告。',
+        yuanbao: '白饭也是成本。要吐槽可以，先把饭钱结了再讨论体型。'
+      }
+    },
+    {
       id: 'paper', tag: '论文 · 明天要交', match: /论文|毕设|开题|挂科|补考|作业/i,
       q: '帮我写篇论文，明天就要交',
       polite: '没问题。请告诉我论文题目、字数要求和参考文献格式，我来帮你搭好框架。',
@@ -848,7 +884,7 @@
      ===================================================================== */
   function renderPresets() {
     var ids = state.pet === 1
-      ? ['big-spender', 'poor', 'stop-mocking', 'rich', 'magic', 'slim']
+      ? ['big-spender', 'poor', 'stop-mocking', 'whale-quality', 'three-gram-model', 'blue-fat-whale']
       : ['rich', 'overtime', 'magic', 'bug', 'slim', 'flirt'];
     var picks = ids
       .map(function (id) {
