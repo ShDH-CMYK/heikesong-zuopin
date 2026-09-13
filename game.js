@@ -671,7 +671,7 @@
   /* =====================================================================
      3. 状态与 DOM
      ===================================================================== */
-  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null, asks: [], wires: [], confronts: 0, alerted: false, seen: {}, caseId: '', verdict: '' };
+  var state = { pet: 0, meter: 0, absurd: 0, count: 0, logs: [], sound: true, busy: false, epoch: 0, lastAsk: '', lastAskPet: null, pendingGossip: false, pendingConfront: null, asks: [], wires: [], confronts: 0, alerted: false, seen: {}, caseId: '', reportReturn: null };
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
@@ -832,6 +832,7 @@
         if (i === state.pet) return;
         beep('chip');
         selectPet(i, true);
+        state.seen[i] = true;
         if (!state.count) { el.messages.innerHTML = ''; greet(); }
         maybeGossip();
       });
@@ -844,7 +845,6 @@
   function selectPet(i, animate) {
     state.pet = i;
     var p = PETS[i];
-    state.seen[i] = true;
 
     applyTheme(i);
 
@@ -1270,6 +1270,7 @@
       if (state.confronts === 1) {
         setTimeout(function () {
           if (epoch !== state.epoch) return;
+          if (el.sceneLab.hidden) return;
           openDossier();
         }, 900);
       }
@@ -1290,7 +1291,14 @@
     el.backstage.setAttribute('aria-hidden', 'true');
     el.scrim.classList.remove('is-open');
     document.body.classList.remove('is-locked');
-    setTimeout(function () { el.scrim.hidden = true; }, 400);
+    setTimeout(hideScrimIfIdle, 400);
+  }
+  function anyOverlayOpen() {
+    return el.backstage.classList.contains('is-open') || el.dossier.classList.contains('is-open');
+  }
+  function hideScrimIfIdle() {
+    if (anyOverlayOpen()) return;
+    el.scrim.hidden = true;
   }
 
   /* =====================================================================
@@ -1403,27 +1411,29 @@
     el.dossierBody.innerHTML = d.html;
     el.dossierMeta.textContent = '档案 ' + d.caseId + ' · ' + d.time;
     el.dossier._text = d.text;
+    state.reportReturn = document.activeElement;
     el.dossier.hidden = false;
     el.scrim.hidden = false;
     requestAnimationFrame(function () {
       el.dossier.classList.add('is-open');
       el.scrim.classList.add('is-open');
+      el.dossierClose.focus();
     });
     document.body.classList.add('is-locked');
     beep('open');
     setCopyState(false);
   }
   function closeDossier() {
+    var wasOpen = el.dossier.classList.contains('is-open');
     el.dossier.classList.remove('is-open');
-    document.body.classList.remove('is-locked');
+    if (!anyOverlayOpen()) document.body.classList.remove('is-locked');
     el.scrim.classList.remove('is-open');
     setTimeout(function () {
-      if (!el.backstage.classList.contains('is-open')) {
-        el.dossier.hidden = true;
-        el.scrim.hidden = true;
-      }
+      if (!el.dossier.classList.contains('is-open')) el.dossier.hidden = true;
+      hideScrimIfIdle();
     }, 400);
-    beep('close');
+    if (wasOpen && state.reportReturn && state.reportReturn.focus) state.reportReturn.focus();
+    if (wasOpen) beep('close');
     setCopyState(false);
   }
   function setCopyState(done) {
@@ -1533,6 +1543,7 @@
     var x = rect.left + rect.width / 2;
     var y = rect.top + rect.height / 2;
     selectPet(index, false);
+    state.seen[index] = true;
 
     wipeTo(x, y, PETS[index].file, function () {
       el.sceneHome.classList.remove('is-active');
