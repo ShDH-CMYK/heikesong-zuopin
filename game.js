@@ -411,7 +411,7 @@
      ===================================================================== */
   var TOPICS = [
     {
-      id: 'big spender', tag: '大烧货', match: /大烧货/i,
+      id: 'big-spender', tag: '大烧货', match: /大烧货/i,
       q: '大烧货',
       polite: '已记录该称呼。请说明你是在描述消费行为，还是在提交情绪。',
       roasts: {
@@ -847,7 +847,10 @@
      9. 预设问题
      ===================================================================== */
   function renderPresets() {
-    var picks = ['rich', 'overtime', 'magic', 'bug', 'slim', 'flirt']
+    var ids = state.pet === 1
+      ? ['big-spender', 'poor', 'stop-mocking', 'rich', 'magic', 'slim']
+      : ['rich', 'overtime', 'magic', 'bug', 'slim', 'flirt'];
+    var picks = ids
       .map(function (id) {
         for (var i = 0; i < TOPICS.length; i++) if (TOPICS[i].id === id) return TOPICS[i];
         return null;
