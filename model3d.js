@@ -74,7 +74,10 @@ if (host && stage && lab) {
       doubao: 'pets/doubao.glb?v=20260913-all-pets-v2',
       deepseek: 'pets/deepseek.glb?v=20260913-all-pets-v2',
       workbuddy: 'pets/workbuddy.glb?v=20260913-all-pets-v2',
-      codex: 'pets/codex.glb?v=20260913-all-pets-v2',
+      // The previous Codex asset could fail to decode in some browsers. This
+      // FBX-converted GLB is self-contained and is used for the replacement
+      // model; its procedural clips below keep click interaction available.
+      codex: 'pets/codex-fbx.glb?v=20260913-codex-fbx1',
       yuanbao: 'pets/yuanbao.glb?v=20260913-all-pets-v2'
     };
     // One renderer; at most five lazily loaded assets, shared across switches.
@@ -316,6 +319,19 @@ if (host && stage && lab) {
       host.dataset.action = '';
       hasFit = false;
     }
+    function makeProceduralClips(root) {
+      // FBX conversion can legitimately produce a static mesh without an
+      // animation stack. Build lightweight Idle/React clips so the common
+      // interaction contract remains the same as the other pets.
+      if (!root.name) root.name = 'CodexModel';
+      const path = root.name + '.rotation[y]';
+      const idleTrack = new THREE.NumberKeyframeTrack(path, [0, 2, 4], [0, 0.035, 0]);
+      const reactTrack = new THREE.NumberKeyframeTrack(path, [0, 0.35, 0.7, 1.4, 2], [0, -0.18, 0.18, -0.08, 0]);
+      return [
+        new THREE.AnimationClip('Idle', 4, [idleTrack]),
+        new THREE.AnimationClip('React', 2, [reactTrack])
+      ];
+    }
     async function selectModel() {
       const id = stage.dataset.modelId;
       if (lab.hidden) return; // Homepage cards do not download the 3D assets.
@@ -358,8 +374,9 @@ if (host && stage && lab) {
         pivot.position.sub(bounds.getCenter(new THREE.Vector3()));
         pivot.updateMatrixWorld(true);
         radius = bounds.getBoundingSphere(new THREE.Sphere()).radius;
-        const idleClip = THREE.AnimationClip.findByName(gltf.animations, 'Idle');
-        const reactClip = THREE.AnimationClip.findByName(gltf.animations, 'React');
+        const clips = (gltf.animations && gltf.animations.length) ? gltf.animations : makeProceduralClips(model);
+        const idleClip = THREE.AnimationClip.findByName(clips, 'Idle');
+        const reactClip = THREE.AnimationClip.findByName(clips, 'React');
         if (!idleClip || !reactClip) throw new Error('Model is missing Idle or React animation');
         mixer = new THREE.AnimationMixer(model);
         idle = mixer.clipAction(idleClip);
@@ -384,7 +401,7 @@ if (host && stage && lab) {
             });
           }
         });
-        host.dataset.animations = gltf.animations.map((clip) => clip.name).join(',');
+        host.dataset.animations = clips.map((clip) => clip.name).join(',');
         host.dataset.action = 'Idle';
         resetView();
         visibilityChanged();
