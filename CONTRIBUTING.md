@@ -72,9 +72,9 @@ python tools/regression.py http://127.0.0.1:8890/index.html
 
 ## 部署（在线演示）
 
-当前主入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目 `subtext`，生产域名 `subtext-8up.pages.dev`）。备用镜像是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>，随 `main` 自动构建；推送成功不等于页面已经更新，要核对线上资源版本。部署后核对 `index.html`、`model3d.js` 与 `pets/deepseek.glb`，并在线验证五个角色的加载、旋转、缩放、点击动作、快速切换和错误回退。
+当前主入口是 Cloudflare Pages 自定义域名 <https://subtext.tryworld.com.cn/>（项目 `subtext`，生产域名 `subtext-8up.pages.dev`）。备用镜像是 GitHub Pages <https://shdh-cmyk.github.io/heikesong-zuopin/>，随 `main` 自动构建；推送成功不等于页面已经更新，要核对线上资源版本。部署后核对 `index.html`、`model3d.js` 与五个角色模型（`pets/doubao.glb`、`pets/deepseek.glb`、`pets/workbuddy.glb`、`pets/codex.glb`、`pets/yuanbao.glb`），并在线验证五个角色的加载、旋转、缩放、点击动作、快速切换和错误回退。
 
-本轮五角色模型更新先在 GitHub Pages 验收；Cloudflare 的五角色版本同步与验证单独记录，不能沿用前一版的同步状态。
+2026-09-13 两个入口已同步到同一版本并各自验证过：GitHub Pages 随 `main` 构建，Cloudflare 部署后逐个核对五个 GLB 与 `vendor/three/` 返回 200，并在线上跑完 `tools/regression.py` 的 50 项检查。该结论只对本次版本有效，下次改动后需重新核对。
 
 部署使用仓库外的**新暂存目录**复制必要静态文件，必须包含 `vendor/three/` 与回复表情所在的 `assets/`：
 

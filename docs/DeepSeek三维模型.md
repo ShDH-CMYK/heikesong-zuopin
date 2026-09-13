@@ -84,9 +84,9 @@ root
 | `Home`（画布获得焦点时） | 复位视角 |
 | `Enter` / 空格（画布获得焦点时） | 触发点击互动 |
 
-加载时继续显示原立绘，三维模型首帧成功绘制后才替换。模块、模型或 WebGL 不可用时保留立绘；切换角色、实验室隐藏、标签页隐藏或模型离开可视范围时暂停渲染。其余四只角色沿用原有立绘和对话行为。
+加载时继续显示原立绘，三维模型首帧成功绘制后才替换。模块、模型或 WebGL 不可用时保留立绘；切换角色、实验室隐藏、标签页隐藏或模型离开可视范围时暂停渲染。其余四只角色同样各自加载独立模型（`pets/doubao.glb`、`pets/workbuddy.glb`、`pets/codex.glb`、`pets/yuanbao.glb`），并沿用同一套立绘回退与对话行为。
 
-本轮 Blue 模型发布与验收入口为 [GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/)。项目另有 [Cloudflare 入口](https://subtext.tryworld.com.cn/)；该入口的 Blue 版本需单独同步并验证，发布和浏览器检查以实际目标地址与资源版本为准。上述内容描述代码支持的行为，测试结果须对应本轮证据记录。
+本轮 Blue 模型已同步到两个入口并各自验证：[GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/) 随 `main` 构建，[Cloudflare 入口](https://subtext.tryworld.com.cn/) 于 2026-09-13 部署后核对模型与 `vendor/three/` 返回 200，并在线上跑完 `tools/regression.py` 的 50 项检查。该结论只对本次版本有效；后续改动以实际目标地址与资源版本为准，上述内容描述代码支持的行为，测试结果须对应本轮证据记录。
 
 ## 从脚本复建
 

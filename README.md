@@ -14,7 +14,7 @@ We Young 黑客松 2026 · 赛道二「离谱发明家」 · 人民当家作组
 
 核心流程使用本地词库，无需 API Key。当前演示主入口是 [subtext.tryworld.com.cn](https://subtext.tryworld.com.cn/)（Cloudflare Pages）；备用镜像是 [GitHub Pages](https://shdh-cmyk.github.io/heikesong-zuopin/)，随 `main` 自动构建。五只宠物均可旋转、缩放并播放待机与点击动作；拆镜使用 Blue 资产绑定版，其余四只按现有立绘制作了独立的风格化实体模型。
 
-本轮五角色互动更新与验收目标为 GitHub Pages；Cloudflare 入口的本次模型版本仍需单独同步和验证，不能据历史部署记录判断其已更新。
+两个入口均已同步到同一版本：2026-09-13 部署 Cloudflare 后，五个模型文件（`pets/doubao.glb` 等）与 `vendor/three/` 逐个实测返回 200，并在线上跑完 `tools/regression.py` 全部 50 项检查。后续每次改动仍需按 [提交前清单](docs/提交前清单.md) 重新核对，不能沿用本次结论。
 
 网页采用静态部署，Three.js 0.180.0 及模型、贴图均随站点提供。用本地 HTTP 服务打开完整副本时，交互和三维角色可在断开互联网后使用；Google Fonts 不可用时回退系统字体。
 
