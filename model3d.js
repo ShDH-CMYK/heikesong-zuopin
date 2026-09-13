@@ -74,10 +74,9 @@ if (host && stage && lab) {
       doubao: 'pets/doubao.glb?v=20260913-all-pets-v2',
       deepseek: 'pets/deepseek.glb?v=20260913-all-pets-v2',
       workbuddy: 'pets/workbuddy.glb?v=20260913-all-pets-v2',
-      // The previous Codex asset could fail to decode in some browsers. This
-      // FBX-converted GLB is self-contained and is used for the replacement
-      // model; its procedural clips below keep click interaction available.
-      codex: 'pets/codex-fbx.glb?v=20260913-codex-fbx1',
+      // codex-fbx.glb 是 29 MB 的 FBX 转换资产，超过 Cloudflare Pages 25 MiB
+      // 单文件上限，主入口取不到该文件，因此仍使用精简的 codex.glb。
+      codex: 'pets/codex.glb?v=20260913-final1',
       yuanbao: 'pets/yuanbao.glb?v=20260913-all-pets-v2'
     };
     // One renderer; at most five lazily loaded assets, shared across switches.
