@@ -46,7 +46,7 @@ with sync_playwright() as p:
     page.on('pageerror', lambda error: errors.append(str(error)))
     page.on('request', lambda req: requests.append(req.url) if '.glb?' in req.url else None)
     page.goto(args.url, wait_until='domcontentloaded')
-    page.get_by_role('button', name='暖球 ORB 暖球 温柔安慰 · 克制吐槽 去问它一句').click()
+    page.locator('.pet-card[data-index="0"]').click()
     for pet, name in PETS:
         select(page, name)
         ready(page, pet)
@@ -111,7 +111,7 @@ with sync_playwright() as p:
     held = []
     cold.route('**/pets/doubao.glb*', lambda route: held.append(route))
     cold.goto(args.url, wait_until='domcontentloaded')
-    cold.get_by_role('button', name='暖球 ORB 暖球 温柔安慰 · 克制吐槽 去问它一句').click()
+    cold.locator('.pet-card[data-index="0"]').click()
     cold.wait_for_function("document.querySelector('#stage-model-3d').dataset.state === 'loading'")
     select(cold, '小金')
     ready(cold, 'yuanbao')
@@ -132,7 +132,7 @@ with sync_playwright() as p:
     failed = browser.new_page()
     failed.route('**/pets/codex.glb*', lambda route: route.fulfill(status=503, body='unavailable'))
     failed.goto(args.url, wait_until='domcontentloaded')
-    failed.get_by_role('button', name='报错 TRACE 报错 技术宅 · 现实报错 去问它一句').click()
+    failed.locator('.pet-card[data-index="3"]').click()
     failed.wait_for_function("document.querySelector('#stage-model-3d').dataset.state === 'fallback'")
     assert failed.locator('#lab-pet').is_visible()
     assert failed.locator('#lab-pet').get_attribute('alt') == '报错'
@@ -146,7 +146,7 @@ with sync_playwright() as p:
 
     mobile = browser.new_page(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
     mobile.goto(args.url, wait_until='domcontentloaded')
-    mobile.get_by_role('button', name='小金 COIN 小金 财迷机灵 · 暴富吐槽 去问它一句').click()
+    mobile.locator('.pet-card[data-index="4"]').click()
     ready(mobile, 'yuanbao')
     for pet, name in PETS:
         select(mobile, name)

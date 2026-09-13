@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Full regression of the core game loop against the local build."""
+import os
+import re
 import sys
 
 from playwright.sync_api import sync_playwright
@@ -58,7 +60,17 @@ with sync_playwright() as p:
     names = page.locator(".pet-card__name").all_inner_texts()
     check("01 首页五只宠物为原创名", names == ["暖球", "拆镜", "班班", "报错", "小金"], names)
     check("02 首页无旧品牌名", not page.evaluate("""() => /豆包|DeepSeek|WorkBuddy|Codex|元宝/.test(document.body.innerText)"""))
-    check("03 首屏示例与词库一致", "先投三千" in page.evaluate("""() => document.querySelector('.hero-demo__roast').textContent"""))
+    hero_reply = page.evaluate("""() => document.querySelector('.hero-demo__reply').textContent""").strip()
+    hero_roast = page.evaluate("""() => document.querySelector('.hero-demo__roast').textContent""").strip()
+    with open(os.path.join(os.path.dirname(__file__), "..", "game.js"), encoding="utf-8") as f:
+        lexicon = f.read()
+    voice_rich = re.search(r"id: 'yuanbao'.*?rich: '(.*?)',\n", lexicon, re.S)
+    roast_rich = re.search(r"id: 'rich',.*?yuanbao: '(.*?)'\n", lexicon, re.S)
+    check("03 首屏示例与词库逐字一致",
+          bool(voice_rich and roast_rich)
+          and hero_reply == voice_rich.group(1)
+          and hero_roast == roast_rich.group(1),
+          hero_roast[:40])
 
     # 2. enter lab
     page.evaluate("""() => document.getElementById('random-btn').click()""")

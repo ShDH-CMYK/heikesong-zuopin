@@ -20,7 +20,7 @@
 ```json
 {
   "question": "用户的问题",
-  "role": { "id": "doubao", "name": "暖球", "persona": "温柔安慰 · 克制吐槽" }
+  "role": { "id": "doubao", "name": "暖球", "persona": "温柔外婆式软刀子 · 句句心疼地损你" }
 }
 ```
 
