@@ -50,7 +50,7 @@ with sync_playwright() as p:
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     errs, failed = [], []
     page.on("pageerror", lambda e: errs.append(str(e)))
-    page.on("requestfailed", lambda r: failed.append(r.url))
+    page.on("requestfailed", lambda r: failed.append((r.url, (r.failure or ""))))
 
     # 1. home
     page.goto(URL, wait_until="domcontentloaded", timeout=15000)
@@ -358,7 +358,8 @@ with sync_playwright() as p:
     check("48 清空后两处告警条都收起", not reset["stage"] and not reset["drawer"], reset)
 
     check("49 全程无 JS 报错", not errs, errs[:2])
-    bad = [u for u in failed if "fonts.g" not in u]
+    # 切换角色时浏览器会主动取消在途图片请求，ERR_ABORTED 不是资源缺失
+    bad = [u for u, why in failed if "fonts.g" not in u and "ERR_ABORTED" not in why]
     check("50 全程无资源加载失败", not bad, bad[:2])
     browser.close()
 fails = [r for r in R if not r["pass"]]
